@@ -58,7 +58,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\AccountViewModels.cs" />
-    <Compile Include="Entities\AppContext.cs" />
+    <Compile Include="EF\AppContext.cs" />
+    <Compile Include="Entities\ApplicationRole.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\CampPlace.cs" />
     <Compile Include="Entities\Dialog.cs" />
@@ -71,7 +72,16 @@
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\UserProfile.cs" />
     <Compile Include="Entities\UserSetting.cs" />
+    <Compile Include="Identity\ApplicationRoleManager.cs" />
+    <Compile Include="Identity\ApplicationUserManager.cs" />
+    <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\CampPlacesRepository.cs" />
+    <Compile Include="Repositories\GroupsRepository.cs" />
+    <Compile Include="Repositories\IdentityUnitOfWork.cs" />
+    <Compile Include="Repositories\MessagesRepository.cs" />
+    <Compile Include="Repositories\PostsRepository.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

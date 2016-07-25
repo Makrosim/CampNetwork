@@ -1,13 +1,12 @@
 ﻿using System.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using CampBusinessLogic.Entities;
 
-namespace CampBusinessLogic.Entities
+namespace CampBusinessLogic.EF
 {
     public class AppContext : IdentityDbContext<User>
     {
-        public AppContext() : base("DefaultConnection", throwIfV1Schema: false)
-        {
-        }
+        public AppContext(string conectionString) : base(conectionString) { }
 
         public DbSet<Group> Groups { get; set; }
         public DbSet<GroupSetting> GroupSettings { get; set; }
@@ -17,10 +16,5 @@ namespace CampBusinessLogic.Entities
         public DbSet<Post> Posts { get; set; }
         public DbSet<CampPlace> CampPlaces { get; set; }
         public DbSet<Message> Messages { get; set; }
-
-        public static AppContext Create()
-        {
-            return new AppContext();
-        }
     }
 }

@@ -8,22 +8,7 @@ namespace CampBusinessLogic.Entities
 {
     public class User : IdentityUser
     {
-        public User()
-        {
-            CampPlaces = new List<CampPlace>();
-            Groups = new List<Group>();
-            Dialogs = new List<Dialog>();
-            Friends = new List<User>();
-            Media = new List<int>();
-        }
-
         public virtual UserProfile UserProfile { get; set; }
-        public virtual ICollection<int> Media { get; set; }
-        public virtual ICollection<CampPlace> CampPlaces { get; set; }
-        public ICollection<Group> Groups { get; set; }
-        public UserSetting UserSettings { get; set; }
-        public ICollection<User> Friends { get; set; }
-        public ICollection<Dialog> Dialogs { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager)
         {
