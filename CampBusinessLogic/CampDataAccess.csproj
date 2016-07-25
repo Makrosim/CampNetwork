@@ -7,8 +7,8 @@
     <ProjectGuid>{3283B342-1D37-4F5D-BE85-75EDBBF20588}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CampBusinessLogic</RootNamespace>
-    <AssemblyName>CampBusinessLogic</AssemblyName>
+    <RootNamespace>CampDataAccess</RootNamespace>
+    <AssemblyName>CampDataAccess</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -82,6 +82,7 @@
     <Compile Include="Repositories\IdentityUnitOfWork.cs" />
     <Compile Include="Repositories\MessagesRepository.cs" />
     <Compile Include="Repositories\PostsRepository.cs" />
+    <Compile Include="Repositories\UserProfilesRepository.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

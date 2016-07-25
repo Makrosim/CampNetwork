@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CampDataAccess.Entities
 {
@@ -13,12 +15,15 @@ namespace CampDataAccess.Entities
             Media = new List<int>();
         }
 
+        [Key]
+        [ForeignKey("User")]
+        public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string BirthDateDay { get; set; }
         public string BirthDateMounth { get; set; }
         public string BirthDateYear { get; set; }
-        public string Adress { get; set; }
+        public string Address { get; set; }
         public string Skype { get; set; }
         public string Phone { get; set; }
         public string AdditionalInformation { get; set; }

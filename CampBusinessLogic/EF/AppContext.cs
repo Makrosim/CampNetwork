@@ -16,5 +16,6 @@ namespace CampDataAccess.EF
         public DbSet<Post> Posts { get; set; }
         public DbSet<CampPlace> CampPlaces { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
     }
 }

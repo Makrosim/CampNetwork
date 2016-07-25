@@ -18,6 +18,7 @@ namespace CampDataAccess.Repositories
         private IRepository<Message> messageManager;
         private IRepository<Group> groupManager;
         private IRepository<CampPlace> campPlaceManager;
+        private IRepository<UserProfile> userProfileManager;
 
         public IdentityUnitOfWork(string connectionString)
         {
@@ -25,6 +26,10 @@ namespace CampDataAccess.Repositories
             userManager = new ApplicationUserManager(new UserStore<User>(db));
             roleManager = new ApplicationRoleManager(new RoleStore<ApplicationRole>(db));
             postManager = (IRepository<Post>)new PostsRepository(db);
+            messageManager = (IRepository<Message>)new MessagesRepository(db);
+            groupManager = (IRepository<Group>)new GroupsRepository(db);
+            campPlaceManager = (IRepository<CampPlace>)new CampPlacesRepository(db);
+            userProfileManager = (IRepository<UserProfile>)new UserProfilesRepository(db);
         }
 
         public ApplicationUserManager UserManager
@@ -50,6 +55,11 @@ namespace CampDataAccess.Repositories
         public IRepository<CampPlace> CampPlaceManager
         {
             get { return campPlaceManager; }
+        }
+
+        public IRepository<UserProfile> UserProfileManager
+        {
+            get { return userProfileManager; }
         }
 
         public ApplicationRoleManager RoleManager
