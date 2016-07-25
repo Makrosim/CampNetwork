@@ -1,8 +1,8 @@
 ﻿using System.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using CampBusinessLogic.Entities;
+using CampDataAccess.Entities;
 
-namespace CampBusinessLogic.EF
+namespace CampDataAccess.EF
 {
     public class AppContext : IdentityDbContext<User>
     {

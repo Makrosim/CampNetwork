@@ -1,4 +1,4 @@
-﻿namespace CampBusinessLogic.Entities
+﻿namespace CampDataAccess.Entities
 {
     public class Media : BaseEntity
     {

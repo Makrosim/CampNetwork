@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace CampBusinessLogic.Entities
+namespace CampDataAccess.Entities
 {
     public class ExternalLoginConfirmationViewModel
     {

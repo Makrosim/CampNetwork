@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace CampBusinessLogic.Entities
+namespace CampDataAccess.Entities
 {
     public class Post : BaseEntity
     {

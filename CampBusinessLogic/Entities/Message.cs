@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CampBusinessLogic.Entities
+namespace CampDataAccess.Entities
 {
     public class Message : BaseEntity
     {

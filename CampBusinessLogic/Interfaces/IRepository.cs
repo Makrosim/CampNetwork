@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CampBusinessLogic.Interfaces
+namespace CampDataAccess.Interfaces
 {
     public interface IRepository<T> :IDisposable where T : class
     {

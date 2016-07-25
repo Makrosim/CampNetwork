@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using CampBusinessLogic.EF;
-using CampBusinessLogic.Entities;
+using CampDataAccess.EF;
+using CampDataAccess.Entities;
 using System.Data.Entity;
 
-namespace CampBusinessLogic.Repositories
+namespace CampDataAccess.Repositories
 {
     class PostsRepository
     {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using CampBusinessLogic.Identity;
-using CampBusinessLogic.Entities;
+using CampDataAccess.Identity;
+using CampDataAccess.Entities;
 
-namespace CampBusinessLogic.Interfaces
+namespace CampDataAccess.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {

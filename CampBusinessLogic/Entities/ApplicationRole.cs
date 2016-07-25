@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace CampBusinessLogic.Entities
+namespace CampDataAccess.Entities
 {
     public class ApplicationRole : IdentityRole
     {

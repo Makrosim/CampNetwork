@@ -1,8 +1,8 @@
-﻿using CampBusinessLogic.Entities;
+﻿using CampDataAccess.Entities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace CampBusinessLogic.Identity
+namespace CampDataAccess.Identity
 {
     public class ApplicationRoleManager : RoleManager<ApplicationRole>
     {

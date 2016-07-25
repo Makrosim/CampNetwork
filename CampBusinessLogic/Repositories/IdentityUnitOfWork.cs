@@ -1,12 +1,12 @@
-﻿using CampBusinessLogic.EF;
-using CampBusinessLogic.Entities;
-using CampBusinessLogic.Interfaces;
+﻿using CampDataAccess.EF;
+using CampDataAccess.Entities;
+using CampDataAccess.Interfaces;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Threading.Tasks;
-using CampBusinessLogic.Identity;
+using CampDataAccess.Identity;
 
-namespace CampBusinessLogic.Repositories
+namespace CampDataAccess.Repositories
 {
     public class IdentityUnitOfWork : IUnitOfWork
     {

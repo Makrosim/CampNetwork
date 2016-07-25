@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace CampBusinessLogic.Entities
+namespace CampDataAccess.Entities
 {
     public class User : IdentityUser
     {

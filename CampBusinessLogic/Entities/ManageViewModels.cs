@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 
-namespace CampBusinessLogic.Entities
+namespace CampDataAccess.Entities
 {
     public class IndexViewModel
     {

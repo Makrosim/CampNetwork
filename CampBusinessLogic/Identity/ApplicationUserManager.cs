@@ -1,7 +1,7 @@
-﻿using CampBusinessLogic.Entities;
+﻿using CampDataAccess.Entities;
 using Microsoft.AspNet.Identity;
 
-namespace CampBusinessLogic.Identity
+namespace CampDataAccess.Identity
 {
     public class ApplicationUserManager : UserManager<User>
     {
