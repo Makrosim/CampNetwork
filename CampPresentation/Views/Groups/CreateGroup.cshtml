@@ -1,0 +1,23 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="navbar" role="navigation">
+    <div class="navbar-header">
+        <div class="navbar-brand">Создание группы</div>
+    </div>
+</div>
+
+<form method="post" action="">
+    <div class="form-group">
+        <label>Название групппы</label>
+        <input class="form-control" type="text" name="Name" />
+    </div>
+    <div class="form-group">
+        <label>Краткое описание (Тематика, принадлежность городу, организации и т.д.)</label>
+        <textarea class="form-control" name="ShortDescription"></textarea>
+    </div>
+    <input class="btn btn-success" type="submit" value="Создать"/>
+</form>
+

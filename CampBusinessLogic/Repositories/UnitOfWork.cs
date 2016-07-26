@@ -8,7 +8,7 @@ using CampDataAccess.Identity;
 
 namespace CampDataAccess.Repositories
 {
-    public class IdentityUnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private AppContext db;
 
@@ -19,17 +19,19 @@ namespace CampDataAccess.Repositories
         private IRepository<Group> groupManager;
         private IRepository<CampPlace> campPlaceManager;
         private IRepository<UserProfile> userProfileManager;
+        private IRepository<Media> mediaManager;
 
-        public IdentityUnitOfWork(string connectionString)
+        public UnitOfWork(string connectionString)
         {
             db = new AppContext(connectionString);
             userManager = new ApplicationUserManager(new UserStore<User>(db));
             roleManager = new ApplicationRoleManager(new RoleStore<ApplicationRole>(db));
-            postManager = (IRepository<Post>)new PostsRepository(db);
-            messageManager = (IRepository<Message>)new MessagesRepository(db);
-            groupManager = (IRepository<Group>)new GroupsRepository(db);
-            campPlaceManager = (IRepository<CampPlace>)new CampPlacesRepository(db);
-            userProfileManager = (IRepository<UserProfile>)new UserProfilesRepository(db);
+            postManager = new PostsRepository(db);
+            messageManager = new MessagesRepository(db);
+            groupManager = new GroupsRepository(db);
+            userProfileManager = new UserProfilesRepository(db);
+            campPlaceManager = new CampPlacesRepository(db);
+            mediaManager = new MediasRepository(db);
         }
 
         public ApplicationUserManager UserManager
@@ -62,6 +64,11 @@ namespace CampDataAccess.Repositories
             get { return userProfileManager; }
         }
 
+        public IRepository<Media> MediaManager
+        {
+            get { return mediaManager; }
+        }
+
         public ApplicationRoleManager RoleManager
         {
             get { return roleManager; }
@@ -88,10 +95,7 @@ namespace CampDataAccess.Repositories
                 {
                     userManager.Dispose();
                     roleManager.Dispose();
-                    postManager.Dispose();
-                    messageManager.Dispose();
-                    campPlaceManager.Dispose();
-                    groupManager.Dispose();
+                    db.Dispose();
                 }
                 this.disposed = true;
             }

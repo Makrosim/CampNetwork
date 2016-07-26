@@ -22,6 +22,7 @@ namespace CampDataAccess.Entities
         public Rates Comfortableness { get; set; }
         public string ShortDescription { get; set; }
 
+        public virtual ICollection<int?> PostsId { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
         public virtual User User { get; set; }
     }

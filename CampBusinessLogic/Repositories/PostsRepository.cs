@@ -2,10 +2,11 @@
 using CampDataAccess.EF;
 using CampDataAccess.Entities;
 using System.Data.Entity;
+using CampDataAccess.Interfaces;
 
 namespace CampDataAccess.Repositories
 {
-    class PostsRepository
+    class PostsRepository : IRepository<Post>
     {
         private AppContext db;
 
@@ -14,12 +15,12 @@ namespace CampDataAccess.Repositories
             this.db = db;
         }
 
-        public IEnumerable<Post> GetPostList()
+        public IEnumerable<Post> GetAll()
         {
             return db.Posts;
         }
 
-        public Post GetPost(int id)
+        public Post Get(int id)
         {
             return db.Posts.Find(id);
         }

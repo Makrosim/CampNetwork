@@ -1,0 +1,70 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="navbar" role="navigation">
+    <div class="navbar-header">
+        <div class="navbar-brand">Информация пользователя</div>
+    </div>
+</div>
+
+<form class="form-horizontal" method="post" action="" enctype="multipart/form-data">
+    <input type="hidden" name="Id" value="@ViewBag.User.Id" />
+    <div class="form-group">
+        <label class="col-md-3 control-label" for="inp_FirstName">Имя</label>
+        <div class="col-md-6">
+            <input class="form-control" id="inp_FirstName" type="text" name="FirstName" value="@ViewBag.User.FirstName" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-3 control-label" for="inp_LastName">Фамилия</label>
+        <div class="col-md-6">
+            <input class="form-control" id="inp_LastName" type="text" name="LastName" value="@ViewBag.User.LastName" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-3 control-label" for="inp_BirthDate">День рождения</label>
+        <div class="col-md-6">
+            <select class="form-control" id="inp_BirthDate" type="" name="BirthDate" value="@ViewBag.User.BirthDateMounth" >
+                <option>Декабрь</option><option>Январь</option><option>Февраль</option><option>Март</option><option>Апрель</option><option>Май</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-3 control-label" for="inp_Adress">Адрес</label>
+        <div class="col-md-6">
+            <input class="form-control" id="inp_Adress" type="text" name="Adress" value="@ViewBag.User.Adress" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-3 control-label" for="inp_Skype">Skype</label>
+        <div class="col-md-6">
+            <input class="form-control" id="inp_Skype" type="text" name="Skype" value="@ViewBag.User.Skype" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-3 control-label" for="inp_Phone">Телефон</label>
+        <div class="col-md-6">
+            <input class="form-control" id="inp_Phone" type="text" name="Phone" value="@ViewBag.User.Phone" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-3 control-label" for="inp_AdditionalInformation">Дополнительная информация</label>
+        <div class="col-md-6">
+            <textarea class="form-control" rows="5" cols="50" id="inp_AdditionalInformation" name="AdditionalInformation">@ViewBag.User.AdditionalInformation</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-3 control-label" for="inp_image">Аватар</label>
+        <div class="col-md-6">
+            <input type="file" id="inp_image" name="image" />
+        </div>
+    </div> 
+    <div class="form-group">
+        <div class="col-md-offset-3 col-md-6">
+            <input class="btn btn-success" type="submit" value="Сохранить" />
+        </div>
+    </div>
+</form>
+

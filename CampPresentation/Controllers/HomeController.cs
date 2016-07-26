@@ -1,30 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using System.Threading.Tasks;
+using CampBusinessLogic.Interfaces;
+using CampBusinessLogic.DTO;
 
 namespace CampPresentation.Controllers
 {
+
     public class HomeController : Controller
     {
+        private IUserProfileService profileService;
+        private IPostService postService;
+        private IMessageService messageService;
+
+        public HomeController(IUserProfileService profileService, IPostService postService, IMessageService messageService)
+        {
+            this.profileService = profileService;
+            this.postService = postService;
+            this.messageService = messageService;
+        }
+
+        [HttpGet]
         public ActionResult Index()
         {
-            return View();
+            if(Request.IsAuthenticated)
+            {
+                ViewBag.User = profileService.GetProfileData(User.Identity.Name);
+                ViewBag.Posts = postService.GetAllUsersPosts(User.Identity.Name);
+
+                return View();
+            }
+            else
+            {
+                return Redirect("/Account/Login");
+            }
         }
 
-        public ActionResult About()
+        [HttpPost]
+        public async Task<RedirectResult> Index(int PostId, string Text)
         {
-            ViewBag.Message = "Your application description page.";
+            await messageService.CreateUsersMessage(new MessageDTO
+            {
+                Email = User.Identity.Name,
+                PostId = PostId,
+                Text = Text
+            });
 
-            return View();
+            return Redirect("/Home/Index");
         }
 
-        public ActionResult Contact()
+        [HttpGet]
+        public RedirectResult DeleteComment(int Id)
         {
-            ViewBag.Message = "Your contact page.";
+            messageService.DeleteUsersMessage(Id);
 
-            return View();
+            return Redirect("/Home/Index");
         }
     }
 }

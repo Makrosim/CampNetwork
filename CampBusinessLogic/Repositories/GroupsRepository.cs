@@ -2,10 +2,11 @@
 using CampDataAccess.EF;
 using CampDataAccess.Entities;
 using System.Data.Entity;
+using CampDataAccess.Interfaces;
 
 namespace CampDataAccess.Repositories
 {
-    class GroupsRepository
+    class GroupsRepository : IRepository<Group>
     {
         private AppContext db;
 
@@ -14,12 +15,12 @@ namespace CampDataAccess.Repositories
             this.db = db;
         }
 
-        public IEnumerable<Group> GetGroupsList()
+        public IEnumerable<Group> GetAll()
         {
             return db.Groups;
         }
 
-        public Group GetGroup(int id)
+        public Group Get(int id)
         {
             return db.Groups.Find(id);
         }

@@ -13,6 +13,7 @@ namespace CampDataAccess.Interfaces
         IRepository<Message> MessageManager { get; }
         IRepository<Group> GroupManager { get; }
         IRepository<CampPlace> CampPlaceManager { get; }
+        IRepository<Media> MediaManager { get; }
         ApplicationRoleManager RoleManager { get; }
         Task SaveAsync();
     }

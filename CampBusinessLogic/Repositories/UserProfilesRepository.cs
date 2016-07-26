@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CampDataAccess.EF;
 using CampDataAccess.Entities;
 using System.Data.Entity;
+using CampDataAccess.Interfaces;
 
 namespace CampDataAccess.Repositories
 {
-    class UserProfilesRepository
+    class UserProfilesRepository : IRepository<UserProfile>
     {
         private AppContext db;
 
@@ -14,14 +16,14 @@ namespace CampDataAccess.Repositories
             this.db = db;
         }
 
-        public IEnumerable<UserProfile> GetUserProfilesList()
+        public IEnumerable<UserProfile> GetAll()
         {
             return db.UserProfiles;
         }
 
-        public UserProfile GetUserProfile(int id)
+        public UserProfile Get(int id)
         {
-            return db.UserProfiles.Find(id);
+            return db.UserProfiles.Find(Convert.ToString(id));
         }
 
         public void Create(UserProfile up)

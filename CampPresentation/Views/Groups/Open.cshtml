@@ -1,0 +1,82 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="navbar" role="navigation">
+    <div class="navbar-header">
+        <div class="navbar-brand">Обзор группы</div>
+    </div>
+
+    <form class="navbar-form navbar-right" method="post" action="">
+        <div class="form-group">
+            <input type="hidden" value="@ViewBag.Group.Id" name="grId" />
+            <input class="form-control" type="text" name="ArtId"  placeholder="Id Обзора" />
+        </div>
+        <button type="submit" class="btn btn-default">Добавить</button>
+    </form>
+</div>
+
+<div class="row user-info">
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-10">
+        <p>@ViewBag.Group.Name</p>
+        <p>Кол-во учасников: @ViewBag.Group.Members.Count</p>
+        <p>Создатель: @ViewBag.Group.Creator.FirstName @ViewBag.Group.Creator.LastName</p>
+        <p>@ViewBag.Group.ShortDescription</p>
+    </div>
+</div>
+
+<div class="panel-group">
+    @if (ViewBag.GroupPosts != null)
+    {
+        foreach (var a in ViewBag.GroupPosts)
+        {
+            <div class="panel panel-info">
+                <div class="panel-heading">Место отдыха: @a.CampPlace.Name </div>
+                <div class="panel-body">@a.Text</div>
+                <div class="panel-footer">
+                    @a.CreationDate    Id статьи: @a.Id
+                    <a class="pull-right btn btn-danger btn-xs" href="/Article/Delete/@a.Id">Удалить обзор</a>
+                    <a id="comment" class="pull-right btn btn-info btn-xs">Комментировать</a>
+                </div>
+            </div>
+            <form id="comment-area" method="post" hidden class="comment-area" action="/Groups/Comment">
+                <div class="form-group">
+                    <input type="hidden" name="ArtId" value="@a.Id" />
+                    <textarea class="form-control" name="Text"></textarea>
+                </div>
+                <input id="sub" class="btn btn-success" type="submit" value="Комментировать" />
+            </form>
+            if (a.Messages != null)
+            {
+                <dl class="col-md-offset-1 dl-comment">
+                    @foreach (var c in a.Messages)
+                    {
+                        <dt>@c.Author.FirstName @c.Author.LastName в @c.Date <a class="btn btn-xs btn-danger" href="/Groups/DeleteComment/?ArtId=@a.Id&Id=@c.Id">x</a></dt>
+                        <dd> - @c.Text</dd>
+                    }
+                </dl>
+            }
+        }
+    }
+</div>
+
+<script type="text/javascript">
+
+    var com = document.getElementById("comment");
+    var sub = document.getElementById("sub");
+    var area = document.getElementById("comment-area");
+
+    com.onclick = function ()
+    {
+        area.hidden = !area.hidden;
+    }
+
+    sub.onclick = function ()
+    {
+        area.hidden = true;
+    }
+
+</script>

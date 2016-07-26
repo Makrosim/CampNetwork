@@ -1,0 +1,79 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="navbar" role="navigation">
+    <div class="navbar-header">
+        <div class="navbar-brand">Места отдыха</div>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="/CampPlaces/CreateCampPlace">Добавить</a></li>
+        <li><a id="maplink">Показать/Скрыть карту</a></li>
+    </ul> 
+</div>
+
+<div class="map" hidden id="map"></div>
+
+<div class="panel-group">
+    @{if (ViewBag.CP != null)
+      {
+            foreach (var cp in ViewBag.CP)
+            {
+                <div class="panel panel-info">
+                    <div class="panel-heading">@cp.Id.@cp.Name</div>
+                    <div class="panel-body">
+                        <p>Координаты: @cp.LocationX, @cp.LocationY</p>
+                        <p>Чистота: @cp.Purity</p>
+                        <p>Людность: @cp.Crowdy</p>
+                        <p>Доступность: @cp.Appriachibility</p>
+                        <p>Комфорт: @cp.Comfortableness</p>
+                        <p>@cp.ShortDescription</p>
+                    </div>
+                    <div class="panel-footer"> Обзоров: @(cp.Posts?.Count ?? 0)
+                        <a class="pull-right btn btn-danger btn-xs" href="/CampPlaces/Delete/@cp.Id">Удалить место отдыха</a>      
+                        <a class="pull-right btn btn-info btn-xs" href="/Article/Index/@cp.Id">Добавить обзор</a>                                     
+                    </div>
+                </div>
+            }
+      }
+     }
+    
+</div>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBiYT8YJ36AWUsSXozMhCOWi-ruz0tgPc&callback=initMap"></script>
+
+<script type="text/javascript">
+
+    var link = document.getElementById("maplink");
+    var divmap = document.getElementById("map");
+    var map;
+
+    link.onclick = function ()
+    {
+        divmap.hidden = !divmap.hidden;
+
+        if(divmap.hidden)
+            delete map;
+        else
+            initMap();
+    }
+
+    function initMap()
+    {
+        var myLatlng = { lat: 50, lng: 36.28 };
+        var camps = @Html.Raw(Json.Encode(ViewBag.Points));
+
+        map = new google.maps.Map(document.getElementById('map'), { center: myLatlng, zoom: 8 });
+
+        camps.forEach(function (item, i, camps)
+        {
+            var point = item.split(" ");
+            var marker = new google.maps.Marker({
+                position: { lat: parseFloat(point[1]), lng: parseFloat(point[0]) },
+                map: map,
+                title: point[2]
+            });
+        });
+
+    }
+</script>
+

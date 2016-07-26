@@ -8,6 +8,7 @@ namespace CampDataAccess.Entities
     {
         public UserProfile()
         {
+            CampPlacesId = new List<int?>();
             CampPlaces = new List<CampPlace>();
             Groups = new List<Group>();
             Dialogs = new List<Dialog>();
@@ -28,12 +29,15 @@ namespace CampDataAccess.Entities
         public string Phone { get; set; }
         public string AdditionalInformation { get; set; }
 
+        public virtual int Avatar { get; set; }
         public virtual ICollection<int> Media { get; set; }
+        public virtual ICollection<int?> CampPlacesId { get; set; }
         public virtual ICollection<CampPlace> CampPlaces { get; set; }
         public ICollection<Group> Groups { get; set; }
         public UserSetting UserSettings { get; set; }
         public ICollection<User> Friends { get; set; }
         public ICollection<Dialog> Dialogs { get; set; }
+        public ICollection<Message> Messages { get; set; }
 
         public virtual User User { get; set; }
     }
