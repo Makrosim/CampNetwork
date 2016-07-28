@@ -9,7 +9,9 @@ namespace CampBusinessLogic.DTO
     public class GroupDTO
     {
         public int Id { get; set; }
+        public bool IsCreator { get; set; }
         public int Name { get; set; }
+        public int MembersCount { get; set; }
         public string CreatorFirstName { get; set; }
         public string CreatorLastName { get; set; }
         public string ShortDescription { get; set; }

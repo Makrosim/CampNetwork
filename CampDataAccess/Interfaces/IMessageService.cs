@@ -10,7 +10,7 @@ namespace CampBusinessLogic.Interfaces
 {
     public interface IMessageService
     {
-        Task<OperationDetails> CreateUsersMessage(MessageDTO DTO);
+        Task<OperationDetails> CreateUsersMessage(string name, MessageDTO messageDTO);
         Task<OperationDetails> DeleteUsersMessage(int messageId, int postId);
         List<MessageDTO> GetAllPostMessages(int postId);
     }

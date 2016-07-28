@@ -18,15 +18,15 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public async Task<OperationDetails> Create(UserDTO userDto)
+        public async Task<OperationDetails> Create(UserDTO userDTO)
         {
-            var user = await Database.UserManager.FindByEmailAsync(userDto.Email);
+            var user = await Database.UserManager.FindByNameAsync(userDTO.Email);
 
             if (user == null)
             {
-                user = new User { Email = userDto.Email, UserName = userDto.UserName };
+                user = new User { Email = userDTO.Email, UserName = userDTO.UserName };
                 
-                await Database.UserManager.CreateAsync(user, userDto.Password);
+                await Database.UserManager.CreateAsync(user, userDTO.Password);
                 await Database.SaveAsync();
 
                 var profile = new UserProfile
@@ -55,11 +55,11 @@ namespace CampBusinessLogic.Services
             }
         }
 
-        public async Task<ClaimsIdentity> Authenticate(UserDTO userDto)
+        public async Task<ClaimsIdentity> Authenticate(UserDTO userDTO)
         {
             ClaimsIdentity claim = null;
             // находим пользователя
-            var user = await Database.UserManager.FindAsync(userDto.Email, userDto.Password);
+            var user = await Database.UserManager.FindAsync(userDTO.UserName, userDTO.Password);
             // авторизуем его и возвращаем объект ClaimsIdentity
             if (user != null)
                 claim = await Database.UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);

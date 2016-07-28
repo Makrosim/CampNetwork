@@ -25,36 +25,37 @@ namespace CampBusinessLogic.Services
             var post = Database.PostManager.Get(postId);
             var messages = new List<MessageDTO>();
 
+            Mapper.Initialize(cfg => { cfg.CreateMap<Message, MessageDTO>()
+                .ForMember(dest => dest.FirstName, opts => opts.MapFrom(src => src.Author.FirstName))
+                .ForMember(dest => dest.LastName, opts => opts.MapFrom(src => src.Author.LastName)); });
+
             foreach (var messageId in post.Messages)
             {
                 var message = Database.MessageManager.Get(messageId);
-                var messageDTO = Mapper.Map<Message, MessageDTO>(message); //Сконфигурировать маппинг
-                messageDTO.FirstName = message.Author.FirstName;
-                messageDTO.LastName = message.Author.LastName;
+                var messageDTO = Mapper.Map<Message, MessageDTO>(message);
+
                 messages.Add(messageDTO);
             }
 
             return messages;
         }
 
-        public async Task<OperationDetails> CreateUsersMessage(MessageDTO messageDTO)
+        public async Task<OperationDetails> CreateUsersMessage(string name, MessageDTO messageDTO)
         {
-            var user = await Database.UserManager.FindByEmailAsync(messageDTO.Email);
+            var user = await Database.UserManager.FindByNameAsync(name);
             var prof = Database.UserProfileManager.Get(user.Id);
 
-            var mes = new Message
-            {
-                Id = messageDTO.Id,
-                Author = prof,
-                Text = messageDTO.Text,
-                Date = DateTime.Now // Плохо? Время, когда обрабатывается сервером?
-            };
+            Mapper.Initialize(cfg => { cfg.CreateMap<MessageDTO, Message>()
+                .ForMember(dest => dest.Author, opts => opts.MapFrom(p => prof));
+            });
 
-            Database.MessageManager.Create(mes);
+            var message = Mapper.Map<MessageDTO, Message>(messageDTO);
+
+            Database.MessageManager.Create(message);
             await Database.SaveAsync();
 
             var post = Database.PostManager.Get(messageDTO.PostId);
-            post.Messages.Add(mes.Id);
+            post.Messages.Add(message.Id);
 
             await Database.SaveAsync();
 
@@ -65,8 +66,10 @@ namespace CampBusinessLogic.Services
         {
             var message = Database.MessageManager.Get(messageId);
             Database.MessageManager.Delete(message.Id);
+
             var post = Database.PostManager.Get(postId);
             post.Messages.Remove(messageId);
+
             Database.PostManager.Update(post);
             await Database.SaveAsync();
 

@@ -20,6 +20,7 @@ namespace CampPresentation.DI
             container.Register(Component.For<IPostService>().ImplementedBy<PostService>());
             container.Register(Component.For<IMessageService>().ImplementedBy<MessageService>());
             container.Register(Component.For<ICampPlaceService>().ImplementedBy<CampPlaceService>());
+            container.Register(Component.For<IGroupService>().ImplementedBy<GroupService>());
 
             // регистрируем каждый контроллер по отдельности
             var controllers = Assembly.GetExecutingAssembly().GetTypes().Where(x => x.BaseType == typeof(Controller)).ToList();

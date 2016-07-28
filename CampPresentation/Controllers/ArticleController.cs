@@ -33,9 +33,9 @@ namespace CampAuth.Controllers
         }
 
         [HttpPost]
-        public async Task<RedirectResult> Index(int Id, PostDTO postDTO)
+        public async Task<RedirectResult> Index(int campPlaceId, PostDTO postDTO)
         {
-            await postService.CreatePost(Id, postDTO);
+            await postService.CreatePost(campPlaceId, postDTO);
 
             return Redirect("/Home/Index");
         }

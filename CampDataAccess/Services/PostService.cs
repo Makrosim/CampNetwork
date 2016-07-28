@@ -20,7 +20,7 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public async Task<OperationDetails> CreatePost(int Id, PostDTO postDTO)
+        public async Task<OperationDetails> CreatePost(int campPlaceID, PostDTO postDTO)
         {
             Mapper.Initialize(cfg => { cfg.CreateMap<PostDTO, Post>().ForMember("CampPlace", c => c.Ignore()); });
             var post = Mapper.Map<PostDTO, Post>(postDTO);
@@ -28,7 +28,7 @@ namespace CampBusinessLogic.Services
             post.CreationDate = DateTime.Now;
             Database.PostManager.Create(post);
             await Database.SaveAsync();
-            post.CampPlace = Database.CampPlaceManager.Get(Id);
+            post.CampPlace = Database.CampPlaceManager.Get(campPlaceID);
             await Database.SaveAsync();
 
             return new OperationDetails(true, "Операция успешно завершена", "");
@@ -58,27 +58,43 @@ namespace CampBusinessLogic.Services
         public async Task<List<PostDTO>> GetAllUsersPosts(string name)
         {
             var postList = new List<PostDTO>();
-            var user = await Database.UserManager.FindByEmailAsync(name);
+            var user = await Database.UserManager.FindByNameAsync(name);
             var profile = Database.UserProfileManager.Get(user.Id);
 
-            Mapper.Initialize(cfg => { cfg.CreateMap<Message, MessageDTO>(); });
-            
+            Mapper.Initialize(cfg => { cfg.CreateMap<Post, PostDTO>()
+                .ForMember("Messages", c => c.Ignore())
+                .ForMember(dest => dest.CampPlace, opts => opts.MapFrom(src => src.CampPlace.Name));
+            });
+
             foreach (var cp in profile.CampPlaces)
             {
                 if (cp != null)
                 {
                     foreach(var post in cp.Posts)
-                    { 
-                        var postDTO = new PostDTO
-                        {
-                            Id = post.Id,
-                            CreationDate = DateTime.Now,
-                            Text = post.Text,
-                            CampPlace = cp.Name
-                        };
+                    {
+                        var postDTO = Mapper.Map<Post, PostDTO>(post);
                         postList.Add(postDTO);
                     }
                 }
+            }
+
+            return postList;
+        }
+
+        public List<PostDTO> GetAllGroupPosts(int Id)
+        {
+            var postList = new List<PostDTO>();
+            var group = Database.GroupManager.Get(Id);
+
+            Mapper.Initialize(cfg => { cfg.CreateMap<Post, PostDTO>()
+                .ForMember("Messages", c => c.Ignore())
+                .ForMember(dest => dest.CampPlace, opts => opts.MapFrom(src => src.CampPlace.Name));
+            });
+
+            foreach (var post in group.Posts)
+            {
+                var postDTO = Mapper.Map<Post, PostDTO>(post);
+                postList.Add(postDTO);
             }
 
             return postList;

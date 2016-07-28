@@ -6,14 +6,14 @@ namespace CampDataAccess.Entities
     {
         public Group()
         {
-            Members = new List<User>();
+            Members = new List<UserProfile>();
             Posts = new List<Post>();
         }
 
         public string Name { get; set; }
         public string ShortDescription { get; set; }
-        public virtual User Creator { get; set; }
-        public virtual ICollection<User> Members { get; set; }
+        public virtual UserProfile Creator { get; set; }
+        public virtual ICollection<UserProfile> Members { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
         public GroupSetting GroupSetting { get; set; }
     }

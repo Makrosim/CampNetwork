@@ -19,13 +19,13 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public async Task<OperationDetails> Create(string email, CampPlaceDTO campDTO)
+        public async Task<OperationDetails> Create(string name, CampPlaceDTO campPlaceDTO)
         {
-            var user = await Database.UserManager.FindByEmailAsync(email);
+            var user = await Database.UserManager.FindByNameAsync(name);
             var profile = Database.UserProfileManager.Get(user.Id);
 
             Mapper.Initialize(cfg => { cfg.CreateMap<CampPlaceDTO, CampPlace>(); });
-            var camp = Mapper.Map<CampPlaceDTO, CampPlace>(campDTO);
+            var camp = Mapper.Map<CampPlaceDTO, CampPlace>(campPlaceDTO);
             camp.UserProfile =  profile;
 
             Database.CampPlaceManager.Create(camp);
@@ -34,12 +34,12 @@ namespace CampBusinessLogic.Services
             return new OperationDetails(true, "Операция успешно завершена", "");
         }
 
-        public async Task<OperationDetails> Update(CampPlaceDTO campDTO)
+        public async Task<OperationDetails> Update(CampPlaceDTO campPlaceDTO)
         {
-            var campPlace = Database.CampPlaceManager.Get(campDTO.Id);
+            var campPlace = Database.CampPlaceManager.Get(campPlaceDTO.Id);
 
             Mapper.Initialize(cfg => { cfg.CreateMap<CampPlaceDTO, CampPlace>(); });
-            Mapper.Map(campDTO, campPlace, typeof(CampPlaceDTO), typeof(CampPlace));
+            Mapper.Map(campPlaceDTO, campPlace, typeof(CampPlaceDTO), typeof(CampPlace));
 
             Database.CampPlaceManager.Update(campPlace);
             await Database.SaveAsync();
@@ -47,24 +47,24 @@ namespace CampBusinessLogic.Services
             return new OperationDetails(true, "Операция успешно завершена", "");
         }
 
-        public OperationDetails Delete(int Id)
+        public OperationDetails Delete(int campPlaceId)
         {
-            Database.CampPlaceManager.Delete(Id);
+            Database.CampPlaceManager.Delete(campPlaceId);
 
             return new OperationDetails(true, "Операция успешно завершена", "");
         }
 
-        public CampPlaceDTO GetCampData(int id)
+        public CampPlaceDTO GetCampData(int campPlaceId)
         {
             Mapper.Initialize(cfg => { cfg.CreateMap<CampPlace, CampPlaceDTO>(); });
-            var campDTO = Mapper.Map<CampPlace, CampPlaceDTO>(Database.CampPlaceManager.Get(id));
+            var campDTO = Mapper.Map<CampPlace, CampPlaceDTO>(Database.CampPlaceManager.Get(campPlaceId));
             
             return campDTO;
         }
 
-        public async Task<List<CampPlaceDTO>> GetCampList(string email)
+        public async Task<List<CampPlaceDTO>> GetCampList(string name)
         {
-            var user = await Database.UserManager.FindByEmailAsync(email);
+            var user = await Database.UserManager.FindByNameAsync(name);
             var profile = Database.UserProfileManager.Get(user.Id);
 
             var campPlaecDTOList = new List<CampPlaceDTO>();

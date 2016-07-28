@@ -1,29 +1,36 @@
-﻿using System;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using CampAuth.Models;
-using Microsoft.AspNet.Identity.Owin;
+﻿using System.Web.Mvc;
 using System.Threading.Tasks;
+using CampBusinessLogic.Interfaces;
+using CampBusinessLogic.DTO;
+using System;
+using System.Collections.Generic;
 
 namespace CampAuth.Controllers
 {
     public class GroupsController : Controller
     {
-        AppContext db = new AppContext();
+        private IGroupService groupService;
+        private IPostService postService;
+        private IMessageService messageService;
 
-        private ApplicationUserManager UserManager
+        public GroupsController(IGroupService groupService, IPostService postService, IMessageService messageService)
         {
-            get
-            {
-                return HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
+            this.groupService = groupService;
+            this.postService = postService;
+            this.messageService = messageService;
         }
 
         [HttpGet]
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            ViewBag.Groups = db.Groups.ToList();
+            var groupIdList = await groupService.GetAllGroups();
+            var groupDTOList = new List<GroupDTO>();
+            foreach(var groupId in groupIdList)
+            {
+                var groupDTO = await groupService.GetGroupData(User.Identity.Name, group.Id);
+                groupList.Add(groupDTO);
+            }
+            ViewBag.Groups = groupList;
 
             return View();
         }
@@ -35,68 +42,52 @@ namespace CampAuth.Controllers
         }
 
         [HttpGet]
-        public ActionResult Open(int Id)
+        public async Task<ActionResult> Open(int groupId)
         {
-            var group = db.Groups.Find(Id);
+            var group = await groupService.GetGroupData(User.Identity.Name, groupId);
             ViewBag.Group = group;
-            ViewBag.GroupPosts = group.Posts.ToList();
+
+            var posts = postService.GetAllGroupPosts(groupId);
+            ViewBag.Posts = posts;
 
             return View();
         }
 
         [HttpPost]
-        public RedirectResult Open(int grId, int ArtId)
+        public async Task<RedirectResult> Open(int groupId, int postId) // Имя метода не отражает сути
         {
-            Group gr = db.Groups.Find(grId);
-            gr.Posts.Add(db.Posts.Find(ArtId));
-            db.SaveChanges();
+            await groupService.AddPostToGroup(groupId, postId);
 
-            return Redirect($"/Groups/Open/{grId}");
+            return Redirect($"/Groups/Open/{groupId}");
         }
 
         [HttpPost]
-        public async Task<RedirectResult> CreateGroup(Group gr)
+        public async Task<RedirectResult> CreateGroup(GroupDTO groupDTO)
         {
-            User currUser = await UserManager.FindByEmailAsync(User.Identity.Name);
-            gr.Creator = currUser;
-            gr.Members.Add(currUser);
-            db.Groups.Add(gr);
-            db.SaveChanges();
+            await groupService.CreateGroup(User.Identity.Name, groupDTO);
 
             return Redirect("/Groups/Index");
         }
 
         [HttpPost]
-        public async Task<RedirectResult> Comment(int ArtId, string Text)
+        public async Task<RedirectResult> Comment(int postId, string Text) //Менял имя первого параметра
         {
-            User tmpUser = await UserManager.FindByEmailAsync(User.Identity.Name);
-            var currUser = db.Users.Find(tmpUser.Id);
-
-            var mes = new Message
+            await messageService.CreateUsersMessage(User.Identity.Name, new MessageDTO
             {
-                Author = currUser,
+                PostId = postId,
                 Text = Text,
                 Date = DateTime.Now
-            };
+            });
 
-            db.Messages.Add(mes);
-            db.SaveChanges();
-
-            db.Posts.Find(1).Messages.Add(mes.Id);
-
-            db.SaveChanges();
-
-            return Redirect($"/Groups/Open/{ArtId}");
+            return Redirect($"/Groups/Open/{postId}");
         }
 
         [HttpGet]
-        public RedirectResult DeleteComment(int ArtId, int Id)
+        public async Task<RedirectResult> DeleteComment(int postId, int messageId) //Менял имена
         {
-            var com = db.Messages.Find(Id);
-            db.Messages.Remove(com);
-            db.SaveChanges();
+            await messageService.DeleteUsersMessage(messageId, postId);
 
-            return Redirect($"/Groups/Open/{ArtId}");
+            return Redirect($"/Groups/Open/{postId}");
         }
     }
 }

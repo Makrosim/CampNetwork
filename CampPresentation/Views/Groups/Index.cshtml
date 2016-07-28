@@ -25,34 +25,34 @@
         else
         {
             <h3>Созданные вами группы: </h3>
-            foreach (var g in ViewBag.Groups)
+            foreach (var group in ViewBag.Groups)
             {
-                if (g.Creator.Id == 1)
+                if (group.IsCreator)
                 {
                     <div class="panel panel-info">
-                        <div class="panel-heading"><a href="/Groups/Open/@g.Id">@g.Name</a></div>
+                        <div class="panel-heading"><a href="/Groups/Open/@group.Id">@group.Name</a></div>
                         <div class="panel-body">
-                            <p>Id группы: @g.Id</p>
-                            <p>Описание: @g.ShortDescription</p>
+                            <p>Id группы: @group.Id</p>
+                            <p>Описание: @group.ShortDescription</p>
                         </div>
-                        <div class="panel-footer"> Кол-во учасников: @(g.Members?.Count ?? 0) </div>
+                        <div class="panel-footer"> Кол-во учасников: @(group.MembersCount) </div>
                     </div>
                 }
             }
 
             <h3>Вы состоите в группах: </h3>
-            foreach (var g in ViewBag.Groups)
+            foreach (var group in ViewBag.Groups)
             {
-                if (g.Creator.Id != 1)
+                if (!group.IsCreator)
                 {
                     <div class="panel panel-info">
-                        <div class="panel-heading"><a href="/Groups/Open/@g.Id">@g.Name</a></div>
+                        <div class="panel-heading"><a href="/Groups/Open/@group.Id">@group.Name</a></div>
                         <div class="panel-body">
-                            <p>Название группы: @g.Name</p>                    
-                            <p>Описание: @g.ShortDescription</p>
+                            <p>Название группы: @group.Name</p>                    
+                            <p>Описание: @group.ShortDescription</p>
                         </div>
-                        <div class="panel-footer"> Кол-во учасников: @(g.Members?.Count ?? 0) </div>
-                        <div class="pull-right">Создатель: @g.Creator.FirstName @g.Creator.LastName</div>
+                        <div class="panel-footer"> Кол-во учасников: @(group.MembersCount) </div>
+                        <div class="pull-right">Создатель: @group.CreatorFirstName @group.CreatorLastName</div>
                     </div>
                 }
             }

@@ -37,7 +37,7 @@ namespace CamppPresentation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginDTO loginDTO)
         {
-            UserDTO userDto = new UserDTO { Email = loginDTO.Email, Password = loginDTO.Password };
+            UserDTO userDto = new UserDTO { UserName = loginDTO.Login, Password = loginDTO.Password };
             ClaimsIdentity claim = await userService.Authenticate(userDto);
 
             AuthenticationManager.SignOut();
@@ -65,7 +65,7 @@ namespace CamppPresentation.Controllers
         {
             UserDTO userDto = new UserDTO
             {
-                UserName = model.Name,
+                UserName = model.Login,
                 Email = model.Email,
                 Password = model.Password,
                 Role = "user"

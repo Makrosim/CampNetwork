@@ -20,51 +20,79 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public async Task<byte[]> GetAvatar(string email)
+        public async Task<OperationDetails> CreateGroup(string name, GroupDTO groupDTO)
         {
-            var user = await Database.UserManager.FindByEmailAsync(email);
+            var user = await Database.UserManager.FindByNameAsync(name);
             var profile = Database.UserProfileManager.Get(user.Id);
 
-            if (profile.Avatar != -1)
-                return Database.MediaManager.Get(profile.Avatar).Bytes;
-            else
-                return null;
-        }
+            Mapper.Initialize(cfg => { cfg.CreateMap<GroupDTO, Group>()
+                .ForMember(dest => dest.Creator, opts => opts.MapFrom(src => profile));
+            });
 
-        public async Task<OperationDetails> SetGroupData(string email, ProfileDTO profDTO)
-        {
-            var user = await Database.UserManager.FindByEmailAsync(email);
+            var group = Mapper.Map<GroupDTO, Group>(groupDTO);
 
-            var profile = Database.UserProfileManager.Get(user.Id);
-            var profileId = profile.Id;
+            group.Members.Add(profile);
 
-            Mapper.Initialize(cfg => { cfg.CreateMap<ProfileDTO, UserProfile>().ForMember("Avatar", c => c.Ignore()); });
-            Mapper.Map(profDTO, profile, typeof(ProfileDTO), typeof(UserProfile));
+            Database.GroupManager.Create(group);
 
-            profile.Id = profileId;
-
-            if (profDTO.Avatar != null)
-            {
-                var media = new Media { Type = "Image", Bytes = profDTO.Avatar };
-                Database.MediaManager.Create(media);
-                await Database.SaveAsync();
-
-                profile.Media.Add(media.Id);
-                profile.Avatar = media.Id;
-            }
-
-            Database.UserProfileManager.Update(profile);
+            await Database.SaveAsync();
 
             return new OperationDetails(true, "Операция успешно завершена", "");
         }
 
-        public async Task<ProfileDTO> GetProfileData(string name)
+        public async List<int> GetAllGroupsId()
         {
-            var user = await Database.UserManager.FindByEmailAsync(name);
-            var prof = Database.UserProfileManager.Get(user.Id);
-            Mapper.Initialize(cfg => { cfg.CreateMap<UserProfile, ProfileDTO>().ForMember("Avatar", c => c.Ignore()); });
+            var groupList = Database.GroupManager.GetAll();
+            var groupIdList = new List<int>();
 
-            return Mapper.Map<UserProfile, ProfileDTO>(prof);
+            foreach(var group in groupList)
+            {
+                groupIdList.Add(group.Id);
+            }
+
+            return groupIdList;
+        }
+
+        public async Task<GroupDTO> GetGroupData(string name, int groupId)
+        {
+            var user = await Database.UserManager.FindByNameAsync(name);
+            var profile = Database.UserProfileManager.Get(user.Id);
+            var group = Database.GroupManager.Get(groupId);
+
+            Mapper.Initialize(cfg => { cfg.CreateMap<Group, GroupDTO>()
+                .ForMember(dest => dest.CreatorFirstName, opts => opts.MapFrom(src => src.Creator.FirstName))
+                .ForMember(dest => dest.CreatorLastName, opts => opts.MapFrom(src => src.Creator.LastName))
+                .ForMember(dest => dest.IsCreator, opts => opts.MapFrom(src => src.Creator == profile))
+                .ForMember(dest => dest.MembersCount, opts => opts.MapFrom(src => src.Members.Count)); });
+
+            var groupDTO = Mapper.Map<Group, GroupDTO>(group);
+            return groupDTO;
+        }
+
+        public async Task<OperationDetails> SetGroupData(string name, GroupDTO groupDTO)
+        {
+            var user = await Database.UserManager.FindByNameAsync(name);
+            var profile = Database.UserProfileManager.Get(user.Id);
+
+            Mapper.Initialize(cfg => { cfg.CreateMap<GroupDTO, Group>().ForMember("Avatar", c => c.Ignore()); });
+
+            var group = Mapper.Map<GroupDTO, Group>(groupDTO);
+
+            Database.GroupManager.Create(group);
+
+            return new OperationDetails(true, "Операция успешно завершена", "");
+        }
+
+        public async Task<OperationDetails> AddPostToGroup(int groupId, int postId)
+        {
+            var group = Database.GroupManager.Get(groupId);
+            var post = Database.PostManager.Get(postId);
+
+            group.Posts.Add(post);
+
+            await Database.SaveAsync();
+
+            return new OperationDetails(true, "Операция успешно завершена", "");
         }
 
         public void Dispose()

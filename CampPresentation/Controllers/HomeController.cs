@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using CampBusinessLogic.Interfaces;
 using CampBusinessLogic.DTO;
+using System;
 
 namespace CampPresentation.Controllers
 {
@@ -25,16 +26,19 @@ namespace CampPresentation.Controllers
             if(Request.IsAuthenticated)
             {
                 var profile = await profileService.GetProfileData(User.Identity.Name);
-                profile.Avatar = await profileService.GetAvatar(User.Identity.Name);
 
                 if(profile == null)
                 {
                     return Redirect("User/Index");
                 }
+
                 ViewBag.Profile = profile;
+
                 var postsList = await postService.GetAllUsersPosts(User.Identity.Name);
+
                 foreach (var post in postsList)
                     post.Messages = messageService.GetAllPostMessages(post.Id);
+
                 ViewBag.Posts = postsList;      
                     
                 return View();
@@ -46,13 +50,13 @@ namespace CampPresentation.Controllers
         }
 
         [HttpPost]
-        public async Task<RedirectResult> Index(int PostId, string Text)
+        public async Task<RedirectResult> Index(int postId, string Text)
         {
-            await messageService.CreateUsersMessage(new MessageDTO
+            await messageService.CreateUsersMessage(User.Identity.Name, new MessageDTO
             {
-                Email = User.Identity.Name,
-                PostId = PostId,
-                Text = Text
+                PostId = postId,
+                Text = Text,
+                Date = DateTime.Now
             });
 
             return Redirect("/Home/Index");

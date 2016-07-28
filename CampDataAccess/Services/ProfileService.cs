@@ -20,29 +20,23 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public async Task<byte[]> GetAvatar(string email)
-        {
-            var user = await Database.UserManager.FindByEmailAsync(email);
-            var profile = Database.UserProfileManager.Get(user.Id);
-
-            if (profile.Avatar != -1)
-                return Database.MediaManager.Get(profile.Avatar).Bytes;
-            else
-                return null;
-        }
-
         public async Task<ProfileDTO> GetProfileData(string name)
         {
-            var user = await Database.UserManager.FindByEmailAsync(name);
-            var prof = Database.UserProfileManager.Get(user.Id);
+            var user = await Database.UserManager.FindByNameAsync(name);
+            var profile = Database.UserProfileManager.Get(user.Id);
+                 
             Mapper.Initialize(cfg => { cfg.CreateMap<UserProfile, ProfileDTO>().ForMember("Avatar", c => c.Ignore()); });
+            var profDTO = Mapper.Map<UserProfile, ProfileDTO>(profile);
 
-            return Mapper.Map<UserProfile, ProfileDTO>(prof);
+            if (profile.Avatar != -1)
+                profDTO.Avatar = Database.MediaManager.Get(profile.Avatar).Bytes;
+
+            return profDTO;
         }
 
         public async Task<OperationDetails> SetProfileData(string email, ProfileDTO profDTO)
         {
-            var user = await Database.UserManager.FindByEmailAsync(email);
+            var user = await Database.UserManager.FindByNameAsync(email);
 
             var profile = Database.UserProfileManager.Get(user.Id);
             var profileId = profile.Id;
