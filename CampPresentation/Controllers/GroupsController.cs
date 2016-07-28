@@ -23,14 +23,14 @@ namespace CampAuth.Controllers
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            var groupIdList = await groupService.GetAllGroups();
+            var groupIdList = groupService.GetAllGroupsId();
             var groupDTOList = new List<GroupDTO>();
             foreach(var groupId in groupIdList)
             {
-                var groupDTO = await groupService.GetGroupData(User.Identity.Name, group.Id);
-                groupList.Add(groupDTO);
+                var groupDTO = await groupService.GetGroupData(User.Identity.Name, groupId);
+                groupDTOList.Add(groupDTO);
             }
-            ViewBag.Groups = groupList;
+            ViewBag.Groups = groupDTOList;
 
             return View();
         }
@@ -47,8 +47,12 @@ namespace CampAuth.Controllers
             var group = await groupService.GetGroupData(User.Identity.Name, groupId);
             ViewBag.Group = group;
 
-            var posts = postService.GetAllGroupPosts(groupId);
-            ViewBag.Posts = posts;
+            var postsList = postService.GetAllGroupPosts(groupId);
+
+            foreach (var post in postsList)
+                post.Messages = messageService.GetAllPostMessages(post.Id);
+
+            ViewBag.Posts = postsList;
 
             return View();
         }
@@ -58,7 +62,7 @@ namespace CampAuth.Controllers
         {
             await groupService.AddPostToGroup(groupId, postId);
 
-            return Redirect($"/Groups/Open/{groupId}");
+            return Redirect($"/Groups/Open/?groupId={groupId}");
         }
 
         [HttpPost]
@@ -70,7 +74,7 @@ namespace CampAuth.Controllers
         }
 
         [HttpPost]
-        public async Task<RedirectResult> Comment(int postId, string Text) //Менял имя первого параметра
+        public async Task<RedirectResult> Comment(int groupId, int postId, string Text) //Менял имя первого параметра
         {
             await messageService.CreateUsersMessage(User.Identity.Name, new MessageDTO
             {
@@ -79,15 +83,15 @@ namespace CampAuth.Controllers
                 Date = DateTime.Now
             });
 
-            return Redirect($"/Groups/Open/{postId}");
+            return Redirect($"/Groups/Open/?groupId={groupId}");
         }
 
         [HttpGet]
-        public async Task<RedirectResult> DeleteComment(int postId, int messageId) //Менял имена
+        public async Task<RedirectResult> DeleteComment(int groupId, int postId, int messageId) //Менял имена
         {
             await messageService.DeleteUsersMessage(messageId, postId);
 
-            return Redirect($"/Groups/Open/{postId}");
+            return Redirect($"/Groups/Open/?groupId={groupId}");
         }
     }
 }

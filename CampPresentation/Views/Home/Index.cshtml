@@ -23,7 +23,7 @@
         foreach (var a in ViewBag.Posts)
         {
             <div class="panel panel-info">
-                <div class="panel-heading">Место отдыха: @a.CampPlace </div>
+                <div class="panel-heading">Место отдыха: @a.CampPlaceName </div>
                 <div class="panel-body">@a.Text</div>
                 <div class="panel-footer">@a.CreationDate    Id статьи: @a.Id
                     <a class="pull-right btn btn-danger btn-xs" href="/Article/Delete/@a.Id">Удалить обзор</a>

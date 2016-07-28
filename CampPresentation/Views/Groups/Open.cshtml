@@ -29,9 +29,9 @@
 </div>
 
 <div class="panel-group">
-    @if (ViewBag.GroupPosts != null)
+    @if (ViewBag.Posts != null)
     {
-        foreach (var a in ViewBag.GroupPosts)
+        foreach (var a in ViewBag.Posts)
         {
             <div class="panel panel-info">
                 <div class="panel-heading">Место отдыха: @a.CampPlaceName </div>
@@ -44,7 +44,8 @@
             </div>
             <form id="comment-area" method="post" hidden class="comment-area" action="/Groups/Comment">
                 <div class="form-group">
-                    <input type="hidden" name="ArtId" value="@a.Id" />
+                    <input type="hidden" name="groupId" value="@ViewBag.Group.Id" />
+                    <input type="hidden" name="postId" value="@a.Id" />
                     <textarea class="form-control" name="Text"></textarea>
                 </div>
                 <input id="sub" class="btn btn-success" type="submit" value="Комментировать" />
@@ -54,7 +55,7 @@
                 <dl class="col-md-offset-1 dl-comment">
                     @foreach (var c in a.Messages)
                     {
-                        <dt>@c.Author.FirstName @c.Author.LastName в @c.Date <a class="btn btn-xs btn-danger" href="/Groups/DeleteComment/?ArtId=@a.Id&Id=@c.Id">x</a></dt>
+                        <dt>@c.FirstName @c.LastName в @c.Date <a class="btn btn-xs btn-danger" href="/Groups/DeleteComment/?groupId=@ViewBag.Group.Id&postId=@a.Id&messageId=@c.Id">x</a></dt>
                         <dd> - @c.Text</dd>
                     }
                 </dl>

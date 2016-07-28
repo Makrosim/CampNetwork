@@ -63,7 +63,7 @@ namespace CampBusinessLogic.Services
 
             Mapper.Initialize(cfg => { cfg.CreateMap<Post, PostDTO>()
                 .ForMember("Messages", c => c.Ignore())
-                .ForMember(dest => dest.CampPlace, opts => opts.MapFrom(src => src.CampPlace.Name));
+                .ForMember(dest => dest.CampPlaceName, opts => opts.MapFrom(src => src.CampPlace.Name));
             });
 
             foreach (var cp in profile.CampPlaces)
@@ -88,7 +88,7 @@ namespace CampBusinessLogic.Services
 
             Mapper.Initialize(cfg => { cfg.CreateMap<Post, PostDTO>()
                 .ForMember("Messages", c => c.Ignore())
-                .ForMember(dest => dest.CampPlace, opts => opts.MapFrom(src => src.CampPlace.Name));
+                .ForMember(dest => dest.CampPlaceName, opts => opts.MapFrom(src => src.CampPlace.Name));
             });
 
             foreach (var post in group.Posts)

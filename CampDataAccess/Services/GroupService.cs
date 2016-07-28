@@ -40,7 +40,7 @@ namespace CampBusinessLogic.Services
             return new OperationDetails(true, "Операция успешно завершена", "");
         }
 
-        public async List<int> GetAllGroupsId()
+        public List<int> GetAllGroupsId()
         {
             var groupList = Database.GroupManager.GetAll();
             var groupIdList = new List<int>();

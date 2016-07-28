@@ -13,6 +13,6 @@ namespace CampBusinessLogic.DTO
         public DateTime CreationDate { get; set; }
         public ICollection<MessageDTO> Messages { get; set; }
 
-        public string CampPlace { get; set; }
+        public string CampPlaceName { get; set; }
     }
 }
