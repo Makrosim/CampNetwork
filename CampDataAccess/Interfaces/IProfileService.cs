@@ -5,10 +5,10 @@ using CampBusinessLogic.Infrastructure;
 
 namespace CampBusinessLogic.Interfaces
 {
-    public interface IUserProfileService : IDisposable
+    public interface IProfileService : IDisposable
     {
         Task<ProfileDTO> GetProfileData(string id);
         Task<OperationDetails> SetProfileData(string email, ProfileDTO us);
-        Task<byte[]> GetAvatar(string name);
+        Task<byte[]> GetAvatar(string email);
     }
 }

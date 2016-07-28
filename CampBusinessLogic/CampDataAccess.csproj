@@ -75,13 +75,8 @@
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\CampPlacesRepository.cs" />
-    <Compile Include="Repositories\GroupsRepository.cs" />
-    <Compile Include="Repositories\MediasRepository.cs" />
+    <Compile Include="Repositories\Repository.cs" />
     <Compile Include="Repositories\UnitOfWork.cs" />
-    <Compile Include="Repositories\MessagesRepository.cs" />
-    <Compile Include="Repositories\PostsRepository.cs" />
-    <Compile Include="Repositories\UserProfilesRepository.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -8,7 +8,7 @@ namespace CampDataAccess.Entities
 {
     public class User : IdentityUser
     {
-        public virtual UserProfile UserProfile { get; set; }
+        public virtual UserProfile Profile { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager)
         {

@@ -1,42 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Data.Entity;
-using CampAuth.Models;
-using Microsoft.AspNet.Identity.Owin;
+﻿using System.Web.Mvc;
 using System.Threading.Tasks;
+using CampBusinessLogic.Interfaces;
+using CampBusinessLogic.DTO;
 
 namespace CampAuth.Controllers
 {
     public class CampPlacesController : Controller
     {
-        AppContext db = new AppContext();
+        private ICampPlaceService campService;
 
-        private ApplicationUserManager UserManager
+        public CampPlacesController(ICampPlaceService campService)
         {
-            get
-            {
-                return HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
+            this.campService = campService;
         }
 
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            User currUser = await UserManager.FindByEmailAsync(User.Identity.Name);
-            var cps = currUser.CampPlaces.ToList();
-            ViewBag.CP = cps;
 
-            var points = new List<string>();
-
-            foreach (var cp in cps)
-            {
-                points.Add(cp.LocationX + " " + cp.LocationY + " " + cp.Name);
-            }
-
-            ViewBag.Points = points;
+            ViewBag.CP = await campService.GetCampList(User.Identity.Name);
+            ViewBag.Points = campService.GetPointsList();
 
             return View();
         }
@@ -44,16 +27,15 @@ namespace CampAuth.Controllers
         [HttpGet]
         public ActionResult Update(int id)
         {
-            ViewBag.CP = db.CampPlaces.Find(id);
+            ViewBag.CP = campService.GetCampData(id);
 
             return View();
         }
 
         [HttpPost]
-        public RedirectResult Update(CampPlace cp)
+        public RedirectResult Update(CampPlaceDTO cp)
         {
-            db.Entry(cp).State = EntityState.Modified;
-            db.SaveChanges();
+            campService.Update(cp);
 
             return Redirect("/CampPlaces/Index");
         }
@@ -65,15 +47,9 @@ namespace CampAuth.Controllers
         }
 
         [HttpPost]
-        public async Task<RedirectResult> CreateCampPlace(CampPlace place)
+        public async Task<RedirectResult> CreateCampPlace(CampPlaceDTO place)
         {
-            var tmpUser = await UserManager.FindByEmailAsync(User.Identity.Name); //Проблемы с контекстами?
-            var currUser = db.Users.Find(tmpUser.Id);
-
-            place.User = currUser;
-            db.CampPlaces.Add(place);
-            db.SaveChanges();
-            ViewBag.CP = currUser.CampPlaces.ToList();
+            await campService.Create(User.Identity.Name, place);
 
             return Redirect("/CampPlaces/Index");
         }
@@ -81,8 +57,7 @@ namespace CampAuth.Controllers
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            db.CampPlaces.Remove(db.CampPlaces.Find(id));
-            db.SaveChanges();
+            campService.Delete(id);
 
             return View("Index");
         }

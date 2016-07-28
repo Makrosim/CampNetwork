@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Data.Entity;
-using CampAuth.Models;
+using CampBusinessLogic.Interfaces;
+using CampBusinessLogic.DTO;
+using System.Threading.Tasks;
 
 namespace CampAuth.Controllers
 {
     public class ArticleController : Controller
     {
-        AppContext db = new AppContext();
+        private IPostService postService;
 
+        public ArticleController(IPostService postService)
+        {
+            this.postService = postService;
+        }
+        
         [HttpGet]
         public ActionResult Index(int id)
         {
@@ -21,35 +25,17 @@ namespace CampAuth.Controllers
         }
 
         [HttpGet]
-        public RedirectResult Delete(int id)
+        public RedirectResult Delete(int Id)
         {
-            var currart = db.Posts.Find(id);
-            var list = new List<int>();
-
-            foreach (var a in currart.Messages)
-            {
-                list.Add(a);
-            }
-
-            foreach (var a in list)
-            {
-                db.Messages.Remove(db.Messages.Find(a));
-            }
-
-            db.Posts.Remove(currart);
-            db.SaveChanges();
+            postService.DeletePost(Id);
 
             return Redirect("/Home/Index");
         }
 
         [HttpPost]
-        public RedirectResult Index(Post post)
+        public async Task<RedirectResult> Index(int Id, PostDTO postDTO)
         {
-            post.CreationDate = DateTime.Now;
-            db.Posts.Add(post);
-            db.SaveChanges();
-            post.CampPlace = db.CampPlaces.Find(post.CampPlaceID);
-            db.SaveChanges();
+            await postService.CreatePost(Id, postDTO);
 
             return Redirect("/Home/Index");
         }

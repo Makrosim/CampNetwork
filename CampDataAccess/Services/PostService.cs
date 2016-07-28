@@ -20,36 +20,64 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public List<PostDTO> GetAllUsersPosts(string name)
+        public async Task<OperationDetails> CreatePost(int Id, PostDTO postDTO)
+        {
+            Mapper.Initialize(cfg => { cfg.CreateMap<PostDTO, Post>().ForMember("CampPlace", c => c.Ignore()); });
+            var post = Mapper.Map<PostDTO, Post>(postDTO);
+
+            post.CreationDate = DateTime.Now;
+            Database.PostManager.Create(post);
+            await Database.SaveAsync();
+            post.CampPlace = Database.CampPlaceManager.Get(Id);
+            await Database.SaveAsync();
+
+            return new OperationDetails(true, "Операция успешно завершена", "");
+        }
+
+        public async Task<OperationDetails> DeletePost(int Id)
+        {
+            var post = Database.PostManager.Get(Id);
+            var list = new List<int>();
+
+            foreach (var a in post.Messages)
+            {
+                list.Add(a);
+            }
+
+            foreach (var a in list)
+            {
+                Database.MessageManager.Delete(a);
+            }
+          
+            Database.PostManager.Delete(post.Id);
+            await Database.SaveAsync();
+
+            return new OperationDetails(true, "Операция успешно завершена", "");
+        }
+
+        public async Task<List<PostDTO>> GetAllUsersPosts(string name)
         {
             var postList = new List<PostDTO>();
-            var user = Database.UserProfileManager.Get(Convert.ToInt32(name));
+            var user = await Database.UserManager.FindByEmailAsync(name);
+            var profile = Database.UserProfileManager.Get(user.Id);
 
-            foreach (var cpId in user.CampPlacesId)
+            Mapper.Initialize(cfg => { cfg.CreateMap<Message, MessageDTO>(); });
+            
+            foreach (var cp in profile.CampPlaces)
             {
-                if (cpId != null)
+                if (cp != null)
                 {
-                    var tmpPost = Database.PostManager.Get((int)cpId);
-                    var messages = new List<MessageDTO>();
-                    foreach(var mesId in tmpPost.Messages)
-                    {
-                        var tmpMes = Database.MessageManager.Get(mesId);
-                        var tmpMesDTO = new MessageDTO
+                    foreach(var post in cp.Posts)
+                    { 
+                        var postDTO = new PostDTO
                         {
-                            FirstName = user.FirstName,
-                            LastName = user.LastName,
-                            Text = tmpMes.Text,
-                            Date = tmpMes.Date
+                            Id = post.Id,
+                            CreationDate = DateTime.Now,
+                            Text = post.Text,
+                            CampPlace = cp.Name
                         };
-                        messages.Add(tmpMesDTO);
+                        postList.Add(postDTO);
                     }
-                    var tmpPostDTO = new PostDTO
-                    {
-                        Text = tmpPost.Text,
-                        Messages = messages,
-                        CampPlace = tmpPost.CampPlace.ToString() //Возможна проблема
-                    };
-                    postList.Add(tmpPostDTO);
                 }
             }
 

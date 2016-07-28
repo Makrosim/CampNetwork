@@ -23,14 +23,14 @@
                     <a class="list-group-item" href="/User/Index">Настройки</a>
                 </div>
             </div>
-            <div class="col-md-2 sidebar-offcanvas" role="navigation">
+            <div class="col-md-2 pull-right sidebar-offcanvas" role="navigation">
                 <div class="list-group">
                     @if (Request.IsAuthenticated)
                     {
                         using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm"}))
                         {
                             @Html.AntiForgeryToken()
-                            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new {@class = "list-group-item active", title = "Manage" })
+                            @Html.ActionLink("Hello " + User.Identity.Name + "!", "Index", "Manage", routeValues: null, htmlAttributes: new {@class = "list-group-item active", title = "Manage" })
                             <a href="javascript:document.getElementById('logoutForm').submit()" class="list-group-item">Log off</a>
                         }
                     }

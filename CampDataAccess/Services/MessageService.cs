@@ -20,13 +20,31 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
+        public List<MessageDTO> GetAllPostMessages(int postId)
+        {
+            var post = Database.PostManager.Get(postId);
+            var messages = new List<MessageDTO>();
+
+            foreach (var messageId in post.Messages)
+            {
+                var message = Database.MessageManager.Get(messageId);
+                var messageDTO = Mapper.Map<Message, MessageDTO>(message); //Сконфигурировать маппинг
+                messageDTO.FirstName = message.Author.FirstName;
+                messageDTO.LastName = message.Author.LastName;
+                messages.Add(messageDTO);
+            }
+
+            return messages;
+        }
+
         public async Task<OperationDetails> CreateUsersMessage(MessageDTO messageDTO)
         {
             var user = await Database.UserManager.FindByEmailAsync(messageDTO.Email);
-            var prof = Database.UserProfileManager.Get(Convert.ToInt32(user.Id));
+            var prof = Database.UserProfileManager.Get(user.Id);
 
             var mes = new Message
             {
+                Id = messageDTO.Id,
                 Author = prof,
                 Text = messageDTO.Text,
                 Date = DateTime.Now // Плохо? Время, когда обрабатывается сервером?
@@ -43,10 +61,13 @@ namespace CampBusinessLogic.Services
             return new OperationDetails(true, "Успех", "");
         }
 
-        public async Task<OperationDetails> DeleteUsersMessage(int Id)
+        public async Task<OperationDetails> DeleteUsersMessage(int messageId, int postId)
         {
-            var mes = Database.MessageManager.Get(Id);
-            Database.MessageManager.Delete(mes.Id);
+            var message = Database.MessageManager.Get(messageId);
+            Database.MessageManager.Delete(message.Id);
+            var post = Database.PostManager.Get(postId);
+            post.Messages.Remove(messageId);
+            Database.PostManager.Update(post);
             await Database.SaveAsync();
 
             return new OperationDetails(true, "Успех", "");

@@ -8,11 +8,11 @@ namespace CampPresentation.Controllers
 
     public class HomeController : Controller
     {
-        private IUserProfileService profileService;
+        private IProfileService profileService;
         private IPostService postService;
         private IMessageService messageService;
 
-        public HomeController(IUserProfileService profileService, IPostService postService, IMessageService messageService)
+        public HomeController(IProfileService profileService, IPostService postService, IMessageService messageService)
         {
             this.profileService = profileService;
             this.postService = postService;
@@ -20,13 +20,23 @@ namespace CampPresentation.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             if(Request.IsAuthenticated)
             {
-                ViewBag.User = profileService.GetProfileData(User.Identity.Name);
-                ViewBag.Posts = postService.GetAllUsersPosts(User.Identity.Name);
+                var profile = await profileService.GetProfileData(User.Identity.Name);
+                profile.Avatar = await profileService.GetAvatar(User.Identity.Name);
 
+                if(profile == null)
+                {
+                    return Redirect("User/Index");
+                }
+                ViewBag.Profile = profile;
+                var postsList = await postService.GetAllUsersPosts(User.Identity.Name);
+                foreach (var post in postsList)
+                    post.Messages = messageService.GetAllPostMessages(post.Id);
+                ViewBag.Posts = postsList;      
+                    
                 return View();
             }
             else
@@ -49,9 +59,9 @@ namespace CampPresentation.Controllers
         }
 
         [HttpGet]
-        public RedirectResult DeleteComment(int Id)
+        public async Task<RedirectResult> DeleteComment(int messageId, int postId)
         {
-            messageService.DeleteUsersMessage(Id);
+            await messageService.DeleteUsersMessage(messageId, postId);
 
             return Redirect("/Home/Index");
         }

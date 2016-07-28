@@ -4,16 +4,16 @@
 
 <div class="row user-info">
     <div class="col-md-2">
-        @if(ViewBag.Attachment != null)
+        @if(ViewBag.Profile.Avatar != null)
         {
-            @Html.Raw("<img style='width:145px; height:240px;' src=\"data:image/jpg;base64," + Convert.ToBase64String(ViewBag.Attachment.Bytes) + "\" />")
+            @Html.Raw("<img style='width:145px; height:240px;' src=\"data:image/jpg;base64," + Convert.ToBase64String(ViewBag.Profile.Avatar) + "\" />")
         }
     </div>
     <div class="col-md-10">
-        <p>@ViewBag.User.FirstName @ViewBag.User.LastName</p>
+        <p>@ViewBag.Profile.FirstName @ViewBag.Profile.LastName</p>
         @*<p>@ViewBag.User.BirthDate</p>*@
-        <p>Адрес: @ViewBag.User.Adress, Skype: @ViewBag.User.Skype, Телефон: @ViewBag.User.Phone</p>
-        <p>@ViewBag.User.AdditionalInformation</p>
+        <p>Адрес: @ViewBag.Profile.Address, Skype: @ViewBag.Profile.Skype, Телефон: @ViewBag.Profile.Phone</p>
+        <p>@ViewBag.Profile.AdditionalInformation</p>
     </div>
 </div>
 
@@ -23,7 +23,7 @@
         foreach (var a in ViewBag.Posts)
         {
             <div class="panel panel-info">
-                <div class="panel-heading">Место отдыха: @a.CampPlace.Name </div>
+                <div class="panel-heading">Место отдыха: @a.CampPlace </div>
                 <div class="panel-body">@a.Text</div>
                 <div class="panel-footer">@a.CreationDate    Id статьи: @a.Id
                     <a class="pull-right btn btn-danger btn-xs" href="/Article/Delete/@a.Id">Удалить обзор</a>
@@ -40,10 +40,10 @@
             if (a.Messages != null)
             {
                 <dl class="col-md-offset-1 dl-comment">
-                    @foreach(var c in a.Messages)
+                    @foreach(var message in a.Messages)
                     {
-                    <dt>@c.Author.FirstName @c.Author.LastName в @c.Date <a class="btn btn-xs btn-danger" href="/Home/DeleteComment/@c.Id">x</a></dt>
-                    <dd> - @c.Text</dd>
+                    <dt>@message.FirstName @message.LastName в @message.Date <a class="btn btn-xs btn-danger" href="/Home/DeleteComment/?messageId=@message.Id&postId=@a.Id">x</a></dt>
+                    <dd> - @message.Text</dd>
                     }
                 </dl>
             }

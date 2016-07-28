@@ -11,13 +11,35 @@ namespace CampAuth.Controllers
 {
     public class UserController : Controller
     {
-        IUserProfileService profileService;
+        IProfileService profileService;
+
+        public UserController(IProfileService profileService)
+        {
+            this.profileService = profileService;
+        }
 
         [HttpGet]
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            ProfileDTO us = profileService.GetProfileData(User.Identity.Name);
-            ViewBag.User = us;
+            var us = await profileService.GetProfileData(User.Identity.Name);
+
+            if(us == null)
+            {
+                us = new ProfileDTO
+                {
+                    FirstName = "",
+                    LastName = "",
+                    BirthDateDay = "",
+                    BirthDateMounth = "",
+                    BirthDateYear = "",
+                    Address = "",
+                    Phone = "",
+                    Skype = "",
+                    AdditionalInformation = ""
+                };
+            }
+
+            ViewBag.Profile = us;
 
             return View();
         }
@@ -25,10 +47,14 @@ namespace CampAuth.Controllers
         [HttpPost]
         public async Task<ActionResult> Index(ProfileDTO us, HttpPostedFileBase image)
         {
-            us.Image = image.InputStream;
-            await profileService.SetProfileData(us);
+            if (image != null)
+            {
+                us.Avatar = new byte[image.InputStream.Length];
+                image.InputStream.Read(us.Avatar, 0, (int)image.InputStream.Length);
+            }
+            await profileService.SetProfileData(User.Identity.Name, us);
         
-            return View();
+            return Redirect("/Home/Index");
         }
     }
 }

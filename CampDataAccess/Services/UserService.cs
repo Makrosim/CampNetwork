@@ -6,7 +6,6 @@ using Microsoft.AspNet.Identity;
 using System.Security.Claims;
 using CampBusinessLogic.Interfaces;
 using CampDataAccess.Interfaces;
-using System.Collections.Generic;
 
 namespace CampBusinessLogic.Services
 {
@@ -21,17 +20,33 @@ namespace CampBusinessLogic.Services
 
         public async Task<OperationDetails> Create(UserDTO userDto)
         {
-            User user = await Database.UserManager.FindByEmailAsync(userDto.Email);
+            var user = await Database.UserManager.FindByEmailAsync(userDto.Email);
+
             if (user == null)
             {
-                user = new User { Email = userDto.Email, UserName = userDto.Email };
+                user = new User { Email = userDto.Email, UserName = userDto.UserName };
+                
                 await Database.UserManager.CreateAsync(user, userDto.Password);
-                // добавляем роль
-                await Database.UserManager.AddToRoleAsync(user.Id, userDto.Role);
-                // создаем профиль клиента
-                UserProfile clientProfile = new UserProfile { Id = user.Id, Address = userDto.Address, FirstName = userDto.FirstName, LastName = userDto.LastName };
-                Database.UserProfileManager.Create(clientProfile);
                 await Database.SaveAsync();
+
+                var profile = new UserProfile
+                {
+                    Id = user.Id,
+                    FirstName = "Аноним",
+                    LastName = "Анонимович",
+                    BirthDateDay = "Не установлено",
+                    BirthDateMounth = "Не установлено",
+                    BirthDateYear = "Не установлено",
+                    Address = "Не установлено",
+                    Phone = "Не установлено",
+                    Skype = "Не установлено",
+                    AdditionalInformation = "Не установлено",
+                    Avatar = -1
+                };
+
+                Database.UserProfileManager.Create(profile);
+                await Database.SaveAsync();
+
                 return new OperationDetails(true, "Регистрация успешно пройдена", "");
             }
             else
@@ -44,27 +59,11 @@ namespace CampBusinessLogic.Services
         {
             ClaimsIdentity claim = null;
             // находим пользователя
-            User user = await Database.UserManager.FindAsync(userDto.Email, userDto.Password);
+            var user = await Database.UserManager.FindAsync(userDto.Email, userDto.Password);
             // авторизуем его и возвращаем объект ClaimsIdentity
             if (user != null)
-                claim = await Database.UserManager.CreateIdentityAsync(user,
-                                            DefaultAuthenticationTypes.ApplicationCookie);
+                claim = await Database.UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
             return claim;
-        }
-
-        // начальная инициализация бд
-        public async Task SetInitialData(UserDTO adminDto, List<string> roles)
-        {
-            foreach (string roleName in roles)
-            {
-                var role = await Database.RoleManager.FindByNameAsync(roleName);
-                if (role == null)
-                {
-                    role = new ApplicationRole { Name = roleName };
-                    await Database.RoleManager.CreateAsync(role);
-                }
-            }
-            await Create(adminDto);
         }
 
         public void Dispose()

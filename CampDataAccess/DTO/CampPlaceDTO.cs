@@ -1,6 +1,8 @@
-﻿namespace CampBusinessLogic.DTO
+﻿using System.Collections.Generic;
+
+namespace CampBusinessLogic.DTO
 {
-    class CampPlaceDTO
+    public class CampPlaceDTO
     {
         public enum Rates
         {
@@ -11,6 +13,7 @@
             VeryGood = 5
         }
 
+        public int Id { get; set; }
         public string Name { get; set; }
         public string LocationX { get; set; } // Координаты
         public string LocationY { get; set; } // Координаты
@@ -19,5 +22,6 @@
         public Rates Appriachibility { get; set; }
         public Rates Comfortableness { get; set; }
         public string ShortDescription { get; set; }
+        public int PostsCount { get; set; }
     }
 }

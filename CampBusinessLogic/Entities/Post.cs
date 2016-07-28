@@ -6,12 +6,17 @@ namespace CampDataAccess.Entities
 {
     public class Post : BaseEntity
     {
+        public Post()
+        {
+            MediaAttachments = new List<int>();
+            Messages = new List<int>();
+        }
+
         public DateTime CreationDate { get; set; }
         public string Text { get; set; }
-        public ICollection<int> MediaAttachments { get; set; }
+        public virtual ICollection<int> MediaAttachments { get; set; }
         public virtual ICollection<int> Messages { get; set; }
 
-        public int? CampPlaceID { get; set; }
         public virtual CampPlace CampPlace { get; set; }
     }
 }

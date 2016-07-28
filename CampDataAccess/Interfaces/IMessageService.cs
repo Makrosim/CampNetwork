@@ -11,6 +11,7 @@ namespace CampBusinessLogic.Interfaces
     public interface IMessageService
     {
         Task<OperationDetails> CreateUsersMessage(MessageDTO DTO);
-        Task<OperationDetails> DeleteUsersMessage(int Id);
+        Task<OperationDetails> DeleteUsersMessage(int messageId, int postId);
+        List<MessageDTO> GetAllPostMessages(int postId);
     }
 }

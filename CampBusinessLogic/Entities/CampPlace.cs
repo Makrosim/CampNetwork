@@ -13,6 +13,11 @@ namespace CampDataAccess.Entities
             VeryGood = 5
         }
 
+        public CampPlace()
+        {
+            Posts = new List<Post>();
+        }
+
         public string Name { get; set; }
         public virtual string LocationX { get; set; } // Координаты
         public virtual string LocationY { get; set; } // Координаты
@@ -22,8 +27,7 @@ namespace CampDataAccess.Entities
         public Rates Comfortableness { get; set; }
         public string ShortDescription { get; set; }
 
-        public virtual ICollection<int?> PostsId { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
-        public virtual User User { get; set; }
+        public virtual UserProfile UserProfile { get; set; }
     }
 }

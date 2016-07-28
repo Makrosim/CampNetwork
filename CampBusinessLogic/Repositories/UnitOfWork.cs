@@ -26,12 +26,12 @@ namespace CampDataAccess.Repositories
             db = new AppContext(connectionString);
             userManager = new ApplicationUserManager(new UserStore<User>(db));
             roleManager = new ApplicationRoleManager(new RoleStore<ApplicationRole>(db));
-            postManager = new PostsRepository(db);
-            messageManager = new MessagesRepository(db);
-            groupManager = new GroupsRepository(db);
-            userProfileManager = new UserProfilesRepository(db);
-            campPlaceManager = new CampPlacesRepository(db);
-            mediaManager = new MediasRepository(db);
+            postManager = new Repository<Post>(db);
+            messageManager = new Repository<Message>(db);
+            groupManager = new Repository<Group>(db);
+            userProfileManager = new Repository<UserProfile>(db);
+            campPlaceManager = new Repository<CampPlace>(db);
+            mediaManager = new Repository<Media>(db);
         }
 
         public ApplicationUserManager UserManager
