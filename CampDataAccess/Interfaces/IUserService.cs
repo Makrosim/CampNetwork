@@ -9,7 +9,7 @@ namespace CampBusinessLogic.Interfaces
 {
     public interface IUserService : IDisposable
     {
-        Task<OperationDetails> Create(UserDTO userDto);
-        Task<ClaimsIdentity> Authenticate(UserDTO userDto);
+        Task<OperationDetails> Create(UserDTO userDTO);
+        Task<ClaimsIdentity> Authenticate(UserDTO userDTO);
     }
 }

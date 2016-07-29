@@ -22,9 +22,12 @@ namespace CampBusinessLogic.Services
 
         public async Task<ProfileDTO> GetProfileData(string name)
         {
+            if (String.IsNullOrEmpty(name))
+                throw new ArgumentNullException(name);
+            
             var user = await Database.UserManager.FindByNameAsync(name);
             var profile = Database.UserProfileManager.Get(user.Id);
-                 
+
             Mapper.Initialize(cfg => { cfg.CreateMap<UserProfile, ProfileDTO>().ForMember("Avatar", c => c.Ignore()); });
             var profDTO = Mapper.Map<UserProfile, ProfileDTO>(profile);
 
@@ -32,13 +35,17 @@ namespace CampBusinessLogic.Services
                 profDTO.Avatar = Database.MediaManager.Get(profile.Avatar).Bytes;
 
             return profDTO;
+
         }
 
-        public async Task<OperationDetails> SetProfileData(string email, ProfileDTO profDTO)
+        public async Task<OperationDetails> SetProfileData(string name, ProfileDTO profDTO)
         {
-            var user = await Database.UserManager.FindByNameAsync(email);
-
+            if (String.IsNullOrEmpty(name))
+                throw new ArgumentNullException(name);
+            
+            var user = await Database.UserManager.FindByNameAsync(name);
             var profile = Database.UserProfileManager.Get(user.Id);
+
             var profileId = profile.Id;
 
             Mapper.Initialize(cfg => { cfg.CreateMap<ProfileDTO, UserProfile>().ForMember("Avatar", c => c.Ignore()); });
@@ -57,8 +64,9 @@ namespace CampBusinessLogic.Services
             }
 
             Database.UserProfileManager.Update(profile);
-            
+
             return new OperationDetails(true, "Операция успешно завершена", "");
+
         }
 
         public void Dispose()

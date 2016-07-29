@@ -6,6 +6,7 @@ using CampBusinessLogic.Interfaces;
 using CampDataAccess.Interfaces;
 using AutoMapper;
 using System.Collections.Generic;
+using System;
 
 namespace CampBusinessLogic.Services
 {
@@ -21,6 +22,9 @@ namespace CampBusinessLogic.Services
 
         public async Task<OperationDetails> Create(string name, CampPlaceDTO campPlaceDTO)
         {
+            if (String.IsNullOrEmpty(name))
+                throw new ArgumentNullException(name);
+
             var user = await Database.UserManager.FindByNameAsync(name);
             var profile = Database.UserProfileManager.Get(user.Id);
 
@@ -34,36 +38,11 @@ namespace CampBusinessLogic.Services
             return new OperationDetails(true, "Операция успешно завершена", "");
         }
 
-        public async Task<OperationDetails> Update(CampPlaceDTO campPlaceDTO)
-        {
-            var campPlace = Database.CampPlaceManager.Get(campPlaceDTO.Id);
-
-            Mapper.Initialize(cfg => { cfg.CreateMap<CampPlaceDTO, CampPlace>(); });
-            Mapper.Map(campPlaceDTO, campPlace, typeof(CampPlaceDTO), typeof(CampPlace));
-
-            Database.CampPlaceManager.Update(campPlace);
-            await Database.SaveAsync();
-
-            return new OperationDetails(true, "Операция успешно завершена", "");
-        }
-
-        public OperationDetails Delete(int campPlaceId)
-        {
-            Database.CampPlaceManager.Delete(campPlaceId);
-
-            return new OperationDetails(true, "Операция успешно завершена", "");
-        }
-
-        public CampPlaceDTO GetCampData(int campPlaceId)
-        {
-            Mapper.Initialize(cfg => { cfg.CreateMap<CampPlace, CampPlaceDTO>(); });
-            var campDTO = Mapper.Map<CampPlace, CampPlaceDTO>(Database.CampPlaceManager.Get(campPlaceId));
-            
-            return campDTO;
-        }
-
         public async Task<List<CampPlaceDTO>> GetCampList(string name)
         {
+            if (String.IsNullOrEmpty(name))
+                throw new ArgumentNullException(name);
+
             var user = await Database.UserManager.FindByNameAsync(name);
             var profile = Database.UserProfileManager.Get(user.Id);
 
@@ -87,6 +66,34 @@ namespace CampBusinessLogic.Services
         public List<string> GetPointsList()
         {
             return points;
+        }
+
+        public CampPlaceDTO GetCampData(int campPlaceId)
+        {
+            Mapper.Initialize(cfg => { cfg.CreateMap<CampPlace, CampPlaceDTO>(); });
+            var campDTO = Mapper.Map<CampPlace, CampPlaceDTO>(Database.CampPlaceManager.Get(campPlaceId));
+
+            return campDTO;
+        }
+
+        public async Task<OperationDetails> Update(CampPlaceDTO campPlaceDTO)
+        {
+            var campPlace = Database.CampPlaceManager.Get(campPlaceDTO.Id);
+
+            Mapper.Initialize(cfg => { cfg.CreateMap<CampPlaceDTO, CampPlace>(); });
+            Mapper.Map(campPlaceDTO, campPlace, typeof(CampPlaceDTO), typeof(CampPlace));
+
+            Database.CampPlaceManager.Update(campPlace);
+            await Database.SaveAsync();
+
+            return new OperationDetails(true, "Операция успешно завершена", "");
+        }
+
+        public OperationDetails Delete(int campPlaceId)
+        {
+            Database.CampPlaceManager.Delete(campPlaceId);
+
+            return new OperationDetails(true, "Операция успешно завершена", "");
         }
 
         public void Dispose()

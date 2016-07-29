@@ -34,32 +34,15 @@ namespace CampBusinessLogic.Services
             return new OperationDetails(true, "Операция успешно завершена", "");
         }
 
-        public async Task<OperationDetails> DeletePost(int Id)
-        {
-            var post = Database.PostManager.Get(Id);
-            var list = new List<int>();
-
-            foreach (var a in post.Messages)
-            {
-                list.Add(a);
-            }
-
-            foreach (var a in list)
-            {
-                Database.MessageManager.Delete(a);
-            }
-          
-            Database.PostManager.Delete(post.Id);
-            await Database.SaveAsync();
-
-            return new OperationDetails(true, "Операция успешно завершена", "");
-        }
-
         public async Task<List<PostDTO>> GetAllUsersPosts(string name)
         {
-            var postList = new List<PostDTO>();
+            if (String.IsNullOrEmpty(name))
+                throw new ArgumentNullException(name);
+
             var user = await Database.UserManager.FindByNameAsync(name);
             var profile = Database.UserProfileManager.Get(user.Id);
+
+            var postList = new List<PostDTO>();
 
             Mapper.Initialize(cfg => { cfg.CreateMap<Post, PostDTO>()
                 .ForMember("Messages", c => c.Ignore())
@@ -81,10 +64,10 @@ namespace CampBusinessLogic.Services
             return postList;
         }
 
-        public List<PostDTO> GetAllGroupPosts(int Id)
+        public List<PostDTO> GetAllGroupPosts(int groupId)
         {
             var postList = new List<PostDTO>();
-            var group = Database.GroupManager.Get(Id);
+            var group = Database.GroupManager.Get(groupId);
 
             Mapper.Initialize(cfg => { cfg.CreateMap<Post, PostDTO>()
                 .ForMember("Messages", c => c.Ignore())
@@ -98,6 +81,27 @@ namespace CampBusinessLogic.Services
             }
 
             return postList;
+        }
+
+        public async Task<OperationDetails> DeletePost(int postId)
+        {
+            var post = Database.PostManager.Get(postId);
+            var list = new List<int>();
+
+            foreach (var a in post.Messages)
+            {
+                list.Add(a);
+            }
+
+            foreach (var a in list)
+            {
+                Database.MessageManager.Delete(a);
+            }
+
+            Database.PostManager.Delete(post.Id);
+            await Database.SaveAsync();
+
+            return new OperationDetails(true, "Операция успешно завершена", "");
         }
 
     }

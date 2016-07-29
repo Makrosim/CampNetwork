@@ -22,6 +22,9 @@ namespace CampBusinessLogic.Services
 
         public async Task<OperationDetails> CreateGroup(string name, GroupDTO groupDTO)
         {
+            if (String.IsNullOrEmpty(name))
+                throw new ArgumentNullException(name);
+
             var user = await Database.UserManager.FindByNameAsync(name);
             var profile = Database.UserProfileManager.Get(user.Id);
 
@@ -55,6 +58,9 @@ namespace CampBusinessLogic.Services
 
         public async Task<GroupDTO> GetGroupData(string name, int groupId)
         {
+            if (String.IsNullOrEmpty(name))
+                throw new ArgumentNullException(name);
+
             var user = await Database.UserManager.FindByNameAsync(name);
             var profile = Database.UserProfileManager.Get(user.Id);
             var group = Database.GroupManager.Get(groupId);
@@ -71,6 +77,9 @@ namespace CampBusinessLogic.Services
 
         public async Task<OperationDetails> SetGroupData(string name, GroupDTO groupDTO)
         {
+            if (String.IsNullOrEmpty(name))
+                throw new ArgumentNullException(name);
+
             var user = await Database.UserManager.FindByNameAsync(name);
             var profile = Database.UserProfileManager.Get(user.Id);
 

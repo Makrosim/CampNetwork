@@ -20,28 +20,11 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public List<MessageDTO> GetAllPostMessages(int postId)
-        {
-            var post = Database.PostManager.Get(postId);
-            var messages = new List<MessageDTO>();
-
-            Mapper.Initialize(cfg => { cfg.CreateMap<Message, MessageDTO>()
-                .ForMember(dest => dest.FirstName, opts => opts.MapFrom(src => src.Author.FirstName))
-                .ForMember(dest => dest.LastName, opts => opts.MapFrom(src => src.Author.LastName)); });
-
-            foreach (var messageId in post.Messages)
-            {
-                var message = Database.MessageManager.Get(messageId);
-                var messageDTO = Mapper.Map<Message, MessageDTO>(message);
-
-                messages.Add(messageDTO);
-            }
-
-            return messages;
-        }
-
         public async Task<OperationDetails> CreateUsersMessage(string name, MessageDTO messageDTO)
         {
+            if (String.IsNullOrEmpty(name))
+                throw new ArgumentNullException(name);
+
             var user = await Database.UserManager.FindByNameAsync(name);
             var prof = Database.UserProfileManager.Get(user.Id);
 
@@ -60,6 +43,26 @@ namespace CampBusinessLogic.Services
             await Database.SaveAsync();
 
             return new OperationDetails(true, "Успех", "");
+        }
+
+        public List<MessageDTO> GetAllPostMessages(int postId)
+        {
+            var post = Database.PostManager.Get(postId);
+            var messages = new List<MessageDTO>();
+
+            Mapper.Initialize(cfg => { cfg.CreateMap<Message, MessageDTO>()
+                .ForMember(dest => dest.FirstName, opts => opts.MapFrom(src => src.Author.FirstName))
+                .ForMember(dest => dest.LastName, opts => opts.MapFrom(src => src.Author.LastName)); });
+
+            foreach (var messageId in post.Messages)
+            {
+                var message = Database.MessageManager.Get(messageId);
+                var messageDTO = Mapper.Map<Message, MessageDTO>(message);
+
+                messages.Add(messageDTO);
+            }
+
+            return messages;
         }
 
         public async Task<OperationDetails> DeleteUsersMessage(int messageId, int postId)

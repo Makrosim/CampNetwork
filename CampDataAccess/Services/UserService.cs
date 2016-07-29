@@ -50,8 +50,7 @@ namespace CampBusinessLogic.Services
                     await Database.SaveAsync();
                 }
                 else
-                    throw new System.Exception();
-
+                    return new OperationDetails(false, "Ошибка создания пользователя", "");
 
                 return new OperationDetails(true, "Регистрация успешно пройдена", "");
             }
