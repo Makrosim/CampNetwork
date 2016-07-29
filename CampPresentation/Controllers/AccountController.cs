@@ -28,6 +28,7 @@ namespace CamppPresentation.Controllers
             this.userService = userService;
         }
 
+        [HttpGet]
         public ActionResult Login()
         {
             return View();
@@ -37,8 +38,8 @@ namespace CamppPresentation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginDTO loginDTO)
         {
-            UserDTO userDto = new UserDTO { UserName = loginDTO.Login, Password = loginDTO.Password };
-            ClaimsIdentity claim = await userService.Authenticate(userDto);
+            var userDto = new UserDTO { UserName = loginDTO.Login, Password = loginDTO.Password };
+            var claim = await userService.Authenticate(userDto);
 
             AuthenticationManager.SignOut();
             AuthenticationManager.SignIn(new AuthenticationProperties
@@ -48,12 +49,14 @@ namespace CamppPresentation.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public ActionResult Logout()
+        [HttpPost]
+        public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet]
         public ActionResult Register()
         {
             return View();
@@ -61,16 +64,24 @@ namespace CamppPresentation.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(LoginDTO model)
+        public async Task<ActionResult> Register(LoginDTO loginDTO)
         {
             UserDTO userDto = new UserDTO
             {
-                UserName = model.Login,
-                Email = model.Email,
-                Password = model.Password,
+                UserName = loginDTO.Login,
+                Email = loginDTO.Email,
+                Password = loginDTO.Password,
                 Role = "user"
             };
             OperationDetails operationDetails = await userService.Create(userDto);
+
+            ClaimsIdentity claim = await userService.Authenticate(userDto);
+
+            AuthenticationManager.SignOut();
+            AuthenticationManager.SignIn(new AuthenticationProperties
+            {
+                IsPersistent = true
+            }, claim);
 
             return Redirect("/User/Index");
         }

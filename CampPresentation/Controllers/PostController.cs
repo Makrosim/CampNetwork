@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace CampAuth.Controllers
 {
-    public class ArticleController : Controller
+    public class PostController : Controller
     {
         private IPostService postService;
 
-        public ArticleController(IPostService postService)
+        public PostController(IPostService postService)
         {
             this.postService = postService;
         }

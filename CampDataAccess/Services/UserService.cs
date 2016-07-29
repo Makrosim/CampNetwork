@@ -26,26 +26,32 @@ namespace CampBusinessLogic.Services
             {
                 user = new User { Email = userDTO.Email, UserName = userDTO.UserName };
                 
-                await Database.UserManager.CreateAsync(user, userDTO.Password);
-                await Database.SaveAsync();
+                var result =  await Database.UserManager.CreateAsync(user, userDTO.Password);
 
-                var profile = new UserProfile
+                await Database.SaveAsync();
+                if (result.Succeeded)
                 {
-                    Id = user.Id,
-                    FirstName = "Аноним",
-                    LastName = "Анонимович",
-                    BirthDateDay = "Не установлено",
-                    BirthDateMounth = "Не установлено",
-                    BirthDateYear = "Не установлено",
-                    Address = "Не установлено",
-                    Phone = "Не установлено",
-                    Skype = "Не установлено",
-                    AdditionalInformation = "Не установлено",
-                    Avatar = -1
-                };
+                    var profile = new UserProfile
+                    {
+                        Id = user.Id,
+                        FirstName = "Аноним",
+                        LastName = "Анонимович",
+                        BirthDateDay = "Не установлено",
+                        BirthDateMounth = "Не установлено",
+                        BirthDateYear = "Не установлено",
+                        Address = "Не установлено",
+                        Phone = "Не установлено",
+                        Skype = "Не установлено",
+                        AdditionalInformation = "Не установлено",
+                        Avatar = -1
+                    };
 
-                Database.UserProfileManager.Create(profile);
-                await Database.SaveAsync();
+                    Database.UserProfileManager.Create(profile);
+                    await Database.SaveAsync();
+                }
+                else
+                    throw new System.Exception();
+
 
                 return new OperationDetails(true, "Регистрация успешно пройдена", "");
             }

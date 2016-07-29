@@ -50,7 +50,7 @@ namespace CampPresentation.Controllers
         }
 
         [HttpPost]
-        public async Task<RedirectResult> Index(int postId, string Text)
+        public async Task<RedirectResult> Comment(int postId, string Text)
         {
             await messageService.CreateUsersMessage(User.Identity.Name, new MessageDTO
             {

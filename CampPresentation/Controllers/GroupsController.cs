@@ -58,9 +58,15 @@ namespace CampAuth.Controllers
         }
 
         [HttpPost]
-        public async Task<RedirectResult> Open(int groupId, int postId) // Имя метода не отражает сути
+        public async Task<RedirectResult> Open(int groupId, int postId, string Text) // Имя метода не отражает сути
         {
-            await groupService.AddPostToGroup(groupId, postId);
+            await messageService.CreateUsersMessage(User.Identity.Name, new MessageDTO
+            {
+                PostId = postId,
+                Text = Text,
+                Date = DateTime.Now
+            });
+
 
             return Redirect($"/Groups/Open/?groupId={groupId}");
         }
@@ -74,14 +80,9 @@ namespace CampAuth.Controllers
         }
 
         [HttpPost]
-        public async Task<RedirectResult> Comment(int groupId, int postId, string Text) //Менял имя первого параметра
+        public async Task<RedirectResult> AddPost(int groupId, int postId) //Менял имя первого параметра
         {
-            await messageService.CreateUsersMessage(User.Identity.Name, new MessageDTO
-            {
-                PostId = postId,
-                Text = Text,
-                Date = DateTime.Now
-            });
+            await groupService.AddPostToGroup(groupId, postId);
 
             return Redirect($"/Groups/Open/?groupId={groupId}");
         }
