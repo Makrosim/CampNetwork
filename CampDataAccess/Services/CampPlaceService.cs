@@ -67,7 +67,7 @@ namespace CampBusinessLogic.Services
             var user = await Database.UserManager.FindByNameAsync(name);
             var profile = Database.UserProfileManager.Get(user.Id);
 
-            var campPlaecDTOList = new List<CampPlaceDTO>();
+            var campPlaceDTOList = new List<CampPlaceDTO>();
 
             Mapper.Initialize(cfg => { cfg.CreateMap<CampPlace, CampPlaceDTO>(); });
 
@@ -78,10 +78,10 @@ namespace CampBusinessLogic.Services
                 var campDTO = Mapper.Map<CampPlace, CampPlaceDTO>(campPlace);
 
                 campDTO.PostsCount = campPlace.Posts?.Count ?? 0;
-                campPlaecDTOList.Add(campDTO);
+                campPlaceDTOList.Add(campDTO);
             }
 
-            return campPlaecDTOList;
+            return campPlaceDTOList;
         }
 
         public List<string> GetPointsList()

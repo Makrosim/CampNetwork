@@ -58,7 +58,7 @@ namespace CampAuth.Controllers
         }
 
         [HttpPost]
-        public async Task<RedirectResult> Open(int groupId, int postId, string Text) // Имя метода не отражает сути
+        public async Task<RedirectResult> Open(int groupId, int postId, string Text) // Имя метода не отражает сути(Добавление кометрария)
         {
             await messageService.CreateUsersMessage(User.Identity.Name, new MessageDTO
             {
@@ -80,7 +80,7 @@ namespace CampAuth.Controllers
         }
 
         [HttpPost]
-        public async Task<RedirectResult> AddPost(int groupId, int postId) //Менял имя первого параметра
+        public async Task<RedirectResult> AddPost(int groupId, int postId)
         {
             await groupService.AddPostToGroup(groupId, postId);
 
@@ -88,7 +88,7 @@ namespace CampAuth.Controllers
         }
 
         [HttpGet]
-        public async Task<RedirectResult> DeleteComment(int groupId, int postId, int messageId) //Менял имена
+        public async Task<RedirectResult> DeleteComment(int groupId, int postId, int messageId)
         {
             await messageService.DeleteUsersMessage(messageId, postId);
 
