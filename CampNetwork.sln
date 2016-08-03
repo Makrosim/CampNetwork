@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampBusinessLogic", "CampDa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampAPI", "CampAPI\CampAPI.csproj", "{29F93375-BEA8-4A62-B475-C4CEAB487904}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngularJS", "AngularJS\AngularJS.csproj", "{BFF80E2D-D4A9-497B-BDDE-1BE949FC3C10}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{29F93375-BEA8-4A62-B475-C4CEAB487904}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29F93375-BEA8-4A62-B475-C4CEAB487904}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29F93375-BEA8-4A62-B475-C4CEAB487904}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BFF80E2D-D4A9-497B-BDDE-1BE949FC3C10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BFF80E2D-D4A9-497B-BDDE-1BE949FC3C10}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BFF80E2D-D4A9-497B-BDDE-1BE949FC3C10}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BFF80E2D-D4A9-497B-BDDE-1BE949FC3C10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

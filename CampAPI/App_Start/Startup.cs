@@ -12,11 +12,7 @@ namespace CampAPI.App_Start
 {
     public class Startup
     {
-        private IOAuthAuthorizationServerProvider OAuthservice { get; set; }
-        public Startup(IOAuthAuthorizationServerProvider OAuthService)
-        {
-
-        }
+        public IOAuthAuthorizationServerProvider OAuthservice { get; set; }
 
         public void Configuration(IAppBuilder app)
         {

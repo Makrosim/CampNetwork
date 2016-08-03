@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CampNetwork</title>
-    <link href="~/content/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="content/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body ng-controller="loginController">
@@ -23,14 +23,23 @@
         </div>
         <div class="col-md-2 pull-right sidebar-offcanvas" role="navigation">
             <div class="list-group">
-                <a id ="registerLink" class ="list-group-item" href="#/register"></a>
-                <a id="loginLink" class="list-group-item" href="#/login"></a>
+                <a id="loginLink" class="list-group-item" href="#/login">Login</a>
+                <a id ="registerLink" class ="list-group-item" href="#/signup">Register</a>
             </div>
         </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="scripts/bootstrap.min.js"></script>
+    <script src="scripts/angular.js"></script>
+    <script src="scripts/angular-route.min.js"></script>
+    <script src="scripts/angular-local-storage.js"></script>
+    <script src="scripts/loading-bar.js"></script>
+    <!-- Load app main script -->
     <script src="app/app.js"></script>
+        <script src="app/controllers/loginController.js"></script>
+    <script src="app/controllers/signupController.js"></script>
+    <script src="app/services/authService.js"></script>
+
+    <script src="scripts/bootstrap.min.js"></script>
 </body>
 </html>

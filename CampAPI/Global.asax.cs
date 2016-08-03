@@ -18,8 +18,8 @@ namespace CampAPI
         {
             var container = new WindsorContainer();
 
-            container.Install(new WebApiInstaller());
             container.Install(new BusinessLogicCastleInstaller("DefaultConnection"));
+            container.Install(new WebApiInstaller());
 
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
