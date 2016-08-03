@@ -7,7 +7,7 @@ using System.Web.Http;
 using CampBusinessLogic.Infrastructure;
 using CampBusinessLogic.Interfaces;
 using CampBusinessLogic.DTO;
-
+using System.Threading.Tasks;
 
 namespace CampAPI.Controllers
 {
@@ -51,33 +51,5 @@ namespace CampAPI.Controllers
             base.Dispose(disposing);
         }
 
-        private IHttpActionResult GetErrorResult(IdentityResult result)
-        {
-            if (result == null)
-            {
-                return InternalServerError();
-            }
-
-            if (!result.Succeeded)
-            {
-                if (result.Errors != null)
-                {
-                    foreach (string error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error);
-                    }
-                }
-
-                if (ModelState.IsValid)
-                {
-                    // No ModelState errors are available to send, so just return an empty BadRequest.
-                    return BadRequest();
-                }
-
-                return BadRequest(ModelState);
-            }
-
-            return null;
-        }
     }
 }

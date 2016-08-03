@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html ng-app="campApp">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampNetwork</title>
+    <link href="~/content/css/bootstrap.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body ng-controller="loginController">
+    <div class="container">
+        <div class="col-md-10">
+            <div data-ng-view=""></div>
+        </div>
+        <div class="col-md-2 sidebar-offcanvas" role="navigation">
+            <div class="list-group">
+                <a class="list-group-item active" href="/Home/Index">Профиль</a>
+                <a class="list-group-item" href="/Dialog/Index">Диалоги</a>
+                <a class="list-group-item" href="/CampPlaces/Index">Места отдыха</a>
+                <a class="list-group-item" href="/Groups/Index">Группы</a>
+                <a class="list-group-item" href="/User/Index">Настройки</a>
+            </div>
+        </div>
+        <div class="col-md-2 pull-right sidebar-offcanvas" role="navigation">
+            <div class="list-group">
+                <a id ="registerLink" class ="list-group-item" href="#/register"></a>
+                <a id="loginLink" class="list-group-item" href="#/login"></a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+    <script src="app/app.js"></script>
+</body>
+</html>

@@ -11,7 +11,7 @@ namespace CampBusinessLogic.Services
 {
     public class OAuthService : OAuthAuthorizationServerProvider
     {
-        private IUnitOfWork Database { get; set}
+        private IUnitOfWork Database { get; set; }
 
         public OAuthService(IUnitOfWork uow)
         {

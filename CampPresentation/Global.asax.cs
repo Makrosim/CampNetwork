@@ -17,7 +17,6 @@ namespace CampPresentation
             container.Install(new BusinessLogicCastleInstaller("DefaultConnection"));
 
             var castleControllerFactory = new CastleControllerFactory(container);
-
             ControllerBuilder.Current.SetControllerFactory(castleControllerFactory);
 
             AreaRegistration.RegisterAllAreas();

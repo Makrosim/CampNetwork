@@ -7,10 +7,17 @@ using System.Linq;
 using System.Web;
 using System.Web.Http;
 
+[assembly: OwinStartup(typeof(CampAPI.App_Start.Startup))]
 namespace CampAPI.App_Start
 {
     public class Startup
     {
+        private IOAuthAuthorizationServerProvider OAuthservice { get; set; }
+        public Startup(IOAuthAuthorizationServerProvider OAuthService)
+        {
+
+        }
+
         public void Configuration(IAppBuilder app)
         {
             ConfigureOAuth(app);
@@ -27,7 +34,7 @@ namespace CampAPI.App_Start
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/token"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
-                Provider = new SimpleAuthorizationServerProvider()
+                Provider = OAuthservice
             };
 
             // Token Generation
