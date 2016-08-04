@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using CampAPI.Controllers;
 using CampBusinessLogic.Interfaces;
+using CampBusinessLogic.DTO;
+using System.Web.Http.Results;
 
 namespace CampAPI.Tests.Controllers
 {
@@ -20,9 +22,23 @@ namespace CampAPI.Tests.Controllers
         }
 
         [TestMethod]
-        public void RegisterNewUser()
+        public async void Register_SuccessfulRegistration()
         {
+            var userDTO = new UserDTO
+            {
+                Email = "test@ukr.net",
+                UserName = "testUser",
+                Password = "123456&qwertY"
+            };
+
             var controller = new AccountController(userService);
+
+            var result = await controller.Register(userDTO);
+
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOfType(result, typeof(OkResult));
+
+            await userService.Delete(userDTO.UserName);
         }
     }
 }

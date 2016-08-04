@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using System.Security.Claims;
 using CampBusinessLogic.Interfaces;
 using CampDataAccess.Interfaces;
+using System;
 
 namespace CampBusinessLogic.Services
 {
@@ -69,6 +70,21 @@ namespace CampBusinessLogic.Services
             if (user != null)
                 claim = await Database.UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
             return claim;
+        }
+
+        public async Task<OperationDetails> Delete(string name)
+        {
+            try
+            {
+                var user = await Database.UserManager.FindByNameAsync(name);
+                await Database.UserManager.DeleteAsync(user);
+            }
+            catch(Exception ex)
+            {
+                return new OperationDetails(false, ex.Message, "");
+            }
+
+            return new OperationDetails(true, "User successfully deleted", "");
         }
 
         public void Dispose()
