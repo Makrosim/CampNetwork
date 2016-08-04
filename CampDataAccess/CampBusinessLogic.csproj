@@ -89,7 +89,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Castle\BusinessLogicCastleInstaller.cs" />
     <Compile Include="DTO\CampPlaceDTO.cs" />
     <Compile Include="DTO\GroupDTO.cs" />
     <Compile Include="DTO\LoginDTO.cs" />

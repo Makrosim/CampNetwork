@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampBusinessLogic", "CampDa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampAPI", "CampAPI\CampAPI.csproj", "{29F93375-BEA8-4A62-B475-C4CEAB487904}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampAPI.Tests", "CampAPI.Tests\CampAPI.Tests.csproj", "{0D179661-013D-410E-B4E8-41E04FB328F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DependencyInjection", "DependencyInjection\DependencyInjection.csproj", "{F222C37F-C5FA-4CC2-9D55-27C9A64242CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{29F93375-BEA8-4A62-B475-C4CEAB487904}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29F93375-BEA8-4A62-B475-C4CEAB487904}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29F93375-BEA8-4A62-B475-C4CEAB487904}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D179661-013D-410E-B4E8-41E04FB328F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D179661-013D-410E-B4E8-41E04FB328F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D179661-013D-410E-B4E8-41E04FB328F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D179661-013D-410E-B4E8-41E04FB328F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F222C37F-C5FA-4CC2-9D55-27C9A64242CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F222C37F-C5FA-4CC2-9D55-27C9A64242CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F222C37F-C5FA-4CC2-9D55-27C9A64242CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F222C37F-C5FA-4CC2-9D55-27C9A64242CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
