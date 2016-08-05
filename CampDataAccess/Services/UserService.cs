@@ -21,11 +21,11 @@ namespace CampBusinessLogic.Services
 
         public async Task<OperationDetails> Create(UserDTO userDTO)
         {
-            var user = await Database.UserManager.FindByNameAsync(userDTO.Email);
+            var user = await Database.UserManager.FindByNameAsync(userDTO.Name);
 
             if (user == null)
             {
-                user = new User { Email = userDTO.Email, UserName = userDTO.UserName };
+                user = new User { Email = userDTO.Email, UserName = userDTO.Name };
                 
                 var result =  await Database.UserManager.CreateAsync(user, userDTO.Password);
 
@@ -65,7 +65,7 @@ namespace CampBusinessLogic.Services
         {
             ClaimsIdentity claim = null;
             // находим пользователя
-            var user = await Database.UserManager.FindAsync(userDTO.UserName, userDTO.Password);
+            var user = await Database.UserManager.FindAsync(userDTO.Name, userDTO.Password);
             // авторизуем его и возвращаем объект ClaimsIdentity
             if (user != null)
                 claim = await Database.UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);

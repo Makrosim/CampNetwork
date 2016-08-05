@@ -35,7 +35,7 @@ namespace CampAPI.Controllers
 
             if (!result.Succedeed)
             {
-                return BadRequest();
+                return BadRequest(result.Message);
             }
 
             return Ok();

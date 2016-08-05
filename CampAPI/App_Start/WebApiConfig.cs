@@ -1,19 +1,20 @@
-﻿using Newtonsoft.Json.Serialization;
+﻿using CampAPI.Windsor;
+using Castle.Windsor;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Formatting;
 using System.Web.Http;
+using System.Web.Http.Dispatcher;
 
 namespace CampAPI
 {
     public static class WebApiConfig
     {
-        public static void Register(HttpConfiguration config)
+        public static void Register(HttpConfiguration config, IWindsorContainer container)
         {
-            // Web API configuration and services
-
-            // Web API routes
+            RegisterControllerActivator(container);
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
@@ -21,9 +22,14 @@ namespace CampAPI
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-
+                        
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+        }
+
+        private static void RegisterControllerActivator(IWindsorContainer container)
+        {
+            GlobalConfiguration.Configuration.Services.Replace(typeof(IHttpControllerActivator), new WindsorCompositionRoot(container));
         }
     }
 }
