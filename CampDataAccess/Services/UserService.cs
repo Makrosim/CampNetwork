@@ -21,44 +21,52 @@ namespace CampBusinessLogic.Services
 
         public async Task<OperationDetails> Create(UserDTO userDTO)
         {
-            var user = await Database.UserManager.FindByNameAsync(userDTO.Name);
-
-            if (user == null)
+            try
             {
-                user = new User { Email = userDTO.Email, UserName = userDTO.Name };
-                
-                var result =  await Database.UserManager.CreateAsync(user, userDTO.Password);
+                var user = await Database.UserManager.FindByNameAsync(userDTO.Name);
 
-                await Database.SaveAsync();
-                if (result.Succeeded)
+                if (user == null)
                 {
-                    var profile = new UserProfile
-                    {
-                        Id = user.Id,
-                        FirstName = "Аноним",
-                        LastName = "Анонимович",
-                        BirthDateDay = "Не установлено",
-                        BirthDateMounth = "Не установлено",
-                        BirthDateYear = "Не установлено",
-                        Address = "Не установлено",
-                        Phone = "Не установлено",
-                        Skype = "Не установлено",
-                        AdditionalInformation = "Не установлено",
-                        Avatar = -1
-                    };
+                    user = new User { Email = userDTO.Email, UserName = userDTO.Name };
 
-                    Database.UserProfileManager.Create(profile);
-                    await Database.SaveAsync();
+                    var result = await Database.UserManager.CreateAsync(user, userDTO.Password);
+
+                    if (result.Succeeded)
+                    {
+                        var profile = new UserProfile
+                        {
+                            Id = user.Id,
+                            FirstName = "Аноним",
+                            LastName = "Анонимович",
+                            BirthDateDay = "Не установлено",
+                            BirthDateMounth = "Не установлено",
+                            BirthDateYear = "Не установлено",
+                            Address = "Не установлено",
+                            Phone = "Не установлено",
+                            Skype = "Не установлено",
+                            AdditionalInformation = "Не установлено",
+                            Avatar = -1
+                        };
+
+                        Database.UserProfileManager.Create(profile);
+                        await Database.SaveAsync();
+                    }
+                    else
+                        return new OperationDetails(false, "Ошибка создания пользователя", "");
+
+                    return new OperationDetails(true, "Регистрация успешно пройдена", "");
                 }
                 else
-                    return new OperationDetails(false, "Ошибка создания пользователя", "");
-
-                return new OperationDetails(true, "Регистрация успешно пройдена", "");
+                {
+                    return new OperationDetails(false, "Пользователь с таким логином уже существует", "Email");
+                }
             }
-            else
+            catch(Exception ex)
             {
-                return new OperationDetails(false, "Пользователь с таким логином уже существует", "Email");
+                return new OperationDetails(false, ex.Message, "");
             }
+
+
         }
 
         public async Task<ClaimsIdentity> Authenticate(UserDTO userDTO)

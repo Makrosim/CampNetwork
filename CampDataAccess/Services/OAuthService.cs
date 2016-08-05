@@ -29,7 +29,7 @@ namespace CampBusinessLogic.Services
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
 
             var user = await Database.UserManager.FindAsync(context.UserName, context.Password);
-
+            int i = 0;
             if (user == null)
             {
                 context.SetError("invalid_grant", "The user name or password is incorrect.");
