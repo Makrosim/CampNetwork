@@ -23,11 +23,11 @@ namespace CampBusinessLogic.Services
         {
             try
             {
-                var user = await Database.UserManager.FindByNameAsync(userDTO.Name);
+                var user = await Database.UserManager.FindByNameAsync(userDTO.UserName);
 
                 if (user == null)
                 {
-                    user = new User { Email = userDTO.Email, UserName = userDTO.Name };
+                    user = new User { Email = userDTO.Email, UserName = userDTO.UserName };
 
                     var result = await Database.UserManager.CreateAsync(user, userDTO.Password);
 
@@ -73,7 +73,7 @@ namespace CampBusinessLogic.Services
         {
             ClaimsIdentity claim = null;
             // находим пользователя
-            var user = await Database.UserManager.FindAsync(userDTO.Name, userDTO.Password);
+            var user = await Database.UserManager.FindAsync(userDTO.UserName, userDTO.Password);
             // авторизуем его и возвращаем объект ClaimsIdentity
             if (user != null)
                 claim = await Database.UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);

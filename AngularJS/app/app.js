@@ -1,4 +1,4 @@
-﻿var app = angular.module('campApp', ['ngRoute', 'LocalStorageModule', 'angular-loading-bar']);
+var app = angular.module('campApp', ['ngRoute', 'LocalStorageModule', 'angular-loading-bar']);
 
 app.config(function ($routeProvider) {
 
@@ -13,6 +13,15 @@ app.config(function ($routeProvider) {
         templateUrl: "app/views/signup.html"
     });
 
+    $routeProvider.when("/home", {
+        controller: "homeController",
+        templateUrl: "app/views/home.html"
+    });
+
+});
+
+app.config(function ($httpProvider) {
+    $httpProvider.interceptors.push('authInterceptorService');
 });
 
 app.run(['authService', function (authService) {

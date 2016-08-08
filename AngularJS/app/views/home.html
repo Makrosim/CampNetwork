@@ -1,16 +1,15 @@
-<div class="row user-info">
-    <div class="col-md-2">
-        @if(ViewBag.Profile.Avatar != null)
-        {
-            @Html.Raw("<img style='width:145px; height:240px;' src=\"data:image/jpg;base64," + Convert.ToBase64String(ViewBag.Profile.Avatar) + "\" />")
-        }
+<div>
+    <div class="row user-info">
+        <div class="col-md-2">
+            
+        </div>
+        <div class="col-md-10">
+            <p data-ng-model="profileData.name">{{profileData.name}}</p>
+            <p data-ng-model="profileData.birthDate">{{profileData.address}}</p>
+            <p data-ng-model="profileData.address">{{profileData.skype}}</p>
+            <p data-ng-model="profileData.additinalInformation"></p>
+        </div>
     </div>
-    <div class="col-md-10">
-        <p>@ViewBag.Profile.FirstName @ViewBag.Profile.LastName</p>
-        @*<p>@ViewBag.User.BirthDate</p>*@
-        <p>Адрес: @ViewBag.Profile.Address, Skype: @ViewBag.Profile.Skype, Телефон: @ViewBag.Profile.Phone</p>
-        <p>@ViewBag.Profile.AdditionalInformation</p>
-    </div>
-</div>
 
- <ng-include src="'/partials/postist.html'"></ng-include>
+     <ng-include src="'/partials/postist.html'"></ng-include>
+ </div>
