@@ -64,6 +64,7 @@ namespace CampBusinessLogic.Services
             }
 
             Database.UserProfileManager.Update(profile);
+            await Database.SaveAsync();
 
             return new OperationDetails(true, "Операция успешно завершена", "");
 
