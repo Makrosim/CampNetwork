@@ -6,12 +6,15 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace API.Controllers
 {
+    [RoutePrefix("api/UserProfile")]
     public class UserProfileController : ApiController
     {
+        private byte[] image;
         private IProfileService profileService;
 
         public UserProfileController(IProfileService profileService)
@@ -35,9 +38,32 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public void Post(string userName, UserDTO userDTO)
+        [HttpPost]
+        [Route("PostImage")]
+        public async Task<HttpResponseMessage> PostImage()
         {
+            IEnumerable<HttpContent> parts = Request.Content.ReadAsMultipartAsync().Result.Contents;
 
+            var media = parts.ToArray()[0].ReadAsByteArrayAsync().Result;
+            image = media;
+
+            var response = Request.CreateResponse(HttpStatusCode.OK);
+
+            return response;
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("PostProfile")]
+        public async Task<HttpResponseMessage> PostProfile([FromUri]string userName, [FromBody]ProfileDTO profileDTO)
+        {
+            profileDTO.Avatar = image;
+
+            await profileService.SetProfileData(userName, profileDTO);
+
+            var response = Request.CreateResponse(HttpStatusCode.OK);
+
+            return response;
         }
 
         [Authorize]

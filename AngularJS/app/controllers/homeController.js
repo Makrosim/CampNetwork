@@ -17,13 +17,16 @@ app.controller('homeController', ['$http', '$scope', '$location', '$timeout', 'l
     var authData = localStorageService.get('authorizationData');
     $http.get(serviceBase + 'api/UserProfile/?userName=' + authData.userName).then(function (response) {
 
-             console.log(response.data);
-             $scope.profileData.name = response.data.firstName + ' ' + response.data.lastName;
-             $scope.profileData.address = response.data.address;
-             $scope.profileData.skype = response.data.skype;
-             console.log($scope.profileData);
+            console.log(response.data);
+            var profile = response.data;
+            $scope.profileData.name = profile.firstName + ' ' + response.data.lastName;
+            $scope.profileData.address = profile.address;
+            $scope.profileData.skype = profile.skype;
+            $scope.profileData.bitrhDate = profile.birthDateDay + '.' + profile.bitrhDateMounth + '.' + profile.bitrhDateYear;
+            $scope.profileData.additionalInformation = profile.additionalInformation;
+            console.log($scope.profileData);
         },
          function (err) {
              console.log(err.statusText);
-         });;
+     });
 }]);
