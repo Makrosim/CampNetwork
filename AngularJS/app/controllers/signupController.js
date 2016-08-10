@@ -5,14 +5,14 @@ app.controller('signupController', ['$scope', '$location', '$timeout', 'authServ
     $scope.message = "";
 
     $scope.registration = {
-        name: "",
+        userName: "",
         email: "",
         password: "",
         confirmPassword: ""
     };
 
     $scope.signUp = function () {
-
+        console.log($scope.registration);
         authService.saveRegistration($scope.registration).then(function (response) {
 
             $scope.savedSuccessfully = true;
@@ -21,6 +21,7 @@ app.controller('signupController', ['$scope', '$location', '$timeout', 'authServ
 
         },
          function (response) {
+            console.log(response.data.message);
              var errors = [];
              for (var key in response.data.modelState) {
                  for (var i = 0; i < response.data.modelState[key].length; i++) {

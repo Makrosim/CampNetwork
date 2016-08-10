@@ -44,8 +44,7 @@ namespace API.App_Start
                 Provider = container.Resolve<IOAuthAuthorizationServerProvider>()
             };
 
-            app.UseOAuthAuthorizationServer(OAuthServerOptions);
-            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
+            app.UseOAuthBearerTokens(OAuthServerOptions);
 
         }
 

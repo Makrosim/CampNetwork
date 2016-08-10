@@ -3,6 +3,6 @@
     public class Media : BaseEntity
     {
         public string Type { get; set; } // Add Enum
-        public byte[] Bytes { get; set; }
+        public string Path { get; set; }
     }
 }

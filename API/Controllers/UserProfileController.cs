@@ -2,6 +2,7 @@
 using CampBusinessLogic.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -42,10 +43,8 @@ namespace API.Controllers
         [Route("PostImage")]
         public async Task<HttpResponseMessage> PostImage()
         {
-            IEnumerable<HttpContent> parts = Request.Content.ReadAsMultipartAsync().Result.Contents;
-
-            var media = parts.ToArray()[0].ReadAsByteArrayAsync().Result;
-            image = media;
+            var streamProvider = new MultipartFormDataStreamProvider(AppDomain.CurrentDomain.BaseDirectory);
+            await Request.Content.ReadAsMultipartAsync(streamProvider);
 
             var response = Request.CreateResponse(HttpStatusCode.OK);
 
@@ -57,8 +56,6 @@ namespace API.Controllers
         [Route("PostProfile")]
         public async Task<HttpResponseMessage> PostProfile([FromUri]string userName, [FromBody]ProfileDTO profileDTO)
         {
-            profileDTO.Avatar = image;
-
             await profileService.SetProfileData(userName, profileDTO);
 
             var response = Request.CreateResponse(HttpStatusCode.OK);

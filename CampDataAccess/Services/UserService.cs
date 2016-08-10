@@ -7,6 +7,7 @@ using System.Security.Claims;
 using CampBusinessLogic.Interfaces;
 using CampDataAccess.Interfaces;
 using System;
+using System.Diagnostics;
 
 namespace CampBusinessLogic.Services
 {
@@ -97,6 +98,9 @@ namespace CampBusinessLogic.Services
 
         public void Dispose()
         {
+            StackFrame fr = new StackFrame(1);
+            var method = fr.GetMethod();
+            var name = method.Name;
             Database.Dispose();
         }
     }

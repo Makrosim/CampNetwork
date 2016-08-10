@@ -1,5 +1,6 @@
 ﻿using API.Windsor;
 using Castle.Windsor;
+using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,9 @@ namespace API
         {
             MapRoutes(config);
             RegisterControllerActivator(container);
+
+            config.SuppressDefaultHostAuthentication();
+            config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();

@@ -28,11 +28,11 @@ namespace CampBusinessLogic.Services
             var user = await Database.UserManager.FindByNameAsync(name);
             var profile = Database.UserProfileManager.Get(user.Id);
 
-            Mapper.Initialize(cfg => { cfg.CreateMap<UserProfile, ProfileDTO>().ForMember("Avatar", c => c.Ignore()); });
+            Mapper.Initialize(cfg => { cfg.CreateMap<UserProfile, ProfileDTO>(); });
             var profDTO = Mapper.Map<UserProfile, ProfileDTO>(profile);
 
             if (profile.Avatar != -1)
-                profDTO.Avatar = Database.MediaManager.Get(profile.Avatar).Bytes;
+                profDTO.AvatarId = Database.MediaManager.Get(profile.Avatar).Id; //Правильно ли?
 
             return profDTO;
 
@@ -46,22 +46,8 @@ namespace CampBusinessLogic.Services
             var user = await Database.UserManager.FindByNameAsync(name);
             var profile = Database.UserProfileManager.Get(user.Id);
 
-            var profileId = profile.Id;
-
-            Mapper.Initialize(cfg => { cfg.CreateMap<ProfileDTO, UserProfile>().ForMember("Avatar", c => c.Ignore()); });
+            Mapper.Initialize(cfg => { cfg.CreateMap<ProfileDTO, UserProfile>().ForMember("Id", c => c.Ignore()); });
             Mapper.Map(profDTO, profile, typeof(ProfileDTO), typeof(UserProfile));
-
-            profile.Id = profileId;
-
-            if (profDTO.Avatar != null)
-            {
-                var media = new Media { Type = "Image", Bytes = profDTO.Avatar };
-                Database.MediaManager.Create(media);
-                await Database.SaveAsync();
-
-                profile.Media.Add(media.Id);
-                profile.Avatar = media.Id;
-            }
 
             Database.UserProfileManager.Update(profile);
             await Database.SaveAsync();

@@ -5,6 +5,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Threading.Tasks;
 using CampDataAccess.Identity;
+using System.Runtime.CompilerServices;
+using System.Diagnostics;
 
 namespace CampDataAccess.Repositories
 {
@@ -81,8 +83,8 @@ namespace CampDataAccess.Repositories
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            //Dispose(true);
+            //GC.SuppressFinalize(this);
         }
 
         private bool disposed = false;

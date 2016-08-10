@@ -18,6 +18,6 @@ namespace CampBusinessLogic.DTO
         public string BirthDateMounth { get; set; }
         public string BirthDateYear { get; set; }
         public string AdditionalInformation { get; set; }
-        public byte[] Avatar { get; set; }
+        public int AvatarId { get; set; }
     }
 }

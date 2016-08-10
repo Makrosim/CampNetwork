@@ -5,8 +5,6 @@ app.controller('profileController', ['$http', '$scope', '$location', '$timeout',
 
     var authData = localStorageService.get('authorizationData');
 
-    $scope.image = "";
-
     $http.get(serviceBase + 'api/UserProfile/?userName=' + authData.userName).then(function (response) {
 
             $scope.profile = response.data;
@@ -19,19 +17,19 @@ app.controller('profileController', ['$http', '$scope', '$location', '$timeout',
 
     $scope.submit = function () {
         var fd = new FormData()
-        fd.append('file', $scope.file);
+
+        fd.append('avatar', $scope.file);
 
         $http.post(serviceBase + 'api/UserProfile/PostImage', fd, { transformRequest:angular.identity, headers: { 'Content-Type': undefined } }).then(function (response) {
 
-            console.log();
         },
         function (err) {
              console.log(err.statusText);
         });
 
-        $http.post(serviceBase + 'api/UserProfile/PostPRofile/?userName=' + authData.userName, $scope.profile).then(function (response) {
+        $http.post(serviceBase + 'api/UserProfile/PostProfile/?userName=' + authData.userName, $scope.profile).then(function (response) {
 
-            console.log();
+
         },
         function (err) {
              console.log(err.statusText);
