@@ -7,29 +7,29 @@
     <link href="content/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 </head>
 
-<body ng-controller="loginController">
+<body ng-controller="indexController"  ng-switch on="isAuthorized">
     <div class="container">
+
         <div class="col-md-10">
             <div data-ng-view=""></div>
         </div>
-        <div class="col-md-2 sidebar-offcanvas" role="navigation" ng-switch on="isAuthorized">
+
+        <div class="col-md-2 sidebar-offcanvas" role="navigation">
             <div class="list-group" ng-switch-when="true">
-                <a class="list-group-item active" href="#/home">Профиль</a>
+                <a class="list-group-item active" href="#/home">{{userName}}</a>
                 <a class="list-group-item" href="/Dialog/Index">Диалоги</a>
                 <a class="list-group-item" href="/CampPlaces/Index">Места отдыха</a>
                 <a class="list-group-item" href="/Groups/Index">Группы</a>
                 <a class="list-group-item" href="#/profile">Настройки</a>
+                <a id="loginLink" class="list-group-item" href="#/login">Log Out</a>
             </div>
-            <div ng-switch-when="false">
-                
-            </div>
-        </div>
-        <div class="col-md-2 pull-right sidebar-offcanvas" role="navigation">
-            <div class="list-group">
-                <a id="loginLink" class="list-group-item" href="#/login">Login</a>
+
+            <div class="list-group" ng-switch-when="false">
+                <a id="loginLink" class="list-group-item" href="#/login">{{loginMessage}}</a>
                 <a id ="registerLink" class ="list-group-item" href="#/signup">Register</a>
             </div>
         </div>
+
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -37,12 +37,13 @@
     <script src="scripts/angular-route.min.js"></script>
     <script src="scripts/angular-local-storage.js"></script>
     <script src="scripts/loading-bar.js"></script>
-    <!-- Load app main script -->
+
     <script src="app/app.js"></script>
     <script src="app/controllers/loginController.js"></script>
     <script src="app/controllers/signupController.js"></script>
     <script src="app/controllers/homeController.js"></script>
     <script src="app/controllers/profileController.js"></script>
+    <script src="app/controllers/indexController.js"></script>
     <script src="app/services/authService.js"></script>
     <script src="app/services/authInterceptorService.js"></script>
 

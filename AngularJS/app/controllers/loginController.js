@@ -5,7 +5,6 @@ app.controller('loginController', ['$scope', '$location', 'authService', functio
         userName: "",
         password: ""
     };
-    $scope.isAuthorized = authService.authentication.isAuth;
 
     $scope.message = "";
 

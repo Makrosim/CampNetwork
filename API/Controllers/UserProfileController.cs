@@ -43,7 +43,8 @@ namespace API.Controllers
         [Route("PostImage")]
         public async Task<HttpResponseMessage> PostImage()
         {
-            var streamProvider = new MultipartFormDataStreamProvider(AppDomain.CurrentDomain.BaseDirectory);
+            string fileSaveLocation = HttpContext.Current.Server.MapPath("~/App_Data");
+            var streamProvider = new MultipartFormDataStreamProvider(fileSaveLocation);
             await Request.Content.ReadAsMultipartAsync(streamProvider);
 
             var response = Request.CreateResponse(HttpStatusCode.OK);
