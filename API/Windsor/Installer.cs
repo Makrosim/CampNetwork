@@ -17,6 +17,7 @@ namespace API.Windsor
         {
             container.Register(Component.For<IUserService>().ImplementedBy<UserService>()); // Зарегистрировать следующие компоненты
             container.Register(Component.For<IProfileService>().ImplementedBy<ProfileService>());
+            container.Register(Component.For<ICampPlaceService>().ImplementedBy<CampPlaceService>());
             container.Register(Component.For<IOAuthAuthorizationServerProvider>().ImplementedBy<OAuthService>());
             container.Register(Classes.FromThisAssembly().BasedOn<ApiController>().LifestylePerWebRequest());
         }

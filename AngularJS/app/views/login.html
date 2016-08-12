@@ -3,6 +3,7 @@
     <input type="text" class="form-control" placeholder="Username" data-ng-model="loginData.userName" required autofocus>
     <input type="password" class="form-control" placeholder="Password" data-ng-model="loginData.password" required>
     <button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="login()">Login</button>
+    <a id ="registerLink" href="#/signup">Зарегистрироваться</a>
     <div data-ng-hide="message == ''" class="alert alert-danger">
         {{message}}
     </div>

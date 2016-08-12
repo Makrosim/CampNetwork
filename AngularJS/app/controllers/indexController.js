@@ -1,15 +1,21 @@
 ﻿'use strict';
 app.controller('indexController', ['$scope', '$location', 'authService', function ($scope, $location, authService) {
- 
-    $scope.isAuthorized = authService.authentication.isAuth;
 
-    $scope.userName = authService.authentication.userName;
+	$scope.authData = authService.authentication
+	
+	if($scope.authData.isAuth == false)
+	       $location.path('/login');
+
+    $scope.$on('login', function (event, authentication) 
+	{
+		$scope.authData = authentication;
+	})
 
     $scope.logOut = function () {
         authService.logOut();
+        $scope.authData = authService.authentication;
+
         $location.path('/login');
     }
- 
-    $scope.authentication = authService.authentication;
  
 }]);

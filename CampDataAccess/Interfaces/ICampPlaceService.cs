@@ -7,7 +7,7 @@ namespace CampBusinessLogic.Interfaces
 {
     public interface ICampPlaceService
     {
-        Task<OperationDetails> Create(string email, CampPlaceDTO campPlaceDTO);
+        Task<OperationDetails> Create(string name, CampPlaceDTO campPlaceDTO);
         Task<List<CampPlaceDTO>> GetCampList(string name);
         List<string> GetPointsList();
         CampPlaceDTO GetCampData(int campPlaceId);

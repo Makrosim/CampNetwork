@@ -50,6 +50,8 @@ namespace CampBusinessLogic.Services
 
             Mapper.Initialize(cfg => { cfg.CreateMap<CampPlace, CampPlaceDTO>(); });
 
+            points.Clear();
+
             foreach (var cp in profile.CampPlaces)
             {
                 var campPlace = Database.CampPlaceManager.Get(cp.Id);

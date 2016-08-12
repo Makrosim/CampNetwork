@@ -23,6 +23,16 @@ app.config(function ($routeProvider) {
         templateUrl: "app/views/profile.html"
     });
 
+    $routeProvider.when("/camp", {
+        controller: "campController",
+        templateUrl: "app/views/campPlace.html"
+    });
+
+        $routeProvider.when("/createPlace", {
+        controller: "createPlaceController",
+        templateUrl: "app/views/createPlace.html"
+    });
+
 });
 
 app.config(function ($httpProvider) {

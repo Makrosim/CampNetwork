@@ -5,28 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CampNetwork</title>
     <link href="content/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="content/css/site.css" rel="stylesheet" type="text/css" />
 </head>
 
-<body ng-controller="indexController"  ng-switch on="isAuthorized">
+<body ng-controller="indexController">
     <div class="container">
 
         <div class="col-md-10">
             <div data-ng-view=""></div>
         </div>
 
-        <div class="col-md-2 sidebar-offcanvas" role="navigation">
+        <div class="col-md-2 sidebar-offcanvas" role="navigation" ng-switch on="authData.isAuth">
             <div class="list-group" ng-switch-when="true">
-                <a class="list-group-item active" href="#/home">{{userName}}</a>
+                <a class="list-group-item active" href="#/home">{{authData.userName}}</a>
                 <a class="list-group-item" href="/Dialog/Index">Диалоги</a>
-                <a class="list-group-item" href="/CampPlaces/Index">Места отдыха</a>
+                <a class="list-group-item" href="#/camp">Места отдыха</a>
                 <a class="list-group-item" href="/Groups/Index">Группы</a>
                 <a class="list-group-item" href="#/profile">Настройки</a>
-                <a id="loginLink" class="list-group-item" href="#/login">Log Out</a>
-            </div>
-
-            <div class="list-group" ng-switch-when="false">
-                <a id="loginLink" class="list-group-item" href="#/login">{{loginMessage}}</a>
-                <a id ="registerLink" class ="list-group-item" href="#/signup">Register</a>
+                <a id="loginLink" class="list-group-item" ng-click="logOut()">Выход</a>
             </div>
         </div>
 
@@ -44,9 +40,13 @@
     <script src="app/controllers/homeController.js"></script>
     <script src="app/controllers/profileController.js"></script>
     <script src="app/controllers/indexController.js"></script>
+    <script src="app/controllers/campController.js"></script>
+    <script src="app/controllers/createPlaceController.js"></script>
+
     <script src="app/services/authService.js"></script>
     <script src="app/services/authInterceptorService.js"></script>
 
     <script src="scripts/bootstrap.min.js"></script>
+
 </body>
 </html>

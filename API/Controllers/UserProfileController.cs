@@ -1,9 +1,5 @@
 ﻿using CampBusinessLogic.DTO;
 using CampBusinessLogic.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -15,7 +11,6 @@ namespace API.Controllers
     [RoutePrefix("api/UserProfile")]
     public class UserProfileController : ApiController
     {
-        private byte[] image;
         private IProfileService profileService;
 
         public UserProfileController(IProfileService profileService)

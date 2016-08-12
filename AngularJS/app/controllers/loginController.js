@@ -11,11 +11,11 @@ app.controller('loginController', ['$scope', '$location', 'authService', functio
     $scope.login = function () {
 
         authService.login($scope.loginData).then(function (response) {
+            $scope.$emit('login', authService.authentication);
             $location.path('/home');
-            $scope.isAuthorized = authService.authentication.isAuth;
         },
         function (err) {
-             $scope.message = err.error_description;
+            $scope.message = err.error_description;
         });
     };
 
