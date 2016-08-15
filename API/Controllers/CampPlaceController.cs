@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    [RoutePrefix("api/CampPlace")]
     public class CampPlaceController : ApiController
     {
         private ICampPlaceService campService;
@@ -21,9 +20,7 @@ namespace API.Controllers
         }
 
         [Authorize]
-        [HttpPost]
-        [Route("Save")]
-        public async Task<HttpResponseMessage> Save([FromUri]string userName, [FromBody]CampPlaceDTO campPlaceDTO)
+        public async Task<HttpResponseMessage> Post([FromUri]string userName, [FromBody]CampPlaceDTO campPlaceDTO)
         {
             var result = await campService.Create(userName, campPlaceDTO);
 
@@ -55,7 +52,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Authorize]
-        [Route("GetList")]
+        [Route("api/CampPlace/GetList")]
         public async Task<HttpResponseMessage> GetList([FromUri]string userName)
         {
             var campList = await campService.GetCampList(userName);
@@ -72,7 +69,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Authorize]
-        [Route("GetPoints")]
+        [Route("api/CampPlace/GetPoints")]
         public HttpResponseMessage GetPoints()
         {
             var pointsList = campService.GetPointsList();

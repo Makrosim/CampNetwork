@@ -9,18 +9,16 @@ app.controller('createPlaceController', ['$http', '$scope', '$location', '$timeo
 
     var authData = localStorageService.get('authorizationData');
 
-    $scope.submit = function () {
-
-        $http.post(serviceBase + 'api/CampPlace/Save/?userName=' + authData.userName, $scope.campPlace).then(function (response) {
-
-                $scope.campList = response.data;
-                console.log(response.data);
-            },
-             function (err) {
-                 console.log(err.statusText);
-         });
-
+    $scope.submit = function ()
+    {
+        $http.post(serviceBase + 'api/campPlace/?userName=' + authData.userName, $scope.campPlace).then(function (response)
+        {
+            $location.path('/camp');
+        },
+        function (err)
+        {
+             console.log(err.statusText);
+        });
     }
-
 
 }]);

@@ -23,7 +23,7 @@ namespace CampDataAccess.Entities
         public virtual string LocationY { get; set; } // Координаты
         public Rates Purity { get; set; }
         public Rates Crowdy { get; set; }
-        public Rates Appriachibility { get; set; }
+        public Rates Approachability { get; set; }
         public Rates Comfortableness { get; set; }
         public string ShortDescription { get; set; }
 

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System.Collections.Generic;
 
 namespace CampBusinessLogic.DTO
 {
@@ -17,9 +19,13 @@ namespace CampBusinessLogic.DTO
         public string Name { get; set; }
         public string LocationX { get; set; } // Координаты
         public string LocationY { get; set; } // Координаты
+        [JsonConverter(typeof(StringEnumConverter))]
         public Rates Purity { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
         public Rates Crowdy { get; set; }
-        public Rates Appriachibility { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Rates Approachability { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
         public Rates Comfortableness { get; set; }
         public string ShortDescription { get; set; }
         public int PostsCount { get; set; }

@@ -27,11 +27,12 @@ app.controller('profileController', ['$http', '$scope', '$location', '$timeout',
              console.log(err.statusText);
         });
 
-        $http.post(serviceBase + 'api/UserProfile/PostProfile/?userName=' + authData.userName, $scope.profile).then(function (response) {
-
+        $http.post(serviceBase + 'api/UserProfile/PostProfile/?userName=' + authData.userName, $scope.profile).then(function (response)
+        {
 
         },
-        function (err) {
+        function (err)
+        {
              console.log(err.statusText);
         });
     };

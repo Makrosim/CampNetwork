@@ -50,11 +50,11 @@
         <div class="form-group">
             <label class="col-md-3 control-label">Доступность</label>
             <div class="col-md-6">
-               <input type="radio" name="Approachibility" value="VeryBad" data-ng-model="campPlace.Approachibility"/>
-               <input type="radio" name="Approachibility" value="Bad" data-ng-model="campPlace.Approachibility"/>
-               <input type="radio" name="Approachibility" value="Medium" data-ng-model="campPlace.Approachibility"/>
-               <input type="radio" name="Approachibility" value="Good" data-ng-model="campPlace.Approachibility"/>
-               <input type="radio" name="Approachibility" value="VeryGood" data-ng-model="campPlace.Approachibility"/>
+               <input type="radio" name="Approachability" value="VeryBad" data-ng-model="campPlace.Approachability"/>
+               <input type="radio" name="Approachability" value="Bad" data-ng-model="campPlace.Approachability"/>
+               <input type="radio" name="Approachability" value="Medium" data-ng-model="campPlace.Approachability"/>
+               <input type="radio" name="Approachability" value="Good" data-ng-model="campPlace.Approachability"/>
+               <input type="radio" name="Approachability" value="VeryGood" data-ng-model="campPlace.Approachability"/>
             </div>
         </div>
         <div class="form-group">
@@ -96,8 +96,7 @@
             var marker = new google.maps.Marker({
                 position: myLatlng,
                 map: map,
-                draggable: true,
-                title: 'Click to zoom'
+                draggable: true
             });
 
             marker.addListener('drag', function ()
@@ -105,7 +104,9 @@
                 var lng = document.getElementById('lng');
                 var lat = document.getElementById('lat');
                 lng.value = marker.getPosition().lng();
+                lng.dispatchEvent(new Event('change'));
                 lat.value = marker.getPosition().lat();
+                lat.dispatchEvent(new Event('change'));
             });
 
             marker.addListener('click', function () {
