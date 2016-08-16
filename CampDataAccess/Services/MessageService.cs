@@ -25,6 +25,8 @@ namespace CampBusinessLogic.Services
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException(name);
 
+            messageDTO.Date = DateTime.Now;
+
             var user = await Database.UserManager.FindByNameAsync(name);
             var prof = Database.UserProfileManager.Get(user.Id);
 
@@ -35,6 +37,7 @@ namespace CampBusinessLogic.Services
             var message = Mapper.Map<MessageDTO, Message>(messageDTO);
 
             Database.MessageManager.Create(message);
+
             await Database.SaveAsync();
 
             var post = Database.PostManager.Get(messageDTO.PostId);

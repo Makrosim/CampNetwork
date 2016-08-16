@@ -1,11 +1,11 @@
-<div>
+<div id="div">
     <div class="navbar" role="navigation">
         <div class="navbar-header">
             <div class="navbar-brand">Места отдыха</div>
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li><a href="#/createPlace">Добавить</a></li>
-            <li><a id="maplink">Показать/Скрыть карту</a></li>
+            <li><a href="" id="maplink">Показать/Скрыть карту</a></li>
         </ul> 
     </div>
 
@@ -25,7 +25,7 @@
             </div>
             <div class="panel-footer"> Обзоров: {{place.postsCount}}
                 <a class="pull-right btn btn-danger btn-xs" ng-click="delete(place.id)">Удалить место отдыха</a>      
-                <a class="pull-right btn btn-info btn-xs" href="/Article/Index/cp.Id">Добавить обзор</a>                                     
+                <a class="pull-right btn btn-info btn-xs" href="#/post/?id={{place.id}}">Добавить обзор</a>                                     
             </div>
         </div>
         
@@ -55,10 +55,12 @@
         {
             var myLatlng = { lat: 50, lng: 36.28 };
 
-            var dom_el = document.querySelector('[ng-controller="campController"]');
+            var dom_el = document.getElementById('div');
             var ng_el = angular.element(dom_el);
             var ng_el_scope = ng_el.scope();
             var camps = ng_el_scope.points;
+
+            console.log(camps)
 
             map = new google.maps.Map(document.getElementById('map'), { center: myLatlng, zoom: 8 });
 

@@ -4,15 +4,19 @@ app.controller('indexController', ['$scope', '$location', 'authService', functio
 	$scope.authData = authService.authentication
 	
 	if($scope.authData.isAuth == false)
-	       $location.path('/login');
+	{
+       $location.path('/login');
+	}
 
     $scope.$on('login', function (event, authentication) 
 	{
 		$scope.authData = authentication;
 	})
 
-    $scope.logOut = function () {
+    $scope.logOut = function ()
+    {
         authService.logOut();
+        
         $scope.authData = authService.authentication;
 
         $location.path('/login');

@@ -20,12 +20,14 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public async Task<OperationDetails> CreatePost(int campPlaceID, PostDTO postDTO)
+        public async Task<OperationDetails> CreatePost(int campPlaceID, string postText)
         {
-            Mapper.Initialize(cfg => { cfg.CreateMap<PostDTO, Post>().ForMember("CampPlace", c => c.Ignore()); });
-            var post = Mapper.Map<PostDTO, Post>(postDTO);
+            var post = new Post
+            {
+                Text = postText,
+                CreationDate = DateTime.Now
+            };
 
-            post.CreationDate = DateTime.Now;
             Database.PostManager.Create(post);
             await Database.SaveAsync();
             post.CampPlace = Database.CampPlaceManager.Get(campPlaceID);
@@ -40,20 +42,20 @@ namespace CampBusinessLogic.Services
                 throw new ArgumentNullException(name);
 
             var user = await Database.UserManager.FindByNameAsync(name);
-            var profile = Database.UserProfileManager.Get(user.Id);
-
             var postList = new List<PostDTO>();
 
-            Mapper.Initialize(cfg => { cfg.CreateMap<Post, PostDTO>()
-                .ForMember("Messages", c => c.Ignore())
-                .ForMember(dest => dest.CampPlaceName, opts => opts.MapFrom(src => src.CampPlace.Name));
-            });
+            var profile = Database.UserProfileManager.Get(user.Id);
+
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<Post, PostDTO>().ForMember(dest => dest.CampPlaceName, opts => opts.MapFrom(src => src.CampPlace.Name));
+            });            
 
             foreach (var cp in profile.CampPlaces)
             {
                 if (cp != null)
                 {
-                    foreach(var post in cp.Posts)
+                    foreach (var post in cp.Posts)
                     {
                         var postDTO = Mapper.Map<Post, PostDTO>(post);
                         postList.Add(postDTO);

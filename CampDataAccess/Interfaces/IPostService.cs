@@ -8,7 +8,7 @@ namespace CampBusinessLogic.Interfaces
 {
     public interface IPostService
     {
-        Task<OperationDetails> CreatePost(int campPlaceId, PostDTO postDTO);
+        Task<OperationDetails> CreatePost(int campPlaceId, string postText);
         Task<List<PostDTO>> GetAllUsersPosts(string name);
         List<PostDTO> GetAllGroupPosts(int postId);
         Task<OperationDetails> DeletePost(int postId);

@@ -5,36 +5,48 @@ app.controller('profileController', ['$http', '$scope', '$location', '$timeout',
 
     var authData = localStorageService.get('authorizationData');
 
-    $http.get(serviceBase + 'api/UserProfile/?userName=' + authData.userName).then(function (response) {
-
+    $http.get(serviceBase + 'api/UserProfile/?userName=' + authData.userName).then
+    (
+        function (response)
+        {
             $scope.profile = response.data;
             console.log($scope.profile);
-
         },
-         function (err) {
-             console.log(err.statusText);
-     });
+        function (err)
+        {
+            console.log(err.statusText);
+        }
+    );
 
-    $scope.submit = function () {
+    $scope.submit = function () 
+    {
         var fd = new FormData()
 
         fd.append('avatar', $scope.file);
 
-        $http.post(serviceBase + 'api/UserProfile/PostImage', fd, { transformRequest:angular.identity, headers: { 'Content-Type': undefined } }).then(function (response) {
+        $http.post(serviceBase + 'api/UserProfile/PostImage', fd, { transformRequest:angular.identity, headers: { 'Content-Type': undefined } }).then
+        (
+            function (response) 
+            {
 
-        },
-        function (err) {
-             console.log(err.statusText);
-        });
+            },
+            function (err) 
+            {
+                 console.log(err.statusText);
+            }
+        );
 
-        $http.post(serviceBase + 'api/UserProfile/PostProfile/?userName=' + authData.userName, $scope.profile).then(function (response)
-        {
+        $http.post(serviceBase + 'api/UserProfile/PostProfile/?userName=' + authData.userName, $scope.profile).then
+        (
+            function (response)
+            {
 
-        },
-        function (err)
-        {
-             console.log(err.statusText);
-        });
+            },
+            function (err)
+            {
+                console.log(err.statusText);
+            }
+        );
     };
 }]);
 

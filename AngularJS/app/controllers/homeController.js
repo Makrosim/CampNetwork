@@ -7,12 +7,15 @@ app.controller('homeController', ['$http', '$scope', '$location', '$timeout', 'l
 
     var authData = localStorageService.get('authorizationData');
 
-    $http.get(serviceBase + 'api/UserProfile/?userName=' + authData.userName).then(function (response) {
-
+    $http.get(serviceBase + 'api/UserProfile/?userName=' + authData.userName).then
+    (
+        function (response) 
+        {
             $scope.profile = response.data;
-            console.log(response.data);
         },
-         function (err) {
+        function (err)
+        {
              console.log(err.statusText);
-     });
+        }
+    );
 }]);

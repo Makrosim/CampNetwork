@@ -11,8 +11,6 @@ namespace CampBusinessLogic.DTO
         public int Id { get; set; }
         public string Text { get; set; }
         public DateTime CreationDate { get; set; }
-        public ICollection<MessageDTO> Messages { get; set; }
-
         public string CampPlaceName { get; set; }
     }
 }

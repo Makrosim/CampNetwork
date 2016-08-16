@@ -28,9 +28,14 @@ app.config(function ($routeProvider) {
         templateUrl: "app/views/campPlace.html"
     });
 
-        $routeProvider.when("/createPlace", {
+    $routeProvider.when("/createPlace", {
         controller: "createPlaceController",
         templateUrl: "app/views/createPlace.html"
+    });
+
+    $routeProvider.when("/post", {
+        controller: "postController",
+        templateUrl: "app/views/post.html"
     });
 
 });
