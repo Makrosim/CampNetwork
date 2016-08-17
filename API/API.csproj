@@ -163,7 +163,7 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CampDataAccess\CampBusinessLogic.csproj">
+    <ProjectReference Include="..\CampBusinessLogic\CampBusinessLogic.csproj">
       <Project>{30f3eb2a-7034-40ee-9cc7-ba70815c7574}</Project>
       <Name>CampBusinessLogic</Name>
     </ProjectReference>

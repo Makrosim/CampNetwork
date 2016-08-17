@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CampDataAccess")]
+[assembly: AssemblyTitle("CampBusinessLogic")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("CampDataAccess")]
+[assembly: AssemblyProduct("CampBusinessLogic")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("30f3eb2a-7034-40ee-9cc7-ba70815c7574")]
+[assembly: Guid("3283b342-1d37-4f5d-be85-75edbbf20588")]
 
 // Version information for an assembly consists of the following four values:
 //
