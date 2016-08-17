@@ -1,11 +1,35 @@
 'use strict';
-app.controller('postlistController', ['$http', '$scope', '$location', '$timeout', 'localStorageService', function ($http, $scope, $location, $timeout, localStorageService) {
+app.controller('postlistController', ['$http', '$scope', '$location', '$routeParams', '$timeout', 'localStorageService', function ($http, $scope, $location, $routeParams, $timeout, localStorageService) {
 
     var serviceBase = 'http://localhost:56332/';
 
     var authData = localStorageService.get('authorizationData');
 
 	$scope.text ='';
+	console.log($scope.$parent.group);
+
+	var string;
+
+	if($scope.$parent.groupId === undefined)
+	{
+		string = serviceBase + 'api/Post/?userName=' + authData.userName;
+	}
+	else
+	{
+		string = serviceBase + 'api/Post/?groupId=' + $scope.$parent.groupId;
+	}
+
+    $http.get(string).then
+    (
+    	function (response)
+	    {
+	        $scope.posts = response.data.map(getMessages);
+	    },
+	    function (err)
+	    {
+		    console.log(err.statusText);
+	    }
+    );
 
 	$scope.deletePost = function (postId)
 	{
@@ -55,18 +79,6 @@ app.controller('postlistController', ['$http', '$scope', '$location', '$timeout'
 	        }
         );
 	};
-
-    $http.get(serviceBase + 'api/Post/?userName=' + authData.userName).then
-    (
-    	function (response)
-	    {
-	        $scope.posts = response.data.map(getMessages);
-	    },
-	    function (err)
-	    {
-		    console.log(err.statusText);
-	    }
-    );
 
     function getMessages(value, index, array)
     {

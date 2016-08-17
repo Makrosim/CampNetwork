@@ -72,7 +72,6 @@ namespace CampBusinessLogic.Services
             var group = Database.GroupManager.Get(groupId);
 
             Mapper.Initialize(cfg => { cfg.CreateMap<Post, PostDTO>()
-                .ForMember("Messages", c => c.Ignore())
                 .ForMember(dest => dest.CampPlaceName, opts => opts.MapFrom(src => src.CampPlace.Name));
             });
 

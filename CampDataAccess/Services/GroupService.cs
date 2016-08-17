@@ -43,7 +43,7 @@ namespace CampBusinessLogic.Services
             return new OperationDetails(true, "Операция успешно завершена", "");
         }
 
-        public List<int> GetAllGroupsId()
+        public async Task<List<GroupDTO>> GetAllGroups(string userName)
         {
             var groupList = Database.GroupManager.GetAll();
             var groupIdList = new List<int>();
@@ -53,7 +53,15 @@ namespace CampBusinessLogic.Services
                 groupIdList.Add(group.Id);
             }
 
-            return groupIdList;
+            var groupDTOList = new List<GroupDTO>();
+
+            foreach (var Id in groupIdList)
+            {
+                var groupDTO = await GetGroupData(userName, Id);
+                groupDTOList.Add(groupDTO);
+            }
+
+            return groupDTOList;
         }
 
         public async Task<GroupDTO> GetGroupData(string name, int groupId)
@@ -62,6 +70,7 @@ namespace CampBusinessLogic.Services
                 throw new ArgumentNullException(name);
 
             var user = await Database.UserManager.FindByNameAsync(name);
+
             var profile = Database.UserProfileManager.Get(user.Id);
             var group = Database.GroupManager.Get(groupId);
 

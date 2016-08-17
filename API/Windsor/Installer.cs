@@ -20,6 +20,7 @@ namespace API.Windsor
             container.Register(Component.For<ICampPlaceService>().ImplementedBy<CampPlaceService>());
             container.Register(Component.For<IPostService>().ImplementedBy<PostService>());
             container.Register(Component.For<IMessageService>().ImplementedBy<MessageService>());
+            container.Register(Component.For<IGroupService>().ImplementedBy<GroupService>());
             container.Register(Component.For<IOAuthAuthorizationServerProvider>().ImplementedBy<OAuthService>());
             container.Register(Classes.FromThisAssembly().BasedOn<ApiController>().LifestylePerWebRequest());
         }

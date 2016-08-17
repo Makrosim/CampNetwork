@@ -38,6 +38,21 @@ app.config(function ($routeProvider) {
         templateUrl: "app/views/post.html"
     });
 
+    $routeProvider.when("/group", {
+        controller: "groupController",
+        templateUrl: "app/views/group.html"
+    });
+
+    $routeProvider.when("/createGroup", {
+        controller: "createGroupController",
+        templateUrl: "app/views/createGroup.html"
+    });
+
+    $routeProvider.when("/openGroup", {
+        controller: "openGroupController",
+        templateUrl: "app/views/openGroup.html"
+    });
+
 });
 
 app.config(function ($httpProvider) {

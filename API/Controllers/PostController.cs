@@ -28,6 +28,14 @@ namespace API.Controllers
         }
 
         [Authorize]
+        public HttpResponseMessage Get(int groupId) // Get all post
+        {
+            var result = postService.GetAllGroupPosts(groupId);
+
+            return Request.CreateResponse<List<PostDTO>>(HttpStatusCode.OK, result);
+        }
+
+        [Authorize]
         public async Task<HttpResponseMessage> Post([FromUri]int campPlaceId, [FromBody]string postText)
         {
             var result = await postService.CreatePost(campPlaceId, postText);
