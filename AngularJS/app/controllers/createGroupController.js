@@ -12,7 +12,7 @@ app.controller('createGroupController', ['$http', '$scope', '$location', 'localS
         (
             function (response)
             {
-
+                $location.path('/group');
             },
             function (err)
             {
