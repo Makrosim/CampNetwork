@@ -31,11 +31,10 @@ namespace CampBusinessLogic.Services
             Mapper.Initialize(cfg => { cfg.CreateMap<UserProfile, ProfileDTO>(); });
             var profDTO = Mapper.Map<UserProfile, ProfileDTO>(profile);
 
-            if (profile.Avatar != -1)
-                profDTO.AvatarId = Database.MediaManager.Get(profile.Avatar).Id; //Правильно ли?
+            if (profile.AvatarId != -1)
+                profDTO.AvatarId = Database.MediaManager.Get(profile.AvatarId).Id; //Правильно ли?
 
             return profDTO;
-
         }
 
         public async Task<OperationDetails> SetProfileData(string name, ProfileDTO profDTO)
@@ -53,7 +52,6 @@ namespace CampBusinessLogic.Services
             await Database.SaveAsync();
 
             return new OperationDetails(true, "Операция успешно завершена", "");
-
         }
 
         public void Dispose()

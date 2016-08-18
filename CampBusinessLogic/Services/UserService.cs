@@ -46,7 +46,7 @@ namespace CampBusinessLogic.Services
                             Phone = "Не установлено",
                             Skype = "Не установлено",
                             AdditionalInformation = "Не установлено",
-                            Avatar = -1
+                            AvatarId = -1
                         };
 
                         Database.UserProfileManager.Create(profile);
@@ -66,7 +66,6 @@ namespace CampBusinessLogic.Services
             {
                 return new OperationDetails(false, ex.Message, "");
             }
-
 
         }
 

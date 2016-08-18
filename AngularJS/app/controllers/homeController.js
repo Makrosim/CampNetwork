@@ -4,6 +4,7 @@ app.controller('homeController', ['$http', '$scope', '$location', '$timeout', 'l
     var serviceBase = 'http://localhost:56332/';
     $scope.savedSuccessfully = false;
     $scope.message = "";
+    $scope.profile = {};
 
     var authData = localStorageService.get('authorizationData');
 
@@ -12,10 +13,28 @@ app.controller('homeController', ['$http', '$scope', '$location', '$timeout', 'l
         function (response) 
         {
             $scope.profile = response.data;
+            getMedia(); 
         },
         function (err)
         {
-             console.log(err.statusText);
+            console.log(err.statusText);
         }
     );
+
+    function getMedia()
+    {
+        $http.get(serviceBase + 'api/UserProfile/?mediaId=' + $scope.profile.avatarId).then
+        (
+            function (response) 
+            {
+                $scope.avatar = response.data;
+            },
+            function (err)
+            {
+               console.log(err.statusText);
+            }
+        );    
+    }
+
+
 }]);

@@ -8,9 +8,10 @@ using CampBusinessLogic.Infrastructure;
 
 namespace CampBusinessLogic.Interfaces
 {
-    interface IMediaService
+    public interface IMediaService
     {
-        Task<OperationDetails> SaveMedia(string mediaPath);
+        Task<int> SaveMedia(string mediaPath);
         string GetMediaPath(int mediaId);
+        OperationDetails Delete(int mediaId);
     }
 }

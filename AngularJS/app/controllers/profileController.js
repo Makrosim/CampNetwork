@@ -2,8 +2,8 @@
 app.controller('profileController', ['$http', '$scope', '$location', '$timeout', 'localStorageService', function ($http, $scope, $location, $timeout, localStorageService) {
 
     var serviceBase = 'http://localhost:56332/';
-
     var authData = localStorageService.get('authorizationData');
+    $scope.profile = {};
 
     $http.get(serviceBase + 'api/UserProfile/?userName=' + authData.userName).then
     (
@@ -24,23 +24,27 @@ app.controller('profileController', ['$http', '$scope', '$location', '$timeout',
 
         fd.append('avatar', $scope.file);
 
-        $http.post(serviceBase + 'api/UserProfile/PostImage', fd, { transformRequest:angular.identity, headers: { 'Content-Type': undefined } }).then
+        $http.post(serviceBase + 'api/UserProfile', fd, { transformRequest:angular.identity, headers: { 'Content-Type': undefined } }).then
         (
             function (response) 
             {
-
+                $scope.profile.avatarId = response.data;
+                postProfile();
             },
             function (err) 
             {
-                 console.log(err.statusText);
+                console.log(err.statusText);
             }
         );
+    };
 
-        $http.post(serviceBase + 'api/UserProfile/PostProfile/?userName=' + authData.userName, $scope.profile).then
+    function postProfile()
+    {
+        $http.post(serviceBase + 'api/UserProfile/?userName=' + authData.userName, $scope.profile).then
         (
             function (response)
             {
-
+                $location.path('/home');
             },
             function (err)
             {

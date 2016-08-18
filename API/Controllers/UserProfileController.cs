@@ -1,5 +1,7 @@
 ﻿using CampBusinessLogic.DTO;
 using CampBusinessLogic.Interfaces;
+using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -8,14 +10,30 @@ using System.Web.Http;
 
 namespace API.Controllers
 {
-    [RoutePrefix("api/UserProfile")]
     public class UserProfileController : ApiController
     {
         private IProfileService profileService;
+        private IMediaService mediaService;
 
-        public UserProfileController(IProfileService profileService)
+        public UserProfileController(IProfileService profileService, IMediaService mediaService)
         {
             this.profileService = profileService;
+            this.mediaService = mediaService;
+        }
+
+        [Authorize]
+        public HttpResponseMessage Get(int mediaId)
+        {
+            var path = mediaService.GetMediaPath(mediaId);
+
+            byte[] imageArray = File.ReadAllBytes(path);
+
+            string baseImage = Convert.ToBase64String(imageArray);
+
+            if (baseImage == null)
+                return Request.CreateResponse(HttpStatusCode.InternalServerError);
+            else
+                return Request.CreateResponse(HttpStatusCode.OK, baseImage);
         }
 
         [Authorize]
@@ -34,23 +52,26 @@ namespace API.Controllers
         }
 
         [Authorize]
-        [HttpPost]
-        [Route("PostImage")]
-        public async Task<HttpResponseMessage> PostImage()
+        public async Task<HttpResponseMessage> Post()
         {
             string fileSaveLocation = HttpContext.Current.Server.MapPath("~/App_Data");
             var streamProvider = new MultipartFormDataStreamProvider(fileSaveLocation);
             await Request.Content.ReadAsMultipartAsync(streamProvider);
 
-            var response = Request.CreateResponse(HttpStatusCode.OK);
+            var imgname = streamProvider.FileData[0].Headers.ContentDisposition.FileName.Trim(new char[] { '"', '/' });
+            var newpath = fileSaveLocation + "/" + imgname;
+            File.Delete(newpath);
+            File.Move(streamProvider.FileData[0].LocalFileName, newpath);
+
+            var mediaId = await mediaService.SaveMedia(newpath);
+
+            var response = Request.CreateResponse(HttpStatusCode.OK, mediaId);
 
             return response;
         }
 
         [Authorize]
-        [HttpPost]
-        [Route("PostProfile")]
-        public async Task<HttpResponseMessage> PostProfile([FromUri]string userName, [FromBody]ProfileDTO profileDTO)
+        public async Task<HttpResponseMessage> Post([FromUri]string userName, [FromBody]ProfileDTO profileDTO)
         {
             await profileService.SetProfileData(userName, profileDTO);
 

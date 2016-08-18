@@ -20,18 +20,18 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public async Task<OperationDetails> SaveMedia(string path)
+        public async Task<int> SaveMedia(string path)
         {
             if (String.IsNullOrEmpty(path))
                 throw new ArgumentNullException(path);
 
-            var media = new Media { Type = "Image", Path = "path" };
+            var media = new Media { Type = "Image", Path = path };
 
             Database.MediaManager.Create(media);
 
             await Database.SaveAsync();
 
-            return new OperationDetails(true, "Операция успешно завершена", "");
+            return media.Id;
         }
 
         public string GetMediaPath(int mediaId)
@@ -45,6 +45,13 @@ namespace CampBusinessLogic.Services
         public void Dispose()
         {
             Database.Dispose();
+        }
+
+        public OperationDetails Delete(int mediaId)
+        {
+            Database.MediaManager.Delete(mediaId);
+
+            return new OperationDetails(true, "Запись удалена успешно", "");
         }
     }
 }
