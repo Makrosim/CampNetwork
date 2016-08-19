@@ -1,7 +1,7 @@
 'use strict';
 app.controller('groupController', ['$http', '$scope', '$location', 'localStorageService', function ($http, $scope, $location, localStorageService)
 {
-    var serviceBase = 'http://localhost:56332/';
+    var serviceBase = localStorageService.get('serviceBase');
     $scope.isGroupsExists = false;
     $scope.createdGroups = [];
     $scope.otherGroups = [];

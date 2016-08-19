@@ -1,7 +1,7 @@
 'use strict';
 app.controller('profileController', ['$http', '$scope', '$location', '$timeout', 'localStorageService', function ($http, $scope, $location, $timeout, localStorageService) {
 
-    var serviceBase = 'http://localhost:56332/';
+    var serviceBase = localStorageService.get('serviceBase');
     var authData = localStorageService.get('authorizationData');
     $scope.profile = {};
 

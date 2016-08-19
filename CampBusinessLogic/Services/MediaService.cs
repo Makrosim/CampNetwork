@@ -36,7 +36,15 @@ namespace CampBusinessLogic.Services
 
         public string GetMediaPath(int mediaId)
         {
-            var media = Database.MediaManager.Get(mediaId);
+            if(mediaId == -1)
+            {
+                throw new ArgumentException("It’s ok, media Id = -1, no media should be returned");
+            }
+            else
+            {
+                var media = Database.MediaManager.Get(mediaId);
+            }
+
 
             return media.Path;
         }

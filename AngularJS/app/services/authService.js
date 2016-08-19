@@ -1,7 +1,7 @@
 ﻿'use strict';
 app.factory('authService', ['$http', '$q', 'localStorageService', function ($http, $q, localStorageService) {
 
-    var serviceBase = 'http://localhost:56332/';
+    var serviceBase = localStorageService.get('serviceBase');
     var authServiceFactory = {};
 
     var _authentication = {
@@ -9,13 +9,18 @@ app.factory('authService', ['$http', '$q', 'localStorageService', function ($htt
         userName: ""
     };
 
-    var _saveRegistration = function (registration) {
+    var _saveRegistration = function (registration)
+    {
 
         _logOut();
 
-        return $http.post(serviceBase + 'api/account/register', registration).then(function (response) {
-            return response;
-        });
+        return $http.post(serviceBase + 'api/account/register', registration).then
+        (
+            function (response)
+            {
+                return response;
+            }
+        );
 
     };
 
@@ -25,19 +30,23 @@ app.factory('authService', ['$http', '$q', 'localStorageService', function ($htt
 
         var deferred = $q.defer();
 
-        $http.post(serviceBase + 'token', data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).success(function (response) {
+        $http.post(serviceBase + 'token', data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).then
+        (
+            function (response)
+            {
+                localStorageService.set('authorizationData', { token: response.access_token, userName: loginData.userName });
 
-            localStorageService.set('authorizationData', { token: response.access_token, userName: loginData.userName });
+                _authentication.isAuth = true;
+                _authentication.userName = loginData.userName;
 
-            _authentication.isAuth = true;
-            _authentication.userName = loginData.userName;
-
-            deferred.resolve(response);
-
-        }).error(function (err, status) {
-            _logOut();
-            deferred.reject(err);
-        });
+                deferred.resolve(response);
+            },
+            function (err)
+            {
+                _logOut();
+                deferred.reject(err);
+            }
+        );
 
         return deferred.promise;
 

@@ -24,13 +24,26 @@ namespace API.Controllers
         [Authorize]
         public HttpResponseMessage Get(int mediaId)
         {
-            var path = mediaService.GetMediaPath(mediaId);
+            string path;
+
+            try
+            {
+                path = mediaService.GetMediaPath(mediaId);
+            }
+            catch(ArgumentException ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.NoContent, ex.Message);
+            }
+            catch(Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
 
             byte[] imageArray = File.ReadAllBytes(path);
 
             string baseImage = Convert.ToBase64String(imageArray);
 
-            if (baseImage == null)
+            if (String.IsNullOrEmpty(baseImage))
                 return Request.CreateResponse(HttpStatusCode.InternalServerError);
             else
                 return Request.CreateResponse(HttpStatusCode.OK, baseImage);

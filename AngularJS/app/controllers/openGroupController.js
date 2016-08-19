@@ -1,7 +1,7 @@
 'use strict';
 app.controller('openGroupController', ['$http', '$scope', '$location', '$routeParams', 'localStorageService', function ($http, $scope, $location, $routeParams, localStorageService)
 {
-    var serviceBase = 'http://localhost:56332/';
+    var serviceBase = localStorageService.get('serviceBase');
     $scope.group = {};
     $scope.groupId = $routeParams['groupId'];
     $scope.postId = -1;
