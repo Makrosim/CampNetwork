@@ -22,13 +22,13 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public HttpResponseMessage Get(int mediaId)
+        public async Task<HttpResponseMessage> Get(int mediaId) //GetMedia
         {
             string path;
 
             try
             {
-                path = mediaService.GetMediaPath(mediaId);
+                path = await mediaService.GetMediaPath(mediaId);
             }
             catch(ArgumentException ex)
             {
@@ -67,7 +67,7 @@ namespace API.Controllers
         [Authorize]
         public async Task<HttpResponseMessage> Post()
         {
-            string fileSaveLocation = HttpContext.Current.Server.MapPath("~/App_Data");
+            string fileSaveLocation = HttpContext.Current.Server.MapPath("~/content/images");
             var streamProvider = new MultipartFormDataStreamProvider(fileSaveLocation);
             await Request.Content.ReadAsMultipartAsync(streamProvider);
 
