@@ -49,10 +49,16 @@ namespace API.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, baseImage);
         }
 
+        /// <summary>
+        /// Get any user profile
+        /// </summary>
+        /// <param name="userName">current user name</param>
+        /// <param name="ownerName">profile owner name</param>
+        /// <returns></returns>
         [Authorize]
-        public async Task<HttpResponseMessage> Get([FromUri]string userName)
+        public async Task<HttpResponseMessage> Get([FromUri]string userName, [FromUri]string ownerName)
         {
-            var userProfile = await profileService.GetProfileData(userName);
+            var userProfile = await profileService.GetProfileData(ownerName);
 
             HttpResponseMessage response;
 

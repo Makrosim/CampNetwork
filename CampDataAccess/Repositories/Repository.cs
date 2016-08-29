@@ -4,6 +4,7 @@ using CampDataAccess.Entities;
 using System.Data.Entity;
 using CampDataAccess.Interfaces;
 using System;
+using System.Threading.Tasks;
 
 namespace CampDataAccess.Repositories
 {
@@ -26,9 +27,19 @@ namespace CampDataAccess.Repositories
             return db.Set<T>().Find(id);
         }
 
+        public async Task<T> GetAsync(string id)
+        {
+            return await db.Set<T>().FindAsync(id);
+        }
+
         public T Get(string id)
         {
             return db.Set<T>().Find(id);
+        }
+
+        public async Task<T> GetAsync(int id)
+        {
+            return await db.Set<T>().FindAsync(id);
         }
 
         public void Create(T entity)

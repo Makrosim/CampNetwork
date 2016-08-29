@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using CampBusinessLogic.DTO;
 using CampBusinessLogic.Infrastructure;
 using CampDataAccess.Entities;
 using CampBusinessLogic.Interfaces;
 using CampDataAccess.Interfaces;
-using AutoMapper;
-using System.IO;
-using System.Collections.Generic;
 
 namespace CampBusinessLogic.Services
 {
@@ -42,11 +38,10 @@ namespace CampBusinessLogic.Services
             }
             else
             {
-                var media = await Task.Run(() => Database.MediaManager.Get(mediaId));
+                var media = await Database.MediaManager.GetAsync(mediaId);
                 return media.Path;
             }
         }
-
 
         public void Dispose()
         {

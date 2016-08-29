@@ -7,6 +7,7 @@ using CampDataAccess.Interfaces;
 using AutoMapper;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace CampBusinessLogic.Services
 {
@@ -36,6 +37,30 @@ namespace CampBusinessLogic.Services
             await Database.SaveAsync();
 
             return new OperationDetails(true, "Операция успешно завершена", "");
+        }
+
+        public List<CampPlaceDTO> GetCampList()
+        {
+            var campPlaceDTOList = new List<CampPlaceDTO>();
+
+            Mapper.Initialize(cfg => { cfg.CreateMap<CampPlace, CampPlaceDTO>()
+                .ForMember("PostsCount", c => c.Ignore())
+                .ForMember(dest => dest.Author, opts => opts.MapFrom(src => src.UserProfile.User.UserName)); });
+
+            points.Clear();
+
+            var campPlaces = Database.CampPlaceManager.GetAll().ToArray();
+
+            foreach (var cp in campPlaces)
+            {
+                points.Add(cp.LocationX + " " + cp.LocationY + " " + cp.Name);
+                var campDTO = Mapper.Map<CampPlace, CampPlaceDTO>(cp);
+
+                campDTO.PostsCount = cp.Posts?.Count ?? 0;
+                campPlaceDTOList.Add(campDTO);
+            }
+
+            return campPlaceDTOList;
         }
 
         public async Task<List<CampPlaceDTO>> GetCampList(string name)
@@ -76,6 +101,29 @@ namespace CampBusinessLogic.Services
             var campDTO = Mapper.Map<CampPlace, CampPlaceDTO>(Database.CampPlaceManager.Get(campPlaceId));
 
             return campDTO;
+        }
+
+        public List<CampPlaceDTO> SearchByName(string campPlaceName)
+        {
+            Mapper.Initialize(cfg => { cfg.CreateMap<CampPlace, CampPlaceDTO>()
+                .ForMember("PostsCount", c => c.Ignore())
+                .ForMember(dest => dest.Author, opts => opts.MapFrom(src => src.UserProfile.User.UserName)); });
+
+            var campPlaceList = Database.CampPlaceManager.GetAll().ToArray();
+            var matchList = new List<CampPlace>();
+            var campDTOList = new List<CampPlaceDTO>();
+
+            foreach (var cp in campPlaceList)
+            {
+                if (cp.Name == campPlaceName)
+                {
+                    var campDTO = Mapper.Map<CampPlace, CampPlaceDTO>(cp);
+                    campDTO.PostsCount = cp.Posts?.Count ?? 0;
+                    campDTOList.Add(campDTO);
+                }
+            }
+            
+            return campDTOList;
         }
 
         public async Task<OperationDetails> Update(CampPlaceDTO campPlaceDTO)

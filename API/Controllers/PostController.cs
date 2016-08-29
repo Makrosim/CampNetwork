@@ -22,16 +22,15 @@ namespace API.Controllers
         [Authorize]
         public async Task<HttpResponseMessage> Get([FromUri]string userName) // Get all post
         {
+            var result = new List<PostDTO>();
             try
             {
-                await postService.GetAllUsersPosts(userName);
+                result = await postService.GetAllUsersPosts(userName);
             }
             catch(Exception ex)
             {
-                int i = 0;
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
-
-            var result = await postService.GetAllUsersPosts(userName);
 
             return Request.CreateResponse<List<PostDTO>>(HttpStatusCode.OK, result);
         }

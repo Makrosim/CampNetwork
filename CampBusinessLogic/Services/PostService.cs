@@ -44,7 +44,7 @@ namespace CampBusinessLogic.Services
             var user = await Database.UserManager.FindByNameAsync(name);
             var postList = new List<PostDTO>();
 
-            var profile = Database.UserProfileManager.Get(user.Id);
+            var profile = await Database.UserProfileManager.GetAsync(user.Id);
 
             Mapper.Initialize(cfg =>
             {

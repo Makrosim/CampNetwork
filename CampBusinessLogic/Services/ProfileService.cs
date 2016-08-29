@@ -26,7 +26,7 @@ namespace CampBusinessLogic.Services
                 throw new ArgumentNullException(name);
             
             var user = await Database.UserManager.FindByNameAsync(name);
-            var profile = Database.UserProfileManager.Get(user.Id);
+            var profile = await Database.UserProfileManager.GetAsync(user.Id);
 
             Mapper.Initialize(cfg => { cfg.CreateMap<UserProfile, ProfileDTO>(); });
             var profDTO = Mapper.Map<UserProfile, ProfileDTO>(profile);
