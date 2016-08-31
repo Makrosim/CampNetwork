@@ -22,34 +22,52 @@ namespace API.Controllers
         [Authorize]
         public HttpResponseMessage Get(int postId)
         {
-            var result = messageService.GetAllPostMessages(postId);
+            var result = new List<MessageDTO>();
 
-            if (result != null)
-                return Request.CreateResponse<List<MessageDTO>>(HttpStatusCode.OK, result);
+            try
+            {
+                result = messageService.GetAllPostMessages(postId);
+            }
+            catch(Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+            }
+
+            if (result.Count == 0)
+                return Request.CreateResponse(HttpStatusCode.NoContent);
             else
-                return Request.CreateResponse(HttpStatusCode.InternalServerError);
+                return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
         [Authorize]
-        public async Task<HttpResponseMessage> Post([FromUri]string userName, [FromBody]MessageDTO messageDTO)
+        public HttpResponseMessage Post([FromUri]string userName, [FromBody]MessageDTO messageDTO)
         {
-            var result = await messageService.CreateUsersMessage(userName, messageDTO);
+            try
+            {
+               messageService.CreateUsersMessage(userName, messageDTO);
+            }
+            catch(Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+            }
+            
+            return Request.CreateResponse(HttpStatusCode.OK);
 
-            if (result.Succedeed)
-                return Request.CreateResponse(HttpStatusCode.OK);
-            else
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, result.Message);
         }
 
         [Authorize]
-        public async Task<HttpResponseMessage> Delete([FromUri]int messageId, [FromUri]int postId)
+        public HttpResponseMessage Delete([FromUri]int messageId, [FromUri]int postId)
         {
-            var result = await messageService.DeleteUsersMessage(messageId, postId);
+            try
+            {
+                messageService.DeleteUsersMessage(messageId, postId);
+            }
+            catch(Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+            }
 
-            if (result.Succedeed)
-                return Request.CreateResponse(HttpStatusCode.OK);
-            else
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, result.Message);
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
     }
 }

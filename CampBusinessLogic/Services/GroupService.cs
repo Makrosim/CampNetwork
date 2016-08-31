@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CampBusinessLogic.DTO;
-using CampBusinessLogic.Infrastructure;
 using CampDataAccess.Entities;
 using CampBusinessLogic.Interfaces;
 using CampDataAccess.Interfaces;
@@ -20,7 +19,7 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public async Task<OperationDetails> CreateGroup(string name, GroupDTO groupDTO)
+        public async void CreateGroup(string name, GroupDTO groupDTO)
         {
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException(name);
@@ -39,8 +38,6 @@ namespace CampBusinessLogic.Services
             Database.GroupManager.Create(group);
 
             await Database.SaveAsync();
-
-            return new OperationDetails(true, "Операция успешно завершена", "");
         }
 
         public async Task<List<GroupDTO>> GetAllGroups(string userName)
@@ -84,7 +81,7 @@ namespace CampBusinessLogic.Services
             return groupDTO;
         }
 
-        public async Task<OperationDetails> SetGroupData(string name, GroupDTO groupDTO)
+        public async void SetGroupData(string name, GroupDTO groupDTO)
         {
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException(name);
@@ -97,11 +94,9 @@ namespace CampBusinessLogic.Services
             var group = Mapper.Map<GroupDTO, Group>(groupDTO);
 
             Database.GroupManager.Create(group);
-
-            return new OperationDetails(true, "Операция успешно завершена", "");
         }
 
-        public async Task<OperationDetails> AddPostToGroup(int groupId, int postId)
+        public async void AddPostToGroup(int groupId, int postId)
         {
             var group = Database.GroupManager.Get(groupId);
             var post = Database.PostManager.Get(postId);
@@ -109,8 +104,6 @@ namespace CampBusinessLogic.Services
             group.Posts.Add(post);
 
             await Database.SaveAsync();
-
-            return new OperationDetails(true, "Операция успешно завершена", "");
         }
 
         public void Dispose()

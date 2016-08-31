@@ -34,7 +34,7 @@ namespace CampDataAccess.Repositories
 
         public T Get(string id)
         {
-            return db.Set<T>().Find(id);
+            return db.Set<T>().Find();
         }
 
         public async Task<T> GetAsync(int id)

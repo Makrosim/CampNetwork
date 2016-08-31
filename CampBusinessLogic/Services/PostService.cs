@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CampBusinessLogic.DTO;
-using CampBusinessLogic.Infrastructure;
 using CampDataAccess.Entities;
 using CampBusinessLogic.Interfaces;
 using CampDataAccess.Interfaces;
@@ -20,7 +19,7 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public async Task<OperationDetails> CreatePost(int campPlaceID, string postText)
+        public async void CreatePost(int campPlaceID, string postText)
         {
             var post = new Post
             {
@@ -32,8 +31,6 @@ namespace CampBusinessLogic.Services
             await Database.SaveAsync();
             post.CampPlace = Database.CampPlaceManager.Get(campPlaceID);
             await Database.SaveAsync();
-
-            return new OperationDetails(true, "Операция успешно завершена", "");
         }
 
         public async Task<List<PostDTO>> GetAllUsersPosts(string name)
@@ -46,10 +43,7 @@ namespace CampBusinessLogic.Services
 
             var profile = await Database.UserProfileManager.GetAsync(user.Id);
 
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<Post, PostDTO>().ForMember(dest => dest.CampPlaceName, opts => opts.MapFrom(src => src.CampPlace.Name));
-            });            
+            InitializeMapper();
 
             foreach (var cp in profile.CampPlaces)
             {
@@ -71,9 +65,7 @@ namespace CampBusinessLogic.Services
             var postList = new List<PostDTO>();
             var group = Database.GroupManager.Get(groupId);
 
-            Mapper.Initialize(cfg => { cfg.CreateMap<Post, PostDTO>()
-                .ForMember(dest => dest.CampPlaceName, opts => opts.MapFrom(src => src.CampPlace.Name));
-            });
+            InitializeMapper();
 
             foreach (var post in group.Posts)
             {
@@ -84,9 +76,29 @@ namespace CampBusinessLogic.Services
             return postList;
         }
 
-        public async Task<OperationDetails> DeletePost(int postId)
+        public List<PostDTO> GetAllCampPlacePosts(int campPlaceId)
+        {
+            var postList = new List<PostDTO>();
+            var campPlace = Database.CampPlaceManager.Get(campPlaceId);
+
+            InitializeMapper();
+
+            foreach (var post in campPlace.Posts)
+            {
+                var postDTO = Mapper.Map<Post, PostDTO>(post);
+                postList.Add(postDTO);
+            }
+
+            return postList;
+        }
+
+        public async void DeletePost(string userName, int postId)
         {
             var post = Database.PostManager.Get(postId);
+
+            if (userName != post.CampPlace.UserProfile.User.UserName)
+                throw new UnauthorizedAccessException("You are not owner of this recource");
+
             var list = new List<int>();
 
             foreach (var a in post.Messages)
@@ -101,8 +113,16 @@ namespace CampBusinessLogic.Services
 
             Database.PostManager.Delete(post.Id);
             await Database.SaveAsync();
+        }
 
-            return new OperationDetails(true, "Операция успешно завершена", "");
+        private void InitializeMapper()
+        {
+            Mapper.Initialize(cfg => {
+                cfg.CreateMap<Post, PostDTO>()
+                .ForMember(dest => dest.CampPlaceName, opts => opts.MapFrom(src => src.CampPlace.Name))
+                .ForMember(dest => dest.Author, opts => opts.MapFrom(src => src.CampPlace.UserProfile.User.UserName))
+                .ForMember(dest => dest.CampPlaceId, opts => opts.MapFrom(src => src.CampPlace.Id));
+            });
         }
 
     }

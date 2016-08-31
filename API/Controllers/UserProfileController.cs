@@ -65,7 +65,22 @@ namespace API.Controllers
             if (userProfile == null)
                 response = Request.CreateResponse(HttpStatusCode.InternalServerError);
             else
-                response = Request.CreateResponse<ProfileDTO>(HttpStatusCode.OK, userProfile);
+                response = Request.CreateResponse(HttpStatusCode.OK, userProfile);
+
+            return response;
+        }
+
+        [Authorize]
+        public HttpResponseMessage Get(string searchCriteria)
+        {
+            var profileList = profileService.SearchByName(searchCriteria);
+
+            HttpResponseMessage response;
+
+            if (profileList == null)
+                response = Request.CreateResponse(HttpStatusCode.InternalServerError);
+            else
+                response = Request.CreateResponse(HttpStatusCode.OK, profileList);
 
             return response;
         }
@@ -90,9 +105,9 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public async Task<HttpResponseMessage> Post([FromUri]string userName, [FromBody]ProfileDTO profileDTO)
+        public HttpResponseMessage Post([FromUri]string userName, [FromBody]ProfileDTO profileDTO)
         {
-            await profileService.SetProfileData(userName, profileDTO);
+            profileService.SetProfileData(userName, profileDTO);
 
             var response = Request.CreateResponse(HttpStatusCode.OK);
 

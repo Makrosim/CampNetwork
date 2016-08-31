@@ -97,7 +97,6 @@
     <Compile Include="DTO\PostDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="DTO\ProfileDTO.cs" />
-    <Compile Include="Infrastructure\OperationDetails.cs" />
     <Compile Include="Interfaces\ICampPlaceService.cs" />
     <Compile Include="Interfaces\IGroupService.cs" />
     <Compile Include="Interfaces\IMediaService.cs" />

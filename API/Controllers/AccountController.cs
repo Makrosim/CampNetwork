@@ -2,6 +2,9 @@
 using CampBusinessLogic.Interfaces;
 using CampBusinessLogic.DTO;
 using System.Threading.Tasks;
+using System.Net.Http;
+using System.Net;
+using System;
 
 namespace API.Controllers
 {
@@ -18,21 +21,23 @@ namespace API.Controllers
         // POST api/Account/Register
         [AllowAnonymous]
         [Route("Register")]
-        public async Task<IHttpActionResult> Register(UserDTO userDTO)
+        public HttpResponseMessage Register(UserDTO userDTO)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState);
             }
 
-            var result = await userService.Create(userDTO);
-
-            if (!result.Succedeed)
+            try
             {
-                return BadRequest(result.Message);
+                userService.Create(userDTO);
+            }
+            catch(Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
             }
 
-            return Ok();
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         protected override void Dispose(bool disposing)

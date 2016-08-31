@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CampBusinessLogic.DTO;
-using CampBusinessLogic.Infrastructure;
 
 namespace CampBusinessLogic.Interfaces
 {
@@ -12,6 +11,6 @@ namespace CampBusinessLogic.Interfaces
     {
         Task<int> SaveMedia(string mediaPath);
         Task<string> GetMediaPath(int mediaId);
-        OperationDetails Delete(int mediaId);
+        void Delete(int mediaId);
     }
 }

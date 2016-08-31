@@ -20,9 +20,9 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public HttpResponseMessage Get(int campId)
+        public HttpResponseMessage Get(int campPlaceId)
         {
-            var campPlace = campService.GetCampData(campId);
+            var campPlace = campService.GetCampData(campPlaceId);
 
             HttpResponseMessage response;
 
@@ -103,15 +103,15 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public async Task<HttpResponseMessage> Post([FromUri]string userName, [FromBody]CampPlaceDTO campPlaceDTO)
+        public HttpResponseMessage Post([FromUri]string userName, [FromBody]CampPlaceDTO campPlaceDTO)
         {
-            var result = await campService.Create(userName, campPlaceDTO);
+            campService.Create(userName, campPlaceDTO);
 
             HttpResponseMessage response;
 
-            if (result == null)
+
                 response = Request.CreateResponse(HttpStatusCode.InternalServerError);
-            else
+
                 response = Request.CreateResponse(HttpStatusCode.OK);
 
             return response;
@@ -135,33 +135,34 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public async Task<HttpResponseMessage> Put(CampPlaceDTO campPlaceDTO) //Update
+        public HttpResponseMessage Put(CampPlaceDTO campPlaceDTO) //Update
         {
-            var result = await campService.Update(campPlaceDTO);
+            try
+            {
+                campService.Update(campPlaceDTO);
+            }
+            catch(Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+            }
 
-            HttpResponseMessage response;
-
-            if (result == null)
-                response = Request.CreateResponse(HttpStatusCode.InternalServerError);
-            else
-                response = Request.CreateResponse(HttpStatusCode.OK);
-
-            return response;
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         [Authorize]
         public HttpResponseMessage Delete(int Id) //Update
         {
-            var result = campService.Delete(Id);
+            try
+            {
+                campService.Delete(Id);
+            }
+            catch(Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+            }
 
-            HttpResponseMessage response;
+            return Request.CreateResponse(HttpStatusCode.OK);
 
-            if (result == null)
-                response = Request.CreateResponse(HttpStatusCode.InternalServerError);
-            else
-                response = Request.CreateResponse(HttpStatusCode.OK);
-
-            return response;
         }
 
     }

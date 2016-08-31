@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using CampBusinessLogic.DTO;
-using CampBusinessLogic.Infrastructure;
 using CampDataAccess.Entities;
 using CampBusinessLogic.Interfaces;
 using CampDataAccess.Interfaces;
@@ -21,7 +20,7 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public async Task<OperationDetails> Create(string name, CampPlaceDTO campPlaceDTO)
+        public async void Create(string name, CampPlaceDTO campPlaceDTO)
         {
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException(name);
@@ -35,8 +34,6 @@ namespace CampBusinessLogic.Services
 
             Database.CampPlaceManager.Create(camp);
             await Database.SaveAsync();
-
-            return new OperationDetails(true, "Операция успешно завершена", "");
         }
 
         public List<CampPlaceDTO> GetCampList()
@@ -73,7 +70,8 @@ namespace CampBusinessLogic.Services
 
             var campPlaceDTOList = new List<CampPlaceDTO>();
 
-            Mapper.Initialize(cfg => { cfg.CreateMap<CampPlace, CampPlaceDTO>(); });
+            Mapper.Initialize(cfg => { cfg.CreateMap<CampPlace, CampPlaceDTO>()
+                .ForMember(dest => dest.Author, opts => opts.MapFrom(src => src.UserProfile.User.UserName)); });
 
             points.Clear();
 
@@ -126,7 +124,7 @@ namespace CampBusinessLogic.Services
             return campDTOList;
         }
 
-        public async Task<OperationDetails> Update(CampPlaceDTO campPlaceDTO)
+        public async void Update(CampPlaceDTO campPlaceDTO)
         {
             var campPlace = Database.CampPlaceManager.Get(campPlaceDTO.Id);
 
@@ -135,15 +133,11 @@ namespace CampBusinessLogic.Services
 
             Database.CampPlaceManager.Update(campPlace);
             await Database.SaveAsync();
-
-            return new OperationDetails(true, "Операция успешно завершена", "");
         }
 
-        public OperationDetails Delete(int campPlaceId)
+        public void Delete(int campPlaceId)
         {
             Database.CampPlaceManager.Delete(campPlaceId);
-
-            return new OperationDetails(true, "Операция успешно завершена", "");
         }
 
         public void Dispose()

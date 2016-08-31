@@ -20,7 +20,7 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public async Task<HttpResponseMessage> Get([FromUri]string userName) // Get all post
+        public async Task<HttpResponseMessage> Get([FromUri]string userName) // Get all users post
         {
             var result = new List<PostDTO>();
             try
@@ -36,7 +36,7 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public HttpResponseMessage Get(int groupId) // Get all post
+        public HttpResponseMessage Get(int groupId) // Get all group post
         {
             var result = postService.GetAllGroupPosts(groupId);
 
@@ -44,30 +44,46 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public async Task<HttpResponseMessage> Post([FromUri]int campPlaceId, [FromBody]string postText)
+        [Route("api/Post/GetCampPlacePosts")]
+        public HttpResponseMessage GetCampPlacePosts(int campPlaceId) // Get all camp place post
         {
-            var result = await postService.CreatePost(campPlaceId, postText);
+            var result = postService.GetAllCampPlacePosts(campPlaceId);
 
-            if (result.Succedeed)
-                return Request.CreateResponse(HttpStatusCode.Created);
-            else
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, result.Message);
+            return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
         [Authorize]
-        public async Task<HttpResponseMessage> Delete([FromUri]int postId) // Get all post
+        public HttpResponseMessage Post([FromUri]int campPlaceId, [FromBody]string postText)
         {
-            var result = await postService.DeletePost(postId);
+            try
+            {
+                postService.CreatePost(campPlaceId, postText);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+            }
 
-            if(result.Succedeed)
+            return Request.CreateResponse(HttpStatusCode.Created); 
+        }
+
+        [Authorize]
+        public HttpResponseMessage Delete(string userName, int postId)
+        {
+            try
             {
-                return Request.CreateResponse(HttpStatusCode.OK);
+                postService.DeletePost(userName, postId);
             }
-            else
+            catch(UnauthorizedAccessException ex)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, result.Message);
+                return Request.CreateResponse(HttpStatusCode.Forbidden, ex);
             }
-            
+            catch(Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
     }

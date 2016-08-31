@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CampBusinessLogic.DTO;
-using CampBusinessLogic.Infrastructure;
 using CampDataAccess.Entities;
 using CampBusinessLogic.Interfaces;
 using CampDataAccess.Interfaces;
@@ -20,7 +19,7 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public async Task<OperationDetails> CreateUsersMessage(string name, MessageDTO messageDTO)
+        public async void CreateUsersMessage(string name, MessageDTO messageDTO)
         {
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException(name);
@@ -28,10 +27,10 @@ namespace CampBusinessLogic.Services
             messageDTO.Date = DateTime.Now;
 
             var user = await Database.UserManager.FindByNameAsync(name);
-            var prof = Database.UserProfileManager.Get(user.Id);
 
             Mapper.Initialize(cfg => { cfg.CreateMap<MessageDTO, Message>()
-                .ForMember(dest => dest.Author, opts => opts.MapFrom(p => prof));
+                .ForMember(dest => dest.Author, opts => opts.MapFrom(p => user.UserProfile))
+                .ForMember("Id", c => c.Ignore());
             });
 
             var message = Mapper.Map<MessageDTO, Message>(messageDTO);
@@ -43,19 +42,23 @@ namespace CampBusinessLogic.Services
             var post = Database.PostManager.Get(messageDTO.PostId);
             post.Messages.Add(message.Id);
 
-            await Database.SaveAsync();
+            Database.PostManager.Update(post);
 
-            return new OperationDetails(true, "Успех", "");
+            await Database.SaveAsync();
         }
 
         public List<MessageDTO> GetAllPostMessages(int postId)
         {
             var post = Database.PostManager.Get(postId);
+            if (post.Messages.Count == 0)
+                throw new Exception("No messages in post");
             var messages = new List<MessageDTO>();
 
             Mapper.Initialize(cfg => { cfg.CreateMap<Message, MessageDTO>()
                 .ForMember(dest => dest.FirstName, opts => opts.MapFrom(src => src.Author.FirstName))
-                .ForMember(dest => dest.LastName, opts => opts.MapFrom(src => src.Author.LastName)); });
+                .ForMember(dest => dest.LastName, opts => opts.MapFrom(src => src.Author.LastName))
+                .ForMember(dest => dest.Author, opts => opts.MapFrom(src => src.Author.User.UserName));
+            });
 
             foreach (var messageId in post.Messages)
             {
@@ -68,7 +71,7 @@ namespace CampBusinessLogic.Services
             return messages;
         }
 
-        public async Task<OperationDetails> DeleteUsersMessage(int messageId, int postId)
+        public async void DeleteUsersMessage(int messageId, int postId)
         {
             var message = Database.MessageManager.Get(messageId);
             Database.MessageManager.Delete(message.Id);
@@ -78,8 +81,11 @@ namespace CampBusinessLogic.Services
 
             Database.PostManager.Update(post);
             await Database.SaveAsync();
+        }
 
-            return new OperationDetails(true, "Успех", "");
+        private void InitializeMapper()
+        {
+
         }
 
         public void Dispose()

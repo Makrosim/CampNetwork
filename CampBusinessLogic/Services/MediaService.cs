@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using CampBusinessLogic.Infrastructure;
 using CampDataAccess.Entities;
 using CampBusinessLogic.Interfaces;
 using CampDataAccess.Interfaces;
@@ -48,11 +47,9 @@ namespace CampBusinessLogic.Services
             Database.Dispose();
         }
 
-        public OperationDetails Delete(int mediaId)
+        public void Delete(int mediaId)
         {
             Database.MediaManager.Delete(mediaId);
-
-            return new OperationDetails(true, "Запись удалена успешно", "");
         }
     }
 }

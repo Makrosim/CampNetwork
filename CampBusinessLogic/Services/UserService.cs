@@ -1,5 +1,4 @@
 ﻿using CampBusinessLogic.DTO;
-using CampBusinessLogic.Infrastructure;
 using CampDataAccess.Entities;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -20,53 +19,43 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public async Task<OperationDetails> Create(UserDTO userDTO)
+        public async void Create(UserDTO userDTO)
         {
-            try
+            var user = await Database.UserManager.FindByNameAsync(userDTO.UserName);
+
+            if (user == null)
             {
-                var user = await Database.UserManager.FindByNameAsync(userDTO.UserName);
+                user = new User { Email = userDTO.Email, UserName = userDTO.UserName };
 
-                if (user == null)
+                var result = await Database.UserManager.CreateAsync(user, userDTO.Password);
+
+                if (result.Succeeded)
                 {
-                    user = new User { Email = userDTO.Email, UserName = userDTO.UserName };
-
-                    var result = await Database.UserManager.CreateAsync(user, userDTO.Password);
-
-                    if (result.Succeeded)
+                    var profile = new UserProfile
                     {
-                        var profile = new UserProfile
-                        {
-                            Id = user.Id,
-                            FirstName = "Аноним",
-                            LastName = "Анонимович",
-                            BirthDateDay = "Не установлено",
-                            BirthDateMounth = "Не установлено",
-                            BirthDateYear = "Не установлено",
-                            Address = "Не установлено",
-                            Phone = "Не установлено",
-                            Skype = "Не установлено",
-                            AdditionalInformation = "Не установлено",
-                            AvatarId = -1
-                        };
+                        Id = user.Id,
+                        FirstName = "Аноним",
+                        LastName = "Анонимович",
+                        BirthDateDay = "Не установлено",
+                        BirthDateMounth = "Не установлено",
+                        BirthDateYear = "Не установлено",
+                        Address = "Не установлено",
+                        Phone = "Не установлено",
+                        Skype = "Не установлено",
+                        AdditionalInformation = "Не установлено",
+                        AvatarId = -1
+                    };
 
-                        Database.UserProfileManager.Create(profile);
-                        await Database.SaveAsync();
-                    }
-                    else
-                        return new OperationDetails(false, "Ошибка создания пользователя", "");
-
-                    return new OperationDetails(true, "Регистрация успешно пройдена", "");
+                    Database.UserProfileManager.Create(profile);
+                    await Database.SaveAsync();
                 }
                 else
-                {
-                    return new OperationDetails(false, "Пользователь с таким логином уже существует", "Email");
-                }
+                    throw new Exception("Ошибка создания пользователя");
             }
-            catch(Exception ex)
+            else
             {
-                return new OperationDetails(false, ex.Message, "");
-            }
-
+                throw new Exception("Пользователь с таким именем уже существует");
+            }          
         }
 
         public async Task<ClaimsIdentity> Authenticate(UserDTO userDTO)
@@ -80,26 +69,14 @@ namespace CampBusinessLogic.Services
             return claim;
         }
 
-        public async Task<OperationDetails> Delete(string name)
+        public async void Delete(string name)
         {
-            try
-            {
-                var user = await Database.UserManager.FindByNameAsync(name);
-                await Database.UserManager.DeleteAsync(user);
-            }
-            catch(Exception ex)
-            {
-                return new OperationDetails(false, ex.Message, "");
-            }
-
-            return new OperationDetails(true, "User successfully deleted", "");
+            var user = await Database.UserManager.FindByNameAsync(name);
+            await Database.UserManager.DeleteAsync(user);
         }
 
         public void Dispose()
         {
-            StackFrame fr = new StackFrame(1);
-            var method = fr.GetMethod();
-            var name = method.Name;
             Database.Dispose();
         }
     }

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CampBusinessLogic.DTO;
-using CampBusinessLogic.Infrastructure;
 using CampDataAccess.Entities;
 using CampBusinessLogic.Interfaces;
 using CampDataAccess.Interfaces;
 using AutoMapper;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CampBusinessLogic.Services
 {
@@ -20,6 +20,31 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
+        public List<ProfileDTO> SearchByName(string searchCriteria)
+        {
+            if (String.IsNullOrEmpty(searchCriteria))
+                throw new ArgumentNullException(searchCriteria);
+
+            Mapper.Initialize(cfg => { cfg.CreateMap<UserProfile, ProfileDTO>()
+                .ForMember(dest => dest.UserName, opts => opts.MapFrom(src => src.User.UserName)); });
+
+            var profileList = Database.UserProfileManager.GetAll().ToArray();
+            var profileDTOList = new List<ProfileDTO>();
+
+            foreach(var profile in profileList)
+            {
+                var fullName = profile.FirstName + profile.LastName;
+
+                if(fullName.Contains(searchCriteria))
+                {
+                    var profileDTO = Mapper.Map<UserProfile, ProfileDTO>(profile);
+                    profileDTOList.Add(profileDTO);
+                }
+            }
+
+            return profileDTOList;
+        }
+
         public async Task<ProfileDTO> GetProfileData(string name)
         {
             if (String.IsNullOrEmpty(name))
@@ -28,7 +53,9 @@ namespace CampBusinessLogic.Services
             var user = await Database.UserManager.FindByNameAsync(name);
             var profile = await Database.UserProfileManager.GetAsync(user.Id);
 
-            Mapper.Initialize(cfg => { cfg.CreateMap<UserProfile, ProfileDTO>(); });
+            Mapper.Initialize(cfg => { cfg.CreateMap<UserProfile, ProfileDTO>()
+                .ForMember(dest => dest.UserName, opts => opts.MapFrom(src => src.User.UserName)); });
+
             var profDTO = Mapper.Map<UserProfile, ProfileDTO>(profile);
 
             if (profile.AvatarId != -1)
@@ -37,7 +64,7 @@ namespace CampBusinessLogic.Services
             return profDTO;
         }
 
-        public async Task<OperationDetails> SetProfileData(string name, ProfileDTO profDTO)
+        public async void SetProfileData(string name, ProfileDTO profDTO)
         {
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException(name);
@@ -50,8 +77,6 @@ namespace CampBusinessLogic.Services
 
             Database.UserProfileManager.Update(profile);
             await Database.SaveAsync();
-
-            return new OperationDetails(true, "Операция успешно завершена", "");
         }
 
         public void Dispose()
