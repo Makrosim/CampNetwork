@@ -47,7 +47,19 @@ namespace API.Controllers
         [Route("api/Post/GetCampPlacePosts")]
         public HttpResponseMessage GetCampPlacePosts(int campPlaceId) // Get all camp place post
         {
-            var result = postService.GetAllCampPlacePosts(campPlaceId);
+            var result = new List<PostDTO>();
+
+            try
+            {
+                result = postService.GetAllCampPlacePosts(campPlaceId);
+            }
+            catch(Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+            }
+
+            if (result.Count == 0)
+                return Request.CreateResponse(HttpStatusCode.NoContent);
 
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }

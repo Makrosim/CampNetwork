@@ -50,8 +50,6 @@ namespace CampBusinessLogic.Services
         public List<MessageDTO> GetAllPostMessages(int postId)
         {
             var post = Database.PostManager.Get(postId);
-            if (post.Messages.Count == 0)
-                throw new Exception("No messages in post");
             var messages = new List<MessageDTO>();
 
             Mapper.Initialize(cfg => { cfg.CreateMap<Message, MessageDTO>()

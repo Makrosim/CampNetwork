@@ -1,0 +1,70 @@
+<div class='col-md-10'>
+    <form class="form-horizontal" enctype="multipart/form-data">
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="inp_FirstName">Имя</label>
+            <div class="col-md-6">
+                <input class="form-control" id="inp_FirstName" type="text" name="FirstName" data-ng-model="profile.firstName" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="inp_LastName">Фамилия</label>
+            <div class="col-md-6">
+                <input class="form-control" id="inp_LastName" type="text" name="LastName" data-ng-model="profile.lastName" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="inp_BirthDateMounth">День рождения</label>
+
+            <div class="col-md-2">
+                <select class="form-control" id="inp_BirthDateDay" type="" name="BirthDateDay" data-ng-model="profile.birthDateDay"  >
+                    <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select class="form-control" id="inp_BirthDateMounth" type="" name="BirthDateMounth" data-ng-model="profile.birthDateMounth"  >
+                    <option>Декабрь</option><option>Январь</option><option>Февраль</option><option>Март</option><option>Апрель</option><option>Май</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select class="form-control" id="inp_BirthDateYear" type="" name="BirthDateYear" data-ng-model="profile.birthDateYear"  >
+                    <option>1990</option><option>1991</option><option>1992</option><option>1993</option><option>1994</option><option>1995</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="inp_Adress">Адрес</label>
+            <div class="col-md-6">
+                <input class="form-control" id="inp_Adress" type="text" name="Address" data-ng-model="profile.address" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="inp_Skype">Skype</label>
+            <div class="col-md-6">
+                <input class="form-control" id="inp_Skype" type="text" name="Skype" data-ng-model="profile.skype" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="inp_Phone">Телефон</label>
+            <div class="col-md-6">
+                <input class="form-control" id="inp_Phone" type="text" name="Phone" data-ng-model="profile.phone" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="inp_AdditionalInformation">Дополнительная информация</label>
+            <div class="col-md-6">
+                <textarea class="form-control" rows="5" cols="50" id="inp_AdditionalInformation" name="AdditionalInformation"  data-ng-model="profile.additionalInformation" ></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="inp_image">Аватар</label>
+            <div class="col-md-6">
+                <input type="file" id="inp_image" name="image" file-model="file" />
+            </div>
+        </div> 
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-6">
+                <button class="btn btn-success" data-ng-click="submit()">Сохранить</button>
+            </div>
+        </div>
+    </form>
+</div>

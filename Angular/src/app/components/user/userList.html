@@ -1,0 +1,13 @@
+    <div class="panel-group" ng-controller="userListController">
+
+        <div class="panel panel-info" ng-repeat="profile in profiles">
+            <div class="panel-heading"><a href="#/home/{{profile.userName}}">{{profile.firstName}} {{profile.lastName}}</a></div>
+            <div class="panel-body">
+                <p>Адрес: {{profile.address}}, Skype: {{profile.skype}}</p>
+            </div>
+            <div class="panel-footer">   
+                <a class="pull-right btn btn-info btn-xs" href="">В друзья</a>                                     
+            </div>
+        </div>
+        
+    </div>

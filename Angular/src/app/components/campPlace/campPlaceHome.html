@@ -1,0 +1,45 @@
+<div id="div">
+    <div class="well row user-info">
+
+        <div class="col-md-9">
+            <p class="lead">{{campPlace.name}}</p>
+            <hr>
+            <p>Краткое описание: {{campPlace.shortDescription}}</p>
+        </div>
+
+        <div class="homeMap" id="homeMap"></div>
+
+    </div>
+
+    <ng-include src="'app/components/post/postlist.html'"></ng-include>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBiYT8YJ36AWUsSXozMhCOWi-ruz0tgPc&callback=initMap"></script>
+
+    <script type="text/javascript">
+
+        var divmap = document.getElementById("homeMap");
+        var map;
+
+        function initMap()
+        {
+            var myLatlng = { lat: 50, lng: 36.28 };
+
+            map = new google.maps.Map(divmap, { center: myLatlng, zoom: 8 });
+
+            var scope = angular.element(document.getElementById('div')).scope();
+
+            var locX = scope.campPlace.locationX;
+            var locY = scope.campPlace.locationY;
+            var title = scope.campPlace.name;
+
+            var marker = new google.maps.Marker
+            ({
+                position: { lat: parseFloat(locY), lng: parseFloat(locX) },
+                map: map,
+                title: title
+            });
+
+        };
+    </script>
+
+</div>

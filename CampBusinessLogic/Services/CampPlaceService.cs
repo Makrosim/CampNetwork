@@ -40,9 +40,7 @@ namespace CampBusinessLogic.Services
         {
             var campPlaceDTOList = new List<CampPlaceDTO>();
 
-            Mapper.Initialize(cfg => { cfg.CreateMap<CampPlace, CampPlaceDTO>()
-                .ForMember("PostsCount", c => c.Ignore())
-                .ForMember(dest => dest.Author, opts => opts.MapFrom(src => src.UserProfile.User.UserName)); });
+            InitializeMapper();
 
             points.Clear();
 
@@ -66,16 +64,13 @@ namespace CampBusinessLogic.Services
                 throw new ArgumentNullException(name);
 
             var user = await Database.UserManager.FindByNameAsync(name);
-            var profile = Database.UserProfileManager.Get(user.Id);
-
             var campPlaceDTOList = new List<CampPlaceDTO>();
 
-            Mapper.Initialize(cfg => { cfg.CreateMap<CampPlace, CampPlaceDTO>()
-                .ForMember(dest => dest.Author, opts => opts.MapFrom(src => src.UserProfile.User.UserName)); });
+            InitializeMapper();
 
             points.Clear();
 
-            foreach (var cp in profile.CampPlaces)
+            foreach (var cp in user.UserProfile.CampPlaces)
             {
                 var campPlace = Database.CampPlaceManager.Get(cp.Id);
                 points.Add(campPlace.LocationX + " " + campPlace.LocationY + " " + campPlace.Name);
@@ -95,7 +90,8 @@ namespace CampBusinessLogic.Services
 
         public CampPlaceDTO GetCampData(int campPlaceId)
         {
-            Mapper.Initialize(cfg => { cfg.CreateMap<CampPlace, CampPlaceDTO>(); });
+            InitializeMapper();
+
             var campDTO = Mapper.Map<CampPlace, CampPlaceDTO>(Database.CampPlaceManager.Get(campPlaceId));
 
             return campDTO;
@@ -103,9 +99,7 @@ namespace CampBusinessLogic.Services
 
         public List<CampPlaceDTO> SearchByName(string campPlaceName)
         {
-            Mapper.Initialize(cfg => { cfg.CreateMap<CampPlace, CampPlaceDTO>()
-                .ForMember("PostsCount", c => c.Ignore())
-                .ForMember(dest => dest.Author, opts => opts.MapFrom(src => src.UserProfile.User.UserName)); });
+            InitializeMapper();
 
             var campPlaceList = Database.CampPlaceManager.GetAll().ToArray();
             var matchList = new List<CampPlace>();
@@ -138,6 +132,14 @@ namespace CampBusinessLogic.Services
         public void Delete(int campPlaceId)
         {
             Database.CampPlaceManager.Delete(campPlaceId);
+        }
+
+        private void InitializeMapper()
+        {
+            Mapper.Initialize(cfg => { cfg.CreateMap<CampPlace, CampPlaceDTO>()
+                .ForMember("PostsCount", c => c.Ignore())
+                .ForMember(dest => dest.Author, opts => opts.MapFrom(src => src.UserProfile.User.UserName));
+            });
         }
 
         public void Dispose()

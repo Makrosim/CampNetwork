@@ -1,0 +1,56 @@
+<div id="div">
+
+    <div class="container col-md-10">
+        <div class="map well" hidden id="map"></div>
+        <ng-include src="'app/components/campPlace/campPlaceList.html'"></ng-include>
+    </div>
+
+    <div class="col-md-2 sidebar-offcanvas" role="navigation">
+        <div class="list-group">
+            <a class="list-group-item" href="#/createPlace">Добавить</a>
+            <a class="list-group-item" href="" id="maplink">Карта</a>
+        </div>
+    </div>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBiYT8YJ36AWUsSXozMhCOWi-ruz0tgPc&callback=initMap"></script>
+
+    <script type="text/javascript">
+
+        var link = document.getElementById("maplink");
+        var divmap = document.getElementById("map");
+        var map;
+
+        link.onclick = function ()
+        {
+            divmap.hidden = !divmap.hidden;
+
+            if(divmap.hidden)
+                delete map;
+            else
+                initMap();
+        }
+
+        function initMap()
+        {
+            var myLatlng = { lat: 50, lng: 36.28 };
+
+            map = new google.maps.Map(document.getElementById('map'), { center: myLatlng, zoom: 8 });
+
+            var camps = angular.element(document.getElementById('div')).scope().points;
+
+            camps.forEach
+            (
+                function (item, i, camps)
+                {
+                    var point = item.split(" ");
+                    var marker = new google.maps.Marker({
+                        position: { lat: parseFloat(point[1]), lng: parseFloat(point[0]) },
+                        map: map,
+                        title: point[2]
+                    });
+                }
+            );
+        };
+    </script>
+
+</div>

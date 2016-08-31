@@ -1,0 +1,57 @@
+<div ng-controller="postlistController">
+    <div class="panel-group" ng-repeat="post in posts">
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <p class="pull-right">Id статьи: {{post.id}}</p>
+                <span>Место отдыха: </span>
+                <a href="#/campPlaceHome/{{post.campPlaceId}}">{{post.campPlaceName}}</a>
+            </div>
+            <div class="panel-body">
+                <p>Автор: <a href="#/home/{{post.author}}">{{post.author}}</a></p>
+                <p>{{post.text}}</p>
+            </div>
+            <div class="panel-footer">
+                <span>{{post.creationDate | date:"HH:mm MM/dd/yyyy"}}</span>
+                <a class="pull-right btn btn-danger btn-xs" ng-click="deletePost(post.id)" ng-if="userName === post.author">Удалить обзор</a>
+                <a class="pull-right btn btn-info btn-xs" onclick="set()" href="">Комментировать</a>
+            </div>
+        </div>
+
+        <form id="comment_area" class="comment-area" hidden="">
+            <div class="form-group">
+                <input type="hidden" name="groupId" value="@(ViewBag.Group?.Id ?? 0)" />
+                <input type="hidden" name="postId" value="@a.Id" />
+                <textarea class="form-control" ng-model="text"></textarea>
+            </div>
+            <input id="sub" class="btn btn-success" value="Комментировать" ng-click="comment(text, post.id)" />
+        </form>
+
+        <dl class="col-md-offset-1 dl-comment">
+            <div ng-repeat="message in post.messages">
+                <dt>
+                    <span>{{message.firstName}} {{message.lastName}} в {{message.date | date:"HH:mm MM/dd/yyyy"}}</span>
+                    <a class="btn btn-xs btn-danger" ng-click="delete(message.id, post.id)" ng-if="userName === message.author">x</a>
+                 </dt>
+                <dd> - {{message.text}}</dd>
+            </div>
+        </dl>
+
+        <script type="text/javascript">
+
+            var sub = document.getElementById("sub");
+            var area = document.getElementById("comment_area");
+
+            function set()
+            {
+                area.hidden = !area.hidden;
+            };
+
+            sub.onclick = function ()
+            {
+                area.hidden = true;
+            };
+        </script>
+
+    </div>
+</div>

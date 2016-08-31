@@ -1,0 +1,42 @@
+<div>
+
+    <div class="col-md-10" ng-switch on="isGroupsExists">
+
+        <div class="alert alert-info" ng-switch-when="false"> Вы еще не вступили ни в одну группу </div>
+
+        <div class="panel-group" ng-switch-when="true">
+
+            <h3>Созданные вами группы: </h3>
+
+            <div class="panel panel-info" ng-repeat="group in createdGroups">
+                <div class="panel-heading"><a href="#/openGroup/?groupId={{group.id}}">{{group.name}}</a></div>
+                <div class="panel-body">
+                    <p>Id группы: {{group.id}}</p>
+                    <p>Описание: {{group.shortDescription}}</p>
+                </div>
+                <div class="panel-footer"> Кол-во учасников: {{group.membersCount}} </div>
+            </div>
+
+            <h3>Вы состоите в группах: </h3>
+
+            <div class="panel panel-info" ng-repeat="group in otherGroups">
+                <div class="panel-heading"><a href="/Groups/Open/@group.Id">{{group.Name}}</a></div>
+                <div class="panel-body">
+                    <p>Название группы: {{group.name}}</p>                    
+                    <p>Описание: {{group.shortDescription}}</p>
+                </div>
+                <div class="panel-footer"> Кол-во учасников: {{group.membersCount}} </div>
+                <div class="pull-right">Создатель: {{group.creatorFirstName}} {{group.creatorLastName}}</div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-2 sidebar-offcanvas" role="navigation">
+        <div class="list-group">
+            <a class="list-group-item" href="#/createGroup">Создать</a>
+        </div>
+    </div>
+
+</div>

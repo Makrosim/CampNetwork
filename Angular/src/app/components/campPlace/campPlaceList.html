@@ -1,0 +1,27 @@
+    <div class="panel-group" ng-controller="campPlaceListController">
+
+        <div class="panel panel-info" ng-repeat="place in campList">
+            <div class="panel-heading">
+                <span class="pull-right">Id: {{place.id}}</span>
+                <a href="#/campPlaceHome/{{place.id}}">{{place.name}}</a>
+            </div>
+            <div class="panel-body">
+                <p>Координаты: {{place.locationX}}, {{place.locationY}}</p>
+                <p>Чистота: {{place.purity}}</p>
+                <p>Людность: {{place.crowdy}}</p>
+                <p>Доступность: {{place.approachability}}</p>
+                <p>Комфорт: {{place.comfortableness}}</p>
+                <p>{{place.shortDescription}}</p>
+            </div>
+            <div class="panel-footer">
+                <span>Автор: </span>
+                <a href="#/home/{{place.author}}">{{place.author}}</a>, 
+                <span>Обзоров: {{place.postsCount}}</span>
+                <span ng-if="currentUser === place.author">
+                    <a class="pull-right btn btn-danger btn-xs" ng-click="delete(place.id)">Удалить место отдыха</a>      
+                    <a class="pull-right btn btn-info btn-xs" href="#/post/?id={{place.id}}">Добавить обзор</a>   
+                </span>                                  
+            </div>
+        </div>
+        
+    </div>

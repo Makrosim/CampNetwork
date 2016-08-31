@@ -1,0 +1,113 @@
+<div class="col-md-10">
+
+    <div class="map well" id="map"></div>
+
+    <form class="form-horizontal" method="post" action="">
+        <div class="form-group">
+            <label class="col-md-3 control-label">Название</label>
+            <div class="col-md-6">
+                <input class="form-control" type="text" name="Name" data-ng-model="campPlace.name"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Долгота</label>
+            <div class="col-md-6">
+                <input class="form-control" type="text" name="LocationX" id="lng" data-ng-model="campPlace.locationX"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Широта</label>
+            <div class="col-md-6">
+                <input class="form-control" type="text" name="LocationY" id="lat" data-ng-model="campPlace.locationY"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Чистота</label>
+            <div class="col-md-6">
+               <input type="radio" name="Puriry" value="VeryBad" data-ng-model="campPlace.Purity"/>
+               <input type="radio" name="Puriry" value="Bad" data-ng-model="campPlace.Purity"/>
+               <input type="radio" name="Puriry" value="Medium" data-ng-model="campPlace.Purity"/>
+               <input type="radio" name="Puriry" value="Good" data-ng-model="campPlace.Purity"/>
+               <input type="radio" name="Puriry" value="VeryGood" data-ng-model="campPlace.Purity"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Людность</label>
+            <div class="col-md-6">
+               <input type="radio" name="Crowdy" value="VeryBad" data-ng-model="campPlace.Crowdy"/>
+               <input type="radio" name="Crowdy" value="Bad" data-ng-model="campPlace.Crowdy"/>
+               <input type="radio" name="Crowdy" value="Medium" data-ng-model="campPlace.Crowdy"/>
+               <input type="radio" name="Crowdy" value="Good" data-ng-model="campPlace.Crowdy"/>
+               <input type="radio" name="Crowdy" value="VeryGood" data-ng-model="campPlace.Crowdy"/>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Доступность</label>
+            <div class="col-md-6">
+               <input type="radio" name="Approachability" value="VeryBad" data-ng-model="campPlace.Approachability"/>
+               <input type="radio" name="Approachability" value="Bad" data-ng-model="campPlace.Approachability"/>
+               <input type="radio" name="Approachability" value="Medium" data-ng-model="campPlace.Approachability"/>
+               <input type="radio" name="Approachability" value="Good" data-ng-model="campPlace.Approachability"/>
+               <input type="radio" name="Approachability" value="VeryGood" data-ng-model="campPlace.Approachability"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Комфортабельность</label>
+            <div class="col-md-6">
+               <input type="radio" name="Comfortableness" value="VeryBad" data-ng-model="campPlace.Comfortableness"/>
+               <input type="radio" name="Comfortableness" value="Bad" data-ng-model="campPlace.Comfortableness"/>
+               <input type="radio" name="Comfortableness" value="Medium" data-ng-model="campPlace.Comfortableness"/>
+               <input type="radio" name="Comfortableness" value="Good" data-ng-model="campPlace.Comfortableness"/>
+               <input type="radio" name="Comfortableness" value="VeryGood" data-ng-model="campPlace.Comfortableness"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Описание</label>
+            <div class="col-md-6">
+                <textarea class="form-control" name="ShortDescription" data-ng-model="campPlace.ShortDescription"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-6">
+                <input class="btn btn-success" value="Сохранить" ng-click="submit()"/>
+            </div>
+        </div>                                 
+    </form>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBiYT8YJ36AWUsSXozMhCOWi-ruz0tgPc&callback=initMap"></script>
+
+    <script type="text/javascript">
+
+        var map;
+
+
+        function initMap()
+        {
+            var myLatlng = { lat: 50, lng: 36.28 };
+
+            map = new google.maps.Map(document.getElementById('map'), {center: myLatlng, zoom: 8});
+
+            var marker = new google.maps.Marker({
+                position: myLatlng,
+                map: map,
+                draggable: true
+            });
+
+            marker.addListener('drag', function ()
+            {
+                var lng = document.getElementById('lng');
+                var lat = document.getElementById('lat');
+                lng.value = marker.getPosition().lng();
+                lng.dispatchEvent(new Event('change'));
+                lat.value = marker.getPosition().lat();
+                lat.dispatchEvent(new Event('change'));
+            });
+
+            marker.addListener('click', function () {
+                map.setZoom(8);
+                map.setCenter(marker.getPosition());
+            });
+        }
+    </script>
+</div>

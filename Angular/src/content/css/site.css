@@ -1,0 +1,45 @@
+body
+{
+    margin: 0px;
+    padding: 0px;
+    background-color: #f7f7fa;
+}
+
+.map
+{
+    height: 500px;
+    margin-bottom: 10px;
+}
+
+.homeMap
+{
+    height: 250px;
+    width: 220px;
+    margin-bottom: 10px;
+}
+
+
+.div_label_user
+{
+    display: inline-block;
+    width: 200px;
+}
+
+.user-info
+{
+    color: inherit;
+    background-color: #eee;
+    margin-bottom: 10px;
+}
+
+.comment-area
+{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.dl-comment
+{
+    margin-top: 5px;
+    margin-bottom: 10px;
+}

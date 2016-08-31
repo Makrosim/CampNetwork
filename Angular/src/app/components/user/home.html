@@ -1,0 +1,23 @@
+<div class="col-md-10">
+    <div class=" well row user-info">
+        <div>
+            <div class="col-md-8">
+                <div class="lead"><p ng-bind="profile.firstName + ' ' + profile.lastName"></p></div>
+                <hr>
+                <p>Адрес: {{profile.address}}; Skype: {{profile.skype}}</p>
+                <hr>
+                <p>Дата рождения: {{profile.birthDateDay}} {{profile.birthDateMounth}} {{profile.birthDateYear}}</p>
+            </div>
+            <div class="col-md-4">
+                 <img data-ng-src="data:image/png;base64,{{avatar}}" height="180" width="180" />
+            </div>
+        </div>
+        <div>
+            <hr>
+            <p>Дополнительная информация: {{profile.additionalInformation}}</p>
+        </div>
+    </div>
+
+    <ng-include src="'app/components/post/postlist.html'"></ng-include>
+    
+ </div>
