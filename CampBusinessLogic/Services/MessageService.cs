@@ -21,26 +21,21 @@ namespace CampBusinessLogic.Services
 
         public async void CreateUsersMessage(string name, MessageDTO messageDTO)
         {
-            if (String.IsNullOrEmpty(name))
-                throw new ArgumentNullException(name);
-
             messageDTO.Date = DateTime.Now;
 
-            var user = await Database.UserManager.FindByNameAsync(name);
-
             Mapper.Initialize(cfg => { cfg.CreateMap<MessageDTO, Message>()
-                .ForMember(dest => dest.Author, opts => opts.MapFrom(p => user.UserProfile))
                 .ForMember("Id", c => c.Ignore());
             });
 
             var message = Mapper.Map<MessageDTO, Message>(messageDTO);
+            message.UserProfile = (await Database.UserManager.FindByNameAsync(messageDTO.Author)).UserProfile;
 
             Database.MessageManager.Create(message);
 
             await Database.SaveAsync();
 
             var post = Database.PostManager.Get(messageDTO.PostId);
-            post.Messages.Add(message.Id);
+            post.Messages.Add(message);
 
             Database.PostManager.Update(post);
 
@@ -53,14 +48,13 @@ namespace CampBusinessLogic.Services
             var messages = new List<MessageDTO>();
 
             Mapper.Initialize(cfg => { cfg.CreateMap<Message, MessageDTO>()
-                .ForMember(dest => dest.FirstName, opts => opts.MapFrom(src => src.Author.FirstName))
-                .ForMember(dest => dest.LastName, opts => opts.MapFrom(src => src.Author.LastName))
-                .ForMember(dest => dest.Author, opts => opts.MapFrom(src => src.Author.User.UserName));
+                .ForMember(dest => dest.FirstName, opts => opts.MapFrom(src => src.UserProfile.FirstName))
+                .ForMember(dest => dest.LastName, opts => opts.MapFrom(src => src.UserProfile.LastName))
+                .ForMember(dest => dest.Author, opts => opts.MapFrom(src => src.UserProfile.User.UserName));
             });
 
-            foreach (var messageId in post.Messages)
+            foreach (var message in post.Messages)
             {
-                var message = Database.MessageManager.Get(messageId);
                 var messageDTO = Mapper.Map<Message, MessageDTO>(message);
 
                 messages.Add(messageDTO);
@@ -75,15 +69,10 @@ namespace CampBusinessLogic.Services
             Database.MessageManager.Delete(message.Id);
 
             var post = Database.PostManager.Get(postId);
-            post.Messages.Remove(messageId);
+            post.Messages.Remove(message);
 
             Database.PostManager.Update(post);
             await Database.SaveAsync();
-        }
-
-        private void InitializeMapper()
-        {
-
         }
 
         public void Dispose()

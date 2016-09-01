@@ -3,6 +3,7 @@ app.controller('indexController', ['$scope', '$location', 'authService', functio
 
 	$scope.authData = authService.authentication;
 	$scope.search = {};
+	$scope.search.type = '';
 
 	if($scope.authData.isAuth == false)
 	{

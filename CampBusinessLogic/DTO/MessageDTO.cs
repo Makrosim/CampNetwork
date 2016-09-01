@@ -13,7 +13,7 @@ namespace CampBusinessLogic.DTO
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int PostId { get; set; }
-        public string Text { get; set; }
         public DateTime Date { get; set; }
+        public string Text { get; set; }
     }
 }

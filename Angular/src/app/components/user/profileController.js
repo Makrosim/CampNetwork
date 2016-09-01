@@ -40,7 +40,7 @@ app.controller('profileController', ['$http', '$scope', '$rootScope', '$location
                 },
                 function (err) 
                 {
-                    console.log(err.statusText);
+                    console.log(err);
                 }
             );
         }
@@ -57,7 +57,7 @@ app.controller('profileController', ['$http', '$scope', '$rootScope', '$location
             },
             function (err)
             {
-                console.log(err.statusText);
+                console.log(err);
             }
         );
     };

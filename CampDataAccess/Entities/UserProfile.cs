@@ -13,6 +13,7 @@ namespace CampDataAccess.Entities
             Dialogs = new List<Dialog>();
             Friends = new List<UserProfile>();
             MediasId = new List<int>();
+            Messages = new List<Message>();
         }
 
         [Key, ForeignKey("User")]
@@ -30,12 +31,13 @@ namespace CampDataAccess.Entities
         public virtual int AvatarId { get; set; }
         public virtual ICollection<int> MediasId { get; set; }
         public virtual ICollection<CampPlace> CampPlaces { get; set; }
-        public ICollection<Group> Groups { get; set; }
-        public UserSetting UserSettings { get; set; }
-        public ICollection<UserProfile> Friends { get; set; }
-        public ICollection<Dialog> Dialogs { get; set; }
-        public ICollection<Message> Messages { get; set; }
+        public virtual ICollection<Group> Groups { get; set; }
 
+        public virtual ICollection<UserProfile> Friends { get; set; }
+        public virtual ICollection<Dialog> Dialogs { get; set; }
+        public virtual ICollection<Message> Messages { get; set; }
+
+        public virtual UserSetting UserSettings { get; set; }
         public virtual User User { get; set; }
     }
 }

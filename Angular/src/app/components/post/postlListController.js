@@ -17,7 +17,7 @@ app.controller('postlistController', ['$http', '$scope', '$location', '$routePar
 
 	$scope.deletePost = function (postId)
 	{
-        $http.delete(serviceBase + 'api/Post/?postId=' + postId).then
+        $http.delete(serviceBase + 'api/Post/?userName=' + authData.userName + '&postId=' + postId).then
         (
         	function (response)
 	        {
@@ -50,6 +50,7 @@ app.controller('postlistController', ['$http', '$scope', '$location', '$routePar
 		var message = {};
 		message.Text = text;
 		message.postId = postId;
+		message.author = authData.userName;
 
         $http.post(serviceBase + 'api/Message/?userName=' + authData.userName, message).then
         (

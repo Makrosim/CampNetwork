@@ -31,7 +31,10 @@
             <div ng-repeat="message in post.messages">
                 <dt>
                     <span>{{message.firstName}} {{message.lastName}} в {{message.date | date:"HH:mm MM/dd/yyyy"}}</span>
-                    <a class="btn btn-xs btn-danger" ng-click="delete(message.id, post.id)" ng-if="userName === message.author">x</a>
+
+                    <a href="" style="color: red" ng-click="delete(message.id, post.id)" ng-if="userName === message.author">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </a>
                  </dt>
                 <dd> - {{message.text}}</dd>
             </div>

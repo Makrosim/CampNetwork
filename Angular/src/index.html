@@ -27,7 +27,7 @@
     <nav class="navbar navbar-inverse" role="navigation">
         <div class="container">
             <div class="navbar-header">
-                <span class="navbar-brand">{{title}}</span>
+                <span class="navbar-brand" ng-bind="title"></span>
             </div> 
 
             <div class="collapse navbar-collapse" role="navigation">
@@ -55,14 +55,32 @@
     </nav>
 
     <div class="container">
-        <div class="col-md-2 sidebar-offcanvas" role="navigation" ng-switch on="authData.isAuth">
-            <div class="list-group" ng-switch-when="true">
-                <a class="list-group-item active" href="#/home" ng-bind="authData.userName"></a>
-                <a class="list-group-item" href="#/">Диалоги</a>
-                <a class="list-group-item" href="#/camp">Места отдыха</a>
-                <a class="list-group-item" href="#/group">Группы</a>
-                <a class="list-group-item" href="#/profile">Настройки</a>
-                <a class="list-group-item" href="" id="loginLink" ng-click="logOut()">Выход</a>
+        <div class="col-md-2 sidebar-offcanvas" role="navigation" ng-if="authData.isAuth">
+            <div class="list-group">
+                <a class="list-group-item active" href="#/home" >
+                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                    <span ng-bind="authData.userName"></span>
+                </a>
+                <a class="list-group-item" href="#/">                
+                    <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
+                    <span>Диалоги</span>   
+                </a>
+                <a class="list-group-item" href="#/camp">
+                    <span class="glyphicon glyphicon-tent" aria-hidden="true"></span>
+                    <span>Места отдыха</span>   
+                </a>        
+                <a class="list-group-item" href="#/group">
+                    <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+                    <span>Группы</span>  
+                </a>
+                <a class="list-group-item" href="#/profile">
+                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                    <span>Настройки</span>   
+                </a>
+                <a class="list-group-item" href="" id="loginLink" ng-click="logOut()">
+                    <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+                    <span>Выход</span>   
+                </a>
             </div>
         </div>
 

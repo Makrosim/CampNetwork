@@ -17,7 +17,7 @@ app.controller('postController', ['$http', '$scope', '$rootScope', '$location', 
             },
             function (err)
             {
-                console.log(err.statusText);
+                console.log(err);
             }
         );
     }

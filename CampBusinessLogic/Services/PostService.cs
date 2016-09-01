@@ -99,16 +99,16 @@ namespace CampBusinessLogic.Services
             if (userName != post.CampPlace.UserProfile.User.UserName)
                 throw new UnauthorizedAccessException("You are not owner of this recource");
 
-            var list = new List<int>();
+            var messageList = new List<Message>();
 
-            foreach (var a in post.Messages)
+            foreach (var message in post.Messages)
             {
-                list.Add(a);
+                messageList.Add(message);
             }
 
-            foreach (var a in list)
+            foreach (var message in messageList)
             {
-                Database.MessageManager.Delete(a);
+                Database.MessageManager.Delete(message.Id);
             }
 
             Database.PostManager.Delete(post.Id);
