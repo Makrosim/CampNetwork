@@ -1,5 +1,5 @@
 ﻿using API.Windsor;
-using CampBusinessLogic.Castle;
+using CampBusinessLogic.Windsor;
 using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
 using Castle.Windsor.Installer;

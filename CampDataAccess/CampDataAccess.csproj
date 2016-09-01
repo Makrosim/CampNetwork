@@ -57,7 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EF\AppContext.cs" />
+    <Compile Include="Entities\AppContext.cs" />
     <Compile Include="Entities\ApplicationRole.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\CampPlace.cs" />

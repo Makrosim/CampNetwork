@@ -3,13 +3,8 @@ using CampDataAccess.Repositories;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CampBusinessLogic.Castle
+namespace CampBusinessLogic.Windsor
 {
     public class BusinessLogicInstaller : IWindsorInstaller
     {
