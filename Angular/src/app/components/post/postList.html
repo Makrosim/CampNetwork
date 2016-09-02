@@ -3,18 +3,35 @@
 
         <div class="panel panel-info">
             <div class="panel-heading">
-                <p class="pull-right">Id статьи: {{post.id}}</p>
-                <span>Место отдыха: </span>
-                <a href="#/campPlaceHome/{{post.campPlaceId}}">{{post.campPlaceName}}</a>
+                <a href="" class="pull-right" style="color: grey" ng-click="deletePost(post.id)" ng-if="userName === post.author">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </a>
+                <span>Название статьи</span>               
             </div>
             <div class="panel-body">
-                <p>Автор: <a href="#/home/{{post.author}}">{{post.author}}</a></p>
+
+                <div class="col-md-6">
+                    <adress>
+                        <strong>Автор</strong>
+                        <br><a href="#/home/{{post.author}}" ng-bind="post.author"></a>
+                    </adress>
+                </div>
+
+                <div class="col-md-6" style="margin-bottom: 10px">
+                    <adress>
+                        <strong>Место отдыха</strong>
+                        <br><a href="#/campPlaceHome/{{post.campPlaceId}}" ng-bind="post.campPlaceName"></a>
+                    </adress>
+                </div>
+
                 <p>{{post.text}}</p>
             </div>
             <div class="panel-footer">
                 <span>{{post.creationDate | date:"HH:mm MM/dd/yyyy"}}</span>
-                <a class="pull-right btn btn-danger btn-xs" ng-click="deletePost(post.id)" ng-if="userName === post.author">Удалить обзор</a>
-                <a class="pull-right btn btn-info btn-xs" onclick="set()" href="">Комментировать</a>
+                
+                <a href="" class="pull-right" style="color: grey" onclick="set()">
+                    <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                </a> 
             </div>
         </div>
 
@@ -32,7 +49,7 @@
                 <dt>
                     <span>{{message.firstName}} {{message.lastName}} в {{message.date | date:"HH:mm MM/dd/yyyy"}}</span>
 
-                    <a href="" style="color: red" ng-click="delete(message.id, post.id)" ng-if="userName === message.author">
+                    <a href="" style="color: grey" ng-click="delete(message.id, post.id)" ng-if="userName === message.author">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </a>
                  </dt>

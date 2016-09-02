@@ -1,6 +1,8 @@
 <div>
 
-    <div class="col-md-10" ng-switch on="isGroupsExists">
+    <div class="col-md-10"ng-switch on="isGroupsExists">
+
+        <div class="loader container" ng-if="isGroupsExists === null"></div>
 
         <div class="alert alert-info" ng-switch-when="false"> Вы еще не вступили ни в одну группу </div>
 
@@ -17,7 +19,7 @@
                 <div class="panel-footer"> Кол-во учасников: {{group.membersCount}} </div>
             </div>
 
-            <h3>Вы состоите в группах: </h3>
+            <h3 ng-if="oherGroups.length === 0">Вы состоите в группах: </h3>
 
             <div class="panel panel-info" ng-repeat="group in otherGroups">
                 <div class="panel-heading"><a href="/Groups/Open/@group.Id">{{group.Name}}</a></div>

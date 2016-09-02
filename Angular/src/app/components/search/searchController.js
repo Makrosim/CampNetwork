@@ -19,7 +19,7 @@ app.controller('searchController', ['$http', '$scope', '$location', '$routeParam
 			includeString = 'app/components/campPlace/campPlaceList.html';
 			break;
 
-		case 'Человеки':
+		case 'Пользователи':
 			queryString = serviceBase + 'api/userProfile/?searchCriteria=' + $routeParams['searchCriteria'];
 			includeString = 'app/components/user/userList.html';
 			break;

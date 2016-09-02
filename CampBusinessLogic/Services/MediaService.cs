@@ -29,7 +29,7 @@ namespace CampBusinessLogic.Services
             return media.Id;
         }
 
-        public async Task<string> GetMediaPath(int mediaId)
+        public string GetMediaPath(int mediaId)
         {
             if(mediaId == -1)
             {
@@ -37,7 +37,7 @@ namespace CampBusinessLogic.Services
             }
             else
             {
-                var media = await Database.MediaManager.GetAsync(mediaId);
+                var media = Database.MediaManager.Get(mediaId);
                 return media.Path;
             }
         }

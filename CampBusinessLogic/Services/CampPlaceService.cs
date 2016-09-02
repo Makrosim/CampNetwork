@@ -92,7 +92,9 @@ namespace CampBusinessLogic.Services
         {
             InitializeMapper();
 
-            var campDTO = Mapper.Map<CampPlace, CampPlaceDTO>(Database.CampPlaceManager.Get(campPlaceId));
+            var campPlace = Database.CampPlaceManager.Get(campPlaceId);
+
+            var campDTO = Mapper.Map<CampPlace, CampPlaceDTO>(campPlace);
 
             return campDTO;
         }
@@ -101,18 +103,14 @@ namespace CampBusinessLogic.Services
         {
             InitializeMapper();
 
-            var campPlaceList = Database.CampPlaceManager.GetAll().ToArray();
-            var matchList = new List<CampPlace>();
+            var campPlaceList = Database.CampPlaceManager.List(cp => String.Equals(cp.Name, campPlaceName)).ToArray();
             var campDTOList = new List<CampPlaceDTO>();
 
             foreach (var cp in campPlaceList)
             {
-                if (cp.Name == campPlaceName)
-                {
-                    var campDTO = Mapper.Map<CampPlace, CampPlaceDTO>(cp);
-                    campDTO.PostsCount = cp.Posts?.Count ?? 0;
-                    campDTOList.Add(campDTO);
-                }
+                var campDTO = Mapper.Map<CampPlace, CampPlaceDTO>(cp);
+                campDTO.PostsCount = cp.Posts?.Count ?? 0;
+                campDTOList.Add(campDTO);
             }
             
             return campDTOList;

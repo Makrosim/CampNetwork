@@ -28,18 +28,15 @@ namespace CampBusinessLogic.Services
             Mapper.Initialize(cfg => { cfg.CreateMap<UserProfile, ProfileDTO>()
                 .ForMember(dest => dest.UserName, opts => opts.MapFrom(src => src.User.UserName)); });
 
-            var profileList = Database.UserProfileManager.GetAll().ToArray();
+            searchCriteria = searchCriteria.ToLower();
+
+            var profileList = Database.UserProfileManager.List(p => p.FirstName.ToLower().Contains(searchCriteria) || p.LastName.ToLower().Contains(searchCriteria)).ToArray();
             var profileDTOList = new List<ProfileDTO>();
 
             foreach(var profile in profileList)
             {
-                var fullName = profile.FirstName + profile.LastName;
-
-                if(fullName.Contains(searchCriteria))
-                {
-                    var profileDTO = Mapper.Map<UserProfile, ProfileDTO>(profile);
-                    profileDTOList.Add(profileDTO);
-                }
+                var profileDTO = Mapper.Map<UserProfile, ProfileDTO>(profile);
+                profileDTOList.Add(profileDTO);
             }
 
             return profileDTOList;
@@ -51,7 +48,7 @@ namespace CampBusinessLogic.Services
                 throw new ArgumentNullException(name);
             
             var user = await Database.UserManager.FindByNameAsync(name);
-            var profile = await Database.UserProfileManager.GetAsync(user.Id);
+            var profile = Database.UserProfileManager.Get(user.Id);
 
             Mapper.Initialize(cfg => { cfg.CreateMap<UserProfile, ProfileDTO>()
                 .ForMember(dest => dest.UserName, opts => opts.MapFrom(src => src.User.UserName)); });

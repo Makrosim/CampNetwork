@@ -6,7 +6,7 @@ app.controller('groupController', ['$http', '$scope', '$rootScope', '$location',
     var serviceBase = localStorageService.get('serviceBase');
     var authData = localStorageService.get('authorizationData');
         
-    $scope.isGroupsExists = false;
+    $scope.isGroupsExists = null;
     $scope.createdGroups = [];
     $scope.otherGroups = [];
 
@@ -18,6 +18,8 @@ app.controller('groupController', ['$http', '$scope', '$rootScope', '$location',
 
             if(response.data.length > 0)
                 $scope.isGroupsExists = true;
+            else
+                $scope.isGroupsExists = false;
         },
         function (err)
         {

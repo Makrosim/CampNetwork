@@ -6,7 +6,7 @@ app.controller('homeController', ['$http', '$scope', '$rootScope', '$location', 
     var serviceBase = localStorageService.get('serviceBase');
     var authData = localStorageService.get('authorizationData');
 
-    $scope.profile = {};
+    $scope.profile = null;
 
     var param = $routeParams['userName'];
 
@@ -34,7 +34,14 @@ app.controller('homeController', ['$http', '$scope', '$rootScope', '$location', 
         (
             function (response) 
             {
-                $scope.avatar = response.data;
+                if(response.data.length > 0)
+                {
+                    $scope.avatar = 'data:image/png;base64,' + response.data;
+                }
+                else
+                {
+                    $scope.avatar = serviceBase + 'content/images/empty.png'
+                }
             },
             function (err)
             {

@@ -22,13 +22,13 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public async Task<HttpResponseMessage> Get(int mediaId) //GetMedia
+        public HttpResponseMessage Get(int mediaId) //GetMedia
         {
             string path;
 
             try
             {
-                path = await mediaService.GetMediaPath(mediaId);
+                path = mediaService.GetMediaPath(mediaId);
             }
             catch(ArgumentException ex)
             {

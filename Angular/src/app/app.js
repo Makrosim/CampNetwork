@@ -74,8 +74,7 @@ app.config(function ($httpProvider) {
 
 app.run(['authService', 'localStorageService', function (authService, localStorageService)
 {
-        //http://localhost:8080/CampNetwork/
-        //http://localhost:56332/
-    localStorageService.set('serviceBase', 'http://localhost:56332/');
+    //localStorageService.set('serviceBase', 'http://localhost:56332/');
+    localStorageService.set('serviceBase', 'http://localhost:8080/CampNetwork/');
     authService.fillAuthData();
 }]);

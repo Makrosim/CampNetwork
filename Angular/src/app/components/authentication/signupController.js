@@ -1,5 +1,7 @@
 'use strict';
-app.controller('signupController', ['$scope', '$location', '$timeout', 'authService', function ($scope, $location, $timeout, authService) {
+app.controller('signupController', ['$scope', '$rootScope', '$location', '$timeout', 'authService', function ($scope, $rootScope, $location, $timeout, authService) {
+
+    $rootScope.title = 'Регистрация';
 
     $scope.savedSuccessfully = false;
     $scope.message = "";

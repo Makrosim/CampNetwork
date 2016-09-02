@@ -24,12 +24,12 @@ namespace API.App_Start
         public void Configuration(IAppBuilder app)
         {
             var config = new HttpConfiguration();
-
-            ConfigureWindsor(GlobalConfiguration.Configuration);
-            GlobalConfiguration.Configure(c => WebApiConfig.Register(c, container));
+            ConfigureWindsor(config);
 
             ConfigureOAuth(app);
 
+
+            WebApiConfig.Register(config, container);
             app.UseCors(CorsOptions.AllowAll);
             app.UseWebApi(config);
         }
@@ -44,7 +44,8 @@ namespace API.App_Start
                 Provider = container.Resolve<IOAuthAuthorizationServerProvider>()
             };
 
-            app.UseOAuthBearerTokens(OAuthServerOptions);
+            app.UseOAuthAuthorizationServer(OAuthServerOptions);
+            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
 
         }
 

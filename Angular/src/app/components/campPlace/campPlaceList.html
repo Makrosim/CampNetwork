@@ -1,27 +1,46 @@
-    <div class="panel-group" ng-controller="campPlaceListController">
+<div ng-controller="campPlaceListController">
+
+    <div class="loader container" ng-if="campList === null"></div>
+
+    <div class="panel-group">
 
         <div class="panel panel-info" ng-repeat="place in campList">
             <div class="panel-heading">
-                <span class="pull-right">Id: {{place.id}}</span>
+                <a href="" class="pull-right" style="color: grey" ng-click="delete(place.id)" ng-if="currentUser === place.author">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </a>
                 <a href="#/campPlaceHome/{{place.id}}">{{place.name}}</a>
             </div>
             <div class="panel-body">
-                <p>Координаты: {{place.locationX}}, {{place.locationY}}</p>
-                <p>Чистота: {{place.purity}}</p>
-                <p>Людность: {{place.crowdy}}</p>
-                <p>Доступность: {{place.approachability}}</p>
-                <p>Комфорт: {{place.comfortableness}}</p>
+                <div class="col-md-6 userInfo">
+                    <adress>
+                        <strong>Координаты</strong>
+                        <br>Широта: {{place.locationY}}
+                        <br>Долгота: {{place.locationX}}
+                    </adress>
+                </div>
+                <div class="col-md-6 userInfo" style="margin-bottom: 10px">
+                    <adress>
+                        <strong>Оценки</strong>
+                        <br>Чистота: {{place.purity}}
+                        <br>Людность: {{place.crowdy}}
+                        <br>Доступность: {{place.approachability}}
+                        <br>Комфорт: {{place.comfortableness}}
+                    </adress>
+                </div>
                 <p>{{place.shortDescription}}</p>
             </div>
             <div class="panel-footer">
                 <span>Автор: </span>
                 <a href="#/home/{{place.author}}">{{place.author}}</a>, 
                 <span>Обзоров: {{place.postsCount}}</span>
-                <span ng-if="currentUser === place.author">
-                    <a class="pull-right btn btn-danger btn-xs" ng-click="delete(place.id)">Удалить место отдыха</a>      
-                    <a class="pull-right btn btn-info btn-xs" href="#/post/?id={{place.id}}">Добавить обзор</a>   
+                <span ng-if="currentUser === place.author"> 
+                    <a class="pull-right" style="color: grey" href="#/post/?id={{place.id}}">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                    </a>   
                 </span>                                  
             </div>
         </div>
         
     </div>
+</div>

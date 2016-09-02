@@ -5,6 +5,8 @@ using System.Data.Entity;
 using CampDataAccess.Interfaces;
 using System;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace CampDataAccess.Repositories
 {
@@ -24,22 +26,32 @@ namespace CampDataAccess.Repositories
 
         public T Get(int id)
         {
-            return db.Set<T>().Find(id);
-        }
+            var entity = db.Set<T>().Find(id);
 
-        public async Task<T> GetAsync(string id)
-        {
-            return await db.Set<T>().FindAsync(id);
+            if (entity == null)
+                throw new Exception("Запрашиваемый ресурс не найден");
+
+            return entity;
         }
 
         public T Get(string id)
         {
-            return db.Set<T>().Find(id);
+            var entity = db.Set<T>().Find(id);
+
+            if (entity == null)
+                throw new Exception("Запрашиваемый ресурс не найден");
+
+            return entity;
         }
 
-        public async Task<T> GetAsync(int id)
+        public virtual IEnumerable<T> List()
         {
-            return await db.Set<T>().FindAsync(id);
+            return db.Set<T>().AsEnumerable();
+        }
+
+        public virtual IEnumerable<T> List(Expression<Func<T, bool>> predicate)
+        {
+            return db.Set<T>().Where(predicate).AsEnumerable();
         }
 
         public void Create(T entity)
@@ -55,10 +67,9 @@ namespace CampDataAccess.Repositories
         public void Delete(int id)
         {
             var entity = db.Set<T>().Find(id);
+
             if (entity == null)
-            {
-                throw new ArgumentNullException("entity");
-            }
+                throw new Exception("Запрашиваемый ресурс не найден");
 
             db.Set<T>().Remove(entity);
             db.SaveChanges();

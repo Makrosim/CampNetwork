@@ -5,7 +5,7 @@ app.controller('campPlaceController', ['$http', '$scope', '$rootScope', '$locati
 
     var serviceBase = localStorageService.get('serviceBase');
     var authData = localStorageService.get('authorizationData');
-    $scope.campList = {};
+    $scope.campList = null;
 
     $scope.points = {};
 
@@ -13,7 +13,6 @@ app.controller('campPlaceController', ['$http', '$scope', '$rootScope', '$locati
     (
         function (response) 
         {
-            $scope.campList = response.data;
             $scope.$broadcast('dataReceived', response.data);
         },
         function (err) 

@@ -3,7 +3,16 @@ app.controller('indexController', ['$scope', '$location', 'authService', functio
 
 	$scope.authData = authService.authentication;
 	$scope.search = {};
-	$scope.search.type = '';
+    $scope.data = {
+	    availableOptions:
+	    [
+		    {id: '1', name: 'Места отдыха'},
+		    {id: '2', name: 'Пользователи'},
+		    {id: '3', name: 'Группы'}
+	    ],
+    	selectedOption:
+    		{id: '1', name: 'Места отдыха'} //This sets the default value of the select in the ui
+    };
 
 	if($scope.authData.isAuth == false)
 	{
@@ -12,7 +21,7 @@ app.controller('indexController', ['$scope', '$location', 'authService', functio
 
 	$scope.search = function ()
 	{
-		$location.path('/search/' + $scope.search.type + '/' + $scope.search.searchCriteria);
+		$location.path('/search/' + $scope.data.selectedOption.name + '/' + $scope.search.searchCriteria);
 	}
 
     $scope.$on('login', function (event, authentication) 

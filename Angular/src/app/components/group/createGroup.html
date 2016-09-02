@@ -1,19 +1,11 @@
-<div>
-    <div class="navbar" role="navigation">
-        <div class="navbar-header">
-            <div class="navbar-brand">Создание группы</div>
-        </div>
+<div class="col-md-10">
+    <div class="form-group">
+        <label>Название групппы</label>
+        <input class="form-control" type="text" ng-model="groupData.name" />
     </div>
-
-    <form>
-        <div class="form-group">
-            <label>Название групппы</label>
-            <input class="form-control" type="text" ng-model="groupData.name" />
-        </div>
-        <div class="form-group">
-            <label>Краткое описание (Тематика, принадлежность городу, организации и т.д.)</label>
-            <textarea class="form-control" ng-model="groupData.shortDescription"></textarea>
-        </div>
-        <input class="btn btn-success" value="Создать" ng-click="create()"/>
-    </form>
+    <div class="form-group">
+        <label>Краткое описание (Тематика, принадлежность городу, организации и т.д.)</label>
+        <textarea class="form-control" ng-model="groupData.shortDescription"></textarea>
+    </div>
+    <input class="btn btn-success" value="Создать" ng-click="create()"/>
 </div>

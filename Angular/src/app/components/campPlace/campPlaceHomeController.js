@@ -6,6 +6,7 @@ app.controller('campPlaceHomeController', ['$http', '$scope', '$rootScope', '$lo
     var serviceBase = localStorageService.get('serviceBase');
     var authData = localStorageService.get('authorizationData');
 
+    $scope.errorMessage = null;
     $scope.campPlaceId = $routeParams['campPlaceId'];
     $scope.campPlace = {};
 
@@ -18,6 +19,7 @@ app.controller('campPlaceHomeController', ['$http', '$scope', '$rootScope', '$lo
         function (err)
         {
             console.log(err);
+            $scope.errorMessage = err.data.exceptionMessage;
         }
     );
 

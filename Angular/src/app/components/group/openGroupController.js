@@ -1,6 +1,8 @@
 'use strict';
-app.controller('openGroupController', ['$http', '$scope', '$location', '$routeParams', 'localStorageService', function ($http, $scope, $location, $routeParams, localStorageService)
+app.controller('openGroupController', ['$http', '$scope', '$rootScope', '$location', '$routeParams', 'localStorageService', function ($http, $scope, $rootScope, $location, $routeParams, localStorageService)
 {
+    $rootScope.title = 'Группа';
+
     var serviceBase = localStorageService.get('serviceBase');
     var authData = localStorageService.get('authorizationData');
 
