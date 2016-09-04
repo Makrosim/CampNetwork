@@ -48,6 +48,10 @@ namespace CampBusinessLogic.Services
                 throw new ArgumentNullException(name);
             
             var user = await Database.UserManager.FindByNameAsync(name);
+
+            if(user == null)
+                throw new Exception("Запрашиваемый ресурс не найден");
+
             var profile = Database.UserProfileManager.Get(user.Id);
 
             Mapper.Initialize(cfg => { cfg.CreateMap<UserProfile, ProfileDTO>()

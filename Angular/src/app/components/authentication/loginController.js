@@ -16,7 +16,7 @@ app.controller('loginController', ['$scope', '$rootScope', '$location', 'authSer
         (
             function (response)
             {
-                $scope.$emit('login', authService.authentication);
+                $scope.$emit('login', authService.authentication.isAuth);
                 $location.path('/home');
             },
             function (err) 

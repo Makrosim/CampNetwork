@@ -1,40 +1,50 @@
 ﻿'use strict';
-app.controller('indexController', ['$scope', '$location', 'authService', function ($scope, $location, authService) {
+app.controller('indexController', ['$scope', 'localStorageService', '$location', 'authService', function ($scope, localStorageService, $location, authService) {
 
-	$scope.authData = authService.authentication;
-	$scope.search = {};
-    $scope.data = {
-	    availableOptions:
+	$scope.data = {};
+    $scope.data.authData = localStorageService.get('authorizationData');
+    $scope.data.availableOptions = 
 	    [
 		    {id: '1', name: 'Места отдыха'},
 		    {id: '2', name: 'Пользователи'},
 		    {id: '3', name: 'Группы'}
-	    ],
-    	selectedOption:
-    		{id: '1', name: 'Места отдыха'} //This sets the default value of the select in the ui
-    };
+	    ];   	
 
-	if($scope.authData.isAuth == false)
+    $scope.data.selectedOption = {id: '1', name: 'Места отдыха'};
+
+    $scope.$on('login', function (event, isAuth) 
 	{
-       $location.path('/login');
+		$scope.data.authData = localStorageService.get('authorizationData');
+		$scope.data.isAuth = isAuth;
+	})	
+
+	if($scope.data.authData)
+	{
+    	$scope.data.isAuth = true;
+	}
+	else
+	{
+		$scope.data.isAuth = false;
+		$location.path('/login');
 	}
 
 	$scope.search = function ()
-	{
-		$location.path('/search/' + $scope.data.selectedOption.name + '/' + $scope.search.searchCriteria);
-	}
+	{	
+		if($scope.data.searchCriteria === undefined)
+		{
+			$location.path('/search/' + $scope.data.selectedOption.name);
+		}
+		else
+		{
+			$location.path('/search/' + $scope.data.selectedOption.name + '/' + $scope.data.searchCriteria);		
+		}
 
-    $scope.$on('login', function (event, authentication) 
-	{
-		$scope.authData = authentication;
-	})
+	}
 
     $scope.logOut = function ()
     {
         authService.logOut();
-        
-        $scope.authData = authService.authentication;
-
+		$scope.data.isAuth = false;
         $location.path('/login');
     }
  

@@ -121,7 +121,9 @@ namespace CampBusinessLogic.Services
                 cfg.CreateMap<Post, PostDTO>()
                 .ForMember(dest => dest.CampPlaceName, opts => opts.MapFrom(src => src.CampPlace.Name))
                 .ForMember(dest => dest.Author, opts => opts.MapFrom(src => src.CampPlace.UserProfile.User.UserName))
-                .ForMember(dest => dest.CampPlaceId, opts => opts.MapFrom(src => src.CampPlace.Id));
+                .ForMember(dest => dest.CampPlaceId, opts => opts.MapFrom(src => src.CampPlace.Id))
+                .ForMember(dest => dest.AuthorFirstName, opts => opts.MapFrom(src => src.CampPlace.UserProfile.FirstName))
+                .ForMember(dest => dest.AuthorLastName, opts => opts.MapFrom(src => src.CampPlace.UserProfile.LastName));
             });
         }
 

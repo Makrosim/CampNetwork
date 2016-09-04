@@ -30,7 +30,7 @@
                 <span class="navbar-brand" ng-bind="title"></span>
             </div> 
 
-            <div class="collapse navbar-collapse" role="navigation" ng-if="authData.isAuth">
+            <div class="collapse navbar-collapse" role="navigation" ng-if="data.isAuth">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
                         <form class="navbar-form">
@@ -40,7 +40,7 @@
                     </li>
                     <li>
                         <form class="navbar-form">
-                            <input type="text" class="form-control" placeholder="Имя" ng-model="search.searchCriteria">
+                            <input type="text" class="form-control" placeholder="Критерий" ng-model="data.searchCriteria">
                         </form>
                     </li>
                     <li>
@@ -51,12 +51,12 @@
         </div>
     </nav>
 
-    <div class="container" ng-switch on="authData.isAuth">
+    <div class="container" ng-switch on="data.isAuth">
         <div class="col-md-2 sidebar-offcanvas" role="navigation" ng-switch-when="true">
             <div class="list-group">
                 <a class="list-group-item active" href="#/home" >
                     <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-                    <span ng-bind="authData.userName"></span>
+                    <span ng-bind="data.authData.userName"></span>
                 </a>
                 <a class="list-group-item" href="#/">                
                     <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
@@ -83,7 +83,7 @@
 
         <div class="col-md-2 sidebar-offcanvas" role="navigation" ng-switch-when="false">
             <div class="list-group">
-                <a class="list-group-item active" href="#/login" >
+                <a class="list-group-item" href="#/login" >
                     <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
                     <span>Логин</span>
                 </a>

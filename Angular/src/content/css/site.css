@@ -49,6 +49,17 @@ body
     padding: 0px;
 }
 
+.secondary-list-div
+{
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+.main-list-div
+{
+    margin-left: -15px;
+}
+
 .loader {
     border: 16px solid #f3f3f3; /* Light grey */
     border-top: 16px solid #3498db; /* Blue */

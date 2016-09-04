@@ -58,16 +58,18 @@ namespace API.Controllers
         [Authorize]
         public async Task<HttpResponseMessage> Get([FromUri]string userName, [FromUri]string ownerName)
         {
-            var userProfile = await profileService.GetProfileData(ownerName);
+            var userProfile = new ProfileDTO();;
 
-            HttpResponseMessage response;
+            try
+            {
+                userProfile = await profileService.GetProfileData(ownerName);
+            }
+            catch(Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+            }
 
-            if (userProfile == null)
-                response = Request.CreateResponse(HttpStatusCode.InternalServerError);
-            else
-                response = Request.CreateResponse(HttpStatusCode.OK, userProfile);
-
-            return response;
+            return Request.CreateResponse(HttpStatusCode.OK, userProfile);
         }
 
         [Authorize]

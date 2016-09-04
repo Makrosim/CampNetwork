@@ -13,6 +13,7 @@ app.controller('postlistController', ['$http', '$scope', '$location', '$routePar
     $scope.$on('dataReceived', function (event, data)
     {
   		$scope.posts = data;
+  		console.log(data);
 	});
 
 	$scope.deletePost = function (postId)

@@ -5,8 +5,10 @@ app.controller('homeController', ['$http', '$scope', '$rootScope', '$location', 
 
     var serviceBase = localStorageService.get('serviceBase');
     var authData = localStorageService.get('authorizationData');
+    $scope.errorMessage = null;
 
     $scope.profile = null;
+    $scope.isProfileExists = null;
 
     var param = $routeParams['userName'];
 
@@ -20,11 +22,15 @@ app.controller('homeController', ['$http', '$scope', '$rootScope', '$location', 
         function (response) 
         {
             $scope.profile = response.data;
+            $scope.isProfileExists = true;
             getMedia(); 
+            getPosts();
         },
         function (err)
         {
-            console.log(err.statusText);
+            $scope.errorMessage = err.data.Message;
+            $scope.isProfileExists = false;
+            console.log(err);
         }
     );
 
@@ -50,17 +56,21 @@ app.controller('homeController', ['$http', '$scope', '$rootScope', '$location', 
         );    
     }
 
-    $http.get(serviceBase + 'api/Post/?userName=' + authData.userName).then
-    (
-        function (response)
-        {
-            $scope.$broadcast('dataReceived', response.data.map(getMessages));
-        },
-        function (err)
-        {
-            console.log(err);
-        }
-    );
+    function getPosts()
+    {
+        $http.get(serviceBase + 'api/Post/?userName=' + authData.userName).then
+        (
+            function (response)
+            {
+                $scope.$broadcast('dataReceived', response.data.map(getMessages));
+            },
+            function (err)
+            {
+                console.log(err);
+            }
+        );
+    }
+
 
     function getMessages(value, index, array)
     {

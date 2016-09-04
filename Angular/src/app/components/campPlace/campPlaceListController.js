@@ -10,6 +10,7 @@ app.controller('campPlaceListController', ['$http', '$scope', '$location', 'loca
     $scope.$on('dataReceived', function (event, data)
     {
   		$scope.campList = data;
+  		console.log(data);
 	});
 
 }]);

@@ -66,6 +66,16 @@ app.config(function ($routeProvider) {
         controller: "searchController",
         templateUrl: "app/components/search/search.html"
     });
+
+    $routeProvider.when("/search/:type", {
+        controller: "searchController",
+        templateUrl: "app/components/search/search.html"
+    });
+
+    $routeProvider.when("/error", {
+        controller: "errorController",
+        templateUrl: "app/components/layout/layout.html"
+    });
 });
 
 app.config(function ($httpProvider) {

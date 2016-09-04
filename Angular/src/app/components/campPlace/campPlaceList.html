@@ -1,4 +1,4 @@
-<div ng-controller="campPlaceListController">
+<div class="main-list-div" ng-controller="campPlaceListController">
 
     <div class="loader container" ng-if="campList === null"></div>
 
@@ -32,7 +32,7 @@
             </div>
             <div class="panel-footer">
                 <span>Автор: </span>
-                <a href="#/home/{{place.author}}">{{place.author}}</a>, 
+                <a href="#/home/{{place.author}}">{{place.authorFirstName}} {{place.authorLastName}}</a>, 
                 <span>Обзоров: {{place.postsCount}}</span>
                 <span ng-if="currentUser === place.author"> 
                     <a class="pull-right" style="color: grey" href="#/post/?id={{place.id}}">

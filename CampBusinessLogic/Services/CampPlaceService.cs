@@ -51,7 +51,6 @@ namespace CampBusinessLogic.Services
                 points.Add(cp.LocationX + " " + cp.LocationY + " " + cp.Name);
                 var campDTO = Mapper.Map<CampPlace, CampPlaceDTO>(cp);
 
-                campDTO.PostsCount = cp.Posts?.Count ?? 0;
                 campPlaceDTOList.Add(campDTO);
             }
 
@@ -76,7 +75,6 @@ namespace CampBusinessLogic.Services
                 points.Add(campPlace.LocationX + " " + campPlace.LocationY + " " + campPlace.Name);
                 var campDTO = Mapper.Map<CampPlace, CampPlaceDTO>(campPlace);
 
-                campDTO.PostsCount = campPlace.Posts?.Count ?? 0;
                 campPlaceDTOList.Add(campDTO);
             }
 
@@ -103,13 +101,12 @@ namespace CampBusinessLogic.Services
         {
             InitializeMapper();
 
-            var campPlaceList = Database.CampPlaceManager.List(cp => String.Equals(cp.Name, campPlaceName)).ToArray();
+            var campPlaceList = Database.CampPlaceManager.List(cp =>cp.Name.Contains(campPlaceName)).ToArray();
             var campDTOList = new List<CampPlaceDTO>();
 
             foreach (var cp in campPlaceList)
             {
                 var campDTO = Mapper.Map<CampPlace, CampPlaceDTO>(cp);
-                campDTO.PostsCount = cp.Posts?.Count ?? 0;
                 campDTOList.Add(campDTO);
             }
             
@@ -135,8 +132,11 @@ namespace CampBusinessLogic.Services
         private void InitializeMapper()
         {
             Mapper.Initialize(cfg => { cfg.CreateMap<CampPlace, CampPlaceDTO>()
-                .ForMember("PostsCount", c => c.Ignore())
-                .ForMember(dest => dest.Author, opts => opts.MapFrom(src => src.UserProfile.User.UserName));
+                //.ForMember("PostsCount", c => c.Ignore())
+                .ForMember(dest => dest.Author, opts => opts.MapFrom(src => src.UserProfile.User.UserName))
+                .ForMember(dest => dest.PostsCount, opts => opts.MapFrom(src => src.Posts.Count))
+                .ForMember(dest => dest.AuthorFirstName, opts => opts.MapFrom(src => src.UserProfile.FirstName))
+                .ForMember(dest => dest.AuthorLastName, opts => opts.MapFrom(src => src.UserProfile.LastName));
             });
         }
 
