@@ -90,16 +90,17 @@ namespace API.Controllers
         [Route("api/CampPlace/GetList")]
         public async Task<HttpResponseMessage> GetList([FromUri]string userName)
         {
-            var campList = await campService.GetCampList(userName);
+            var result = new List<CampPlaceDTO>();
+            try
+            {
+                result = await campService.GetCampList(userName);
+            }
+            catch(Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+            }
 
-            HttpResponseMessage response;
-
-            if (campList == null)
-                response = Request.CreateResponse(HttpStatusCode.InternalServerError);
-            else
-                response = Request.CreateResponse(HttpStatusCode.OK, campList);
-
-            return response;
+            return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
         [Authorize]
