@@ -103,18 +103,18 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public HttpResponseMessage Post([FromUri]string userName, [FromBody]CampPlaceDTO campPlaceDTO)
+        public async Task<HttpResponseMessage> Post([FromUri]string userName, [FromBody]CampPlaceDTO campPlaceDTO)
         {
-            campService.Create(userName, campPlaceDTO);
+            try
+            {
+                await campService.Create(userName, campPlaceDTO);
+            }
+            catch(Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+            }
 
-            HttpResponseMessage response;
-
-
-                response = Request.CreateResponse(HttpStatusCode.InternalServerError);
-
-                response = Request.CreateResponse(HttpStatusCode.OK);
-
-            return response;
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         [HttpGet]
@@ -135,11 +135,11 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public HttpResponseMessage Put(CampPlaceDTO campPlaceDTO) //Update
+        public async Task<HttpResponseMessage> Put(CampPlaceDTO campPlaceDTO) //Update
         {
             try
             {
-                campService.Update(campPlaceDTO);
+               await campService.Update(campPlaceDTO);
             }
             catch(Exception ex)
             {

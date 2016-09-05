@@ -21,7 +21,7 @@ namespace API.Controllers
         // POST api/Account/Register
         [AllowAnonymous]
         [Route("Register")]
-        public HttpResponseMessage Register(UserDTO userDTO)
+        public async Task<HttpResponseMessage> Register(UserDTO userDTO)
         {
             if (!ModelState.IsValid)
             {
@@ -30,7 +30,7 @@ namespace API.Controllers
 
             try
             {
-                userService.Create(userDTO);
+                await userService.Create(userDTO);
             }
             catch(Exception ex)
             {

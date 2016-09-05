@@ -65,7 +65,7 @@ namespace CampBusinessLogic.Services
             return profDTO;
         }
 
-        public async void SetProfileData(string name, ProfileDTO profDTO)
+        public async Task SetProfileData(string name, ProfileDTO profDTO)
         {
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException(name);

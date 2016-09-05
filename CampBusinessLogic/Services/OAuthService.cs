@@ -26,7 +26,11 @@ namespace CampBusinessLogic.Services
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
+            var header = context.OwinContext.Response.Headers.SingleOrDefault(h => h.Key == "Access-Control-Allow-Origin");
+            if (header.Equals(default(KeyValuePair<string, string[]>)))
+            {
+                context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
+            }
 
             var user = await Database.UserManager.FindAsync(context.UserName, context.Password);
 

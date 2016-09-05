@@ -19,7 +19,7 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public async void Create(UserDTO userDTO)
+        public async Task Create(UserDTO userDTO)
         {
             var user = await Database.UserManager.FindByNameAsync(userDTO.UserName);
 
@@ -69,7 +69,7 @@ namespace CampBusinessLogic.Services
             return claim;
         }
 
-        public async void Delete(string name)
+        public async Task Delete(string name)
         {
             var user = await Database.UserManager.FindByNameAsync(name);
             await Database.UserManager.DeleteAsync(user);

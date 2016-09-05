@@ -7,7 +7,6 @@ app.controller('indexController', ['$scope', 'localStorageService', '$location',
 	    [
 		    {id: '1', name: 'Места отдыха'},
 		    {id: '2', name: 'Пользователи'},
-		    {id: '3', name: 'Группы'}
 	    ];   	
 
     $scope.data.selectedOption = {id: '1', name: 'Места отдыха'};

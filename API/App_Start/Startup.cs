@@ -23,6 +23,7 @@ namespace API.App_Start
 
         public void Configuration(IAppBuilder app)
         {
+            app.UseCors(CorsOptions.AllowAll);
             var config = new HttpConfiguration();
             ConfigureWindsor(config);
 
@@ -30,7 +31,7 @@ namespace API.App_Start
 
 
             WebApiConfig.Register(config, container);
-            app.UseCors(CorsOptions.AllowAll);
+
             app.UseWebApi(config);
         }
 

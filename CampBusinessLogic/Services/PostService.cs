@@ -19,7 +19,7 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public async void CreatePost(int campPlaceID, string postText)
+        public async Task CreatePost(int campPlaceID, string postText)
         {
             var post = new Post
             {
@@ -92,7 +92,7 @@ namespace CampBusinessLogic.Services
             return postList;
         }
 
-        public async void DeletePost(string userName, int postId)
+        public async Task DeletePost(string userName, int postId)
         {
             var post = Database.PostManager.Get(postId);
 

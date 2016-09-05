@@ -20,7 +20,7 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public async void Create(string name, CampPlaceDTO campPlaceDTO)
+        public async Task Create(string name, CampPlaceDTO campPlaceDTO)
         {
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException(name);
@@ -113,7 +113,7 @@ namespace CampBusinessLogic.Services
             return campDTOList;
         }
 
-        public async void Update(CampPlaceDTO campPlaceDTO)
+        public async Task Update(CampPlaceDTO campPlaceDTO)
         {
             var campPlace = Database.CampPlaceManager.Get(campPlaceDTO.Id);
 

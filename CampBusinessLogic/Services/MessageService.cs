@@ -19,7 +19,7 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public async void CreateUsersMessage(string name, MessageDTO messageDTO)
+        public async Task CreateUsersMessage(string name, MessageDTO messageDTO)
         {
             messageDTO.Date = DateTime.Now;
 
@@ -39,7 +39,7 @@ namespace CampBusinessLogic.Services
 
             Database.PostManager.Update(post);
 
-            await Database.SaveAsync();
+            await Database.SaveAsync(); 
         }
 
         public List<MessageDTO> GetAllPostMessages(int postId)
@@ -63,7 +63,7 @@ namespace CampBusinessLogic.Services
             return messages;
         }
 
-        public async void DeleteUsersMessage(int messageId, int postId)
+        public async Task DeleteUsersMessage(int messageId, int postId)
         {
             var message = Database.MessageManager.Get(messageId);
             Database.MessageManager.Delete(message.Id);

@@ -19,7 +19,7 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public async void CreateGroup(string name, GroupDTO groupDTO)
+        public async Task CreateGroup(string name, GroupDTO groupDTO)
         {
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException(name);
@@ -81,7 +81,7 @@ namespace CampBusinessLogic.Services
             return groupDTO;
         }
 
-        public async void SetGroupData(string name, GroupDTO groupDTO)
+        public async Task SetGroupData(string name, GroupDTO groupDTO)
         {
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException(name);
@@ -96,7 +96,7 @@ namespace CampBusinessLogic.Services
             Database.GroupManager.Create(group);
         }
 
-        public async void AddPostToGroup(int groupId, int postId)
+        public async Task AddPostToGroup(int groupId, int postId)
         {
             var group = Database.GroupManager.Get(groupId);
             var post = Database.PostManager.Get(postId);

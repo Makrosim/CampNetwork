@@ -6,13 +6,13 @@ namespace CampBusinessLogic.Interfaces
 {
     public interface ICampPlaceService
     {
-        void Create(string name, CampPlaceDTO campPlaceDTO);
+        Task Create(string name, CampPlaceDTO campPlaceDTO);
         List<CampPlaceDTO> GetCampList();
         Task<List<CampPlaceDTO>> GetCampList(string name);
         List<string> GetPointsList();
         CampPlaceDTO GetCampData(int campPlaceId);
         List<CampPlaceDTO> SearchByName(string campPlaceName);
-        void Update(CampPlaceDTO campPlaceDTO);
+        Task Update(CampPlaceDTO campPlaceDTO);
         void Delete(int campPlaceId);
     }
 }

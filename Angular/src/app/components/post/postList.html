@@ -10,7 +10,7 @@
             </div>
             <div class="panel-body">
 
-                <div class="col-md-6">
+                <div class="col-md-6 userInfo">
                     <adress>
                         <strong>Автор</strong>
                         <br><a href="#/home/{{post.author}}" ng-bind="post.authorFirstName + ' ' + post.authorLastName"></a>
@@ -44,7 +44,7 @@
             <input id="sub" class="btn btn-success" value="Комментировать" ng-click="comment(text, post.id)" />
         </form>
 
-        <dl class="dl-comment">
+        <dl class="dl-comment col-md-12">
             <div ng-repeat="message in post.messages">
                 <dt>
                     <span><a href="#/home/{{message.author}}">{{message.firstName}} {{message.lastName}}</a> в {{message.date | date:"HH:mm MM/dd/yyyy"}}</span>

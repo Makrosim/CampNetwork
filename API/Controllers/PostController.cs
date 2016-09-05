@@ -32,7 +32,7 @@ namespace API.Controllers
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
-            return Request.CreateResponse<List<PostDTO>>(HttpStatusCode.OK, result);
+            return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
         [Authorize]
@@ -65,11 +65,11 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public HttpResponseMessage Post([FromUri]int campPlaceId, [FromBody]string postText)
+        public async Task<HttpResponseMessage> Post([FromUri]int campPlaceId, [FromBody]string postText)
         {
             try
             {
-                postService.CreatePost(campPlaceId, postText);
+                await postService.CreatePost(campPlaceId, postText);
             }
             catch (Exception ex)
             {
@@ -80,11 +80,11 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public HttpResponseMessage Delete(string userName, int postId)
+        public async Task<HttpResponseMessage> Delete(string userName, int postId)
         {
             try
             {
-                postService.DeletePost(userName, postId);
+                await postService.DeletePost(userName, postId);
             }
             catch(UnauthorizedAccessException ex)
             {

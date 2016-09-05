@@ -9,6 +9,6 @@ namespace CampBusinessLogic.Interfaces
     {
         List<ProfileDTO> SearchByName(string searchCriteria);
         Task<ProfileDTO> GetProfileData(string name);
-        void SetProfileData(string name, ProfileDTO profileDTO);
+        Task SetProfileData(string name, ProfileDTO profileDTO);
     }
 }

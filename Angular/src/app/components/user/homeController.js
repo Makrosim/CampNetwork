@@ -28,9 +28,9 @@ app.controller('homeController', ['$http', '$scope', '$rootScope', '$location', 
         },
         function (err)
         {
+            console.log(err);
             $scope.errorMessage = err.data.Message;
             $scope.isProfileExists = false;
-            console.log(err);
         }
     );
 

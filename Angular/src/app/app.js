@@ -74,8 +74,10 @@ app.config(function ($routeProvider) {
 
     $routeProvider.when("/error", {
         controller: "errorController",
-        templateUrl: "app/components/layout/layout.html"
+        templateUrl: "app/components/layout/error.html"
     });
+
+    $routeProvider.otherwise({redirectTo: '/home'});
 });
 
 app.config(function ($httpProvider) {
@@ -84,7 +86,7 @@ app.config(function ($httpProvider) {
 
 app.run(['authService', 'localStorageService', function (authService, localStorageService)
 {
-    //localStorageService.set('serviceBase', 'http://localhost:56332/');
-    localStorageService.set('serviceBase', 'http://localhost:8080/CampNetwork/');
+    localStorageService.set('serviceBase', 'http://localhost:56332/');
+    //localStorageService.set('serviceBase', 'http://localhost:8080/CampNetwork/');
     authService.fillAuthData();
 }]);

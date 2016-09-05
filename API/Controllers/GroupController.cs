@@ -50,11 +50,11 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public HttpResponseMessage Post(string userName, GroupDTO groupDTO)
+        public async Task<HttpResponseMessage> Post(string userName, GroupDTO groupDTO)
         {
             try
             {
-                groupService.CreateGroup(userName, groupDTO);
+                await groupService.CreateGroup(userName, groupDTO);
             }
             catch(Exception ex)
             {
@@ -67,11 +67,11 @@ namespace API.Controllers
         [Authorize]
         [HttpGet]
         [Route("api/Group/AddPost")]
-        public HttpResponseMessage AddPostToGroup(int groupId, int postId)
+        public async Task<HttpResponseMessage> AddPostToGroup(int groupId, int postId)
         {
             try
             {
-                groupService.AddPostToGroup(groupId, postId);
+                await groupService.AddPostToGroup(groupId, postId);
             }
             catch(Exception ex)
             {

@@ -18,10 +18,7 @@ namespace API.Windsor
             this.container = container;
         }
 
-        public IHttpController Create(
-            HttpRequestMessage request,
-            HttpControllerDescriptor controllerDescriptor,
-            Type controllerType)
+        public IHttpController Create( HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
         {
             var controller = (IHttpController)container.Resolve(controllerType);
 

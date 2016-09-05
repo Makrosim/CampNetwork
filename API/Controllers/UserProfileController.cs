@@ -107,13 +107,18 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public HttpResponseMessage Post([FromUri]string userName, [FromBody]ProfileDTO profileDTO)
+        public async Task<HttpResponseMessage> Post([FromUri]string userName, [FromBody]ProfileDTO profileDTO)
         {
-            profileService.SetProfileData(userName, profileDTO);
+            try
+            {
+                await profileService.SetProfileData(userName, profileDTO);
+            }
+            catch(Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+            }
 
-            var response = Request.CreateResponse(HttpStatusCode.OK);
-
-            return response;
+            return Request.CreateResponse(HttpStatusCode.OK); ;
         }
 
         [Authorize]

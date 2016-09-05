@@ -40,11 +40,11 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public HttpResponseMessage Post([FromUri]string userName, [FromBody]MessageDTO messageDTO)
+        public async Task<HttpResponseMessage> Post([FromUri]string userName, [FromBody]MessageDTO messageDTO)
         {
             try
             {
-               messageService.CreateUsersMessage(userName, messageDTO);
+               await messageService.CreateUsersMessage(userName, messageDTO);
             }
             catch(Exception ex)
             {
@@ -56,11 +56,11 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public HttpResponseMessage Delete([FromUri]int messageId, [FromUri]int postId)
+        public async Task<HttpResponseMessage> Delete([FromUri]int messageId, [FromUri]int postId)
         {
             try
             {
-                messageService.DeleteUsersMessage(messageId, postId);
+                await messageService.DeleteUsersMessage(messageId, postId);
             }
             catch(Exception ex)
             {
