@@ -5,7 +5,8 @@ app.controller('postlistController', ['$http', '$scope', '$location', '$routePar
     var authData = localStorageService.get('authorizationData');
 
 	$scope.text ='';
-	$scope.posts = null;
+	$scope.posts = {};
+	$scope.posts.messages = {};
 	$scope.userName = authData.userName;
 
 	var string = serviceBase + 'api/Post/?groupId=' + $scope.$parent.groupId;
@@ -30,13 +31,20 @@ app.controller('postlistController', ['$http', '$scope', '$location', '$routePar
         );
 	};
 
-	$scope.delete = function (messageId, postId)
+	$scope.delete = function (messageId, postId, messageIndex, postIndex)
 	{
         $http.delete(serviceBase + 'api/Message/?messageId=' + messageId + '&postId=' + postId).then
         (
         	function (response)
 	        {
-
+	        	if(postIndex === undefined)
+	        	{
+					$scope.posts.messages.splice(messageIndex);
+	        	}
+	        	else
+	        	{
+	        		$scope.posts[postIndex].messages.splice(messageIndex, 1);
+	        	}    			
 	        },
 	        function (err)
 	        {
@@ -45,18 +53,26 @@ app.controller('postlistController', ['$http', '$scope', '$location', '$routePar
         );
 	};
 
-	$scope.comment = function (text, postId)
+	$scope.comment = function (text, postId, postIndex)
 	{
 		var message = {};
-		message.Text = text;
+		message.text = text;
 		message.postId = postId;
 		message.author = authData.userName;
+		message.date = new Date();
 
         $http.post(serviceBase + 'api/Message/?userName=' + authData.userName, message).then
         (
         	function (response)
 	        {
-	        	console.log(response);
+	        	if(postIndex === undefined)
+	        	{
+	        		$scope.posts.messages.push(response.data);
+	        	}
+	        	else
+	        	{
+	        		$scope.posts[postIndex].messages.push(response.data);
+	        	}
 	        },
 	        function (err)
 	        {

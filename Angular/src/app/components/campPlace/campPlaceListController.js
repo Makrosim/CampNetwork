@@ -1,6 +1,7 @@
 'use strict';
 app.controller('campPlaceListController', ['$http', '$scope', '$location', 'localStorageService', function ($http, $scope, $location, localStorageService) {
 
+    var serviceBase = localStorageService.get('serviceBase');
     var authData = localStorageService.get('authorizationData');
 
     $scope.points = $scope.$parent.points;
@@ -11,5 +12,20 @@ app.controller('campPlaceListController', ['$http', '$scope', '$location', 'loca
     {
   		$scope.campList = data;
 	});
+
+    $scope.delete = function (id, index)
+    {
+        $http.delete(serviceBase + 'api/CampPlace/?Id=' + id).then
+        (
+            function (response) 
+            {
+                $scope.campList.splice(index, 1);
+            },
+            function (err)
+            {
+                console.log(err.statusText);
+            }
+        );
+    }
 
 }]);

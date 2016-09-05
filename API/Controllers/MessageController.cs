@@ -42,16 +42,17 @@ namespace API.Controllers
         [Authorize]
         public async Task<HttpResponseMessage> Post([FromUri]string userName, [FromBody]MessageDTO messageDTO)
         {
+            var result = new MessageDTO();
             try
             {
-               await messageService.CreateUsersMessage(userName, messageDTO);
+               result = await messageService.CreateUsersMessage(userName, messageDTO);
             }
             catch(Exception ex)
             {
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
             }
             
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return Request.CreateResponse(HttpStatusCode.OK, result);
 
         }
 

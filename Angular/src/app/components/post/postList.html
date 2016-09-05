@@ -41,19 +41,19 @@
                 <input type="hidden" name="postId" value="@a.Id" />
                 <textarea class="form-control" ng-model="text"></textarea>
             </div>
-            <input id="sub" class="btn btn-success" value="Комментировать" ng-click="comment(text, post.id)" />
+            <input id="sub" class="btn btn-success" value="Комментировать" ng-click="comment(text, post.id, $index)" />
         </form>
 
         <dl class="dl-comment col-md-12">
             <div ng-repeat="message in post.messages">
                 <dt>
-                    <span><a href="#/home/{{message.author}}">{{message.firstName}} {{message.lastName}}</a> в {{message.date | date:"HH:mm MM/dd/yyyy"}}</span>
+                    <span><a href="#/home/{{message.author}}" ng-bind="message.firstName + ' ' + message.lastName"></a> в {{message.date | date:"HH:mm MM/dd/yyyy"}}</span>
 
-                    <a href="" style="color: grey" ng-click="delete(message.id, post.id)" ng-if="userName === message.author">
+                    <a href="" style="color: grey" ng-click="delete(message.id, post.id, post.messages.indexOf(message), posts.indexOf(post))" ng-if="userName === message.author">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </a>
                  </dt>
-                <dd> - {{message.text}}</dd>
+                <dd ng-bind="' - ' + message.text"></dd>
             </div>
         </dl>
 

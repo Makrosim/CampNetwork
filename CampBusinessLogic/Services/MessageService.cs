@@ -19,10 +19,8 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public async Task CreateUsersMessage(string name, MessageDTO messageDTO)
+        public async Task<MessageDTO> CreateUsersMessage(string name, MessageDTO messageDTO)
         {
-            messageDTO.Date = DateTime.Now;
-
             Mapper.Initialize(cfg => { cfg.CreateMap<MessageDTO, Message>()
                 .ForMember("Id", c => c.Ignore());
             });
@@ -39,7 +37,11 @@ namespace CampBusinessLogic.Services
 
             Database.PostManager.Update(post);
 
-            await Database.SaveAsync(); 
+            await Database.SaveAsync();
+
+            InitializeMapper();
+
+            return Mapper.Map<Message, MessageDTO>(message);
         }
 
         public List<MessageDTO> GetAllPostMessages(int postId)
@@ -47,11 +49,7 @@ namespace CampBusinessLogic.Services
             var post = Database.PostManager.Get(postId);
             var messages = new List<MessageDTO>();
 
-            Mapper.Initialize(cfg => { cfg.CreateMap<Message, MessageDTO>()
-                .ForMember(dest => dest.FirstName, opts => opts.MapFrom(src => src.UserProfile.FirstName))
-                .ForMember(dest => dest.LastName, opts => opts.MapFrom(src => src.UserProfile.LastName))
-                .ForMember(dest => dest.Author, opts => opts.MapFrom(src => src.UserProfile.User.UserName));
-            });
+            InitializeMapper();
 
             foreach (var message in post.Messages)
             {
@@ -61,6 +59,15 @@ namespace CampBusinessLogic.Services
             }
 
             return messages;
+        }
+
+        private void InitializeMapper()
+        {
+            Mapper.Initialize(cfg => { cfg.CreateMap<Message, MessageDTO>()
+                .ForMember(dest => dest.FirstName, opts => opts.MapFrom(src => src.UserProfile.FirstName))
+                .ForMember(dest => dest.LastName, opts => opts.MapFrom(src => src.UserProfile.LastName))
+                .ForMember(dest => dest.Author, opts => opts.MapFrom(src => src.UserProfile.User.UserName));
+            });
         }
 
         public async Task DeleteUsersMessage(int messageId, int postId)
