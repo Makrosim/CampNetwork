@@ -28,11 +28,27 @@ namespace API
         private static void MapRoutes(HttpConfiguration config)
         {
             config.MapHttpAttributeRoutes();
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
+
+            config.Routes.MapHttpRoute
+            (
+                name: "DoubleEntityRoute",
+                routeTemplate: "api/{action}/{id}/{controller}"
+            );
+
+            config.Routes.MapHttpRoute
+            (
+                name: "SingleEntityRoute",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
-                );
+            );
+
+
+
+            config.Routes.MapHttpRoute
+            (
+                name: "DoubleEntityRouteDoubleParam",
+                routeTemplate: "api/{action}/{firstId}/{controller}/{secondId}"
+            );
         }
 
         private static void RegisterControllerActivator(IWindsorContainer container)

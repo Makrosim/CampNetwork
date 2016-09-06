@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using CampDataAccess.Entities;
 using CampBusinessLogic.Interfaces;
 using CampDataAccess.Interfaces;
+using System.IO;
 
 namespace CampBusinessLogic.Services
 {
@@ -29,17 +30,18 @@ namespace CampBusinessLogic.Services
             return media.Id;
         }
 
-        public string GetMediaPath(int mediaId)
+        public string GetMediaBase64(int mediaId)
         {
             if(mediaId == -1)
-            {
-                throw new ArgumentException("It’s ok, media Id = -1, no media should be returned");
-            }
-            else
-            {
-                var media = Database.MediaManager.Get(mediaId);
-                return media.Path;
-            }
+                return "";
+
+            var media = Database.MediaManager.Get(mediaId);
+
+            byte[] imageArray = File.ReadAllBytes(media.Path);
+
+            string imageBase64 = Convert.ToBase64String(imageArray);
+
+            return imageBase64;
         }
 
         public void Dispose()

@@ -12,7 +12,7 @@ namespace CampDataAccess.Entities
             Groups = new List<Group>();
             Dialogs = new List<Dialog>();
             Friends = new List<UserProfile>();
-            MediasId = new List<int>();
+            Medias = new List<Media>();
             Messages = new List<Message>();
         }
 
@@ -28,8 +28,8 @@ namespace CampDataAccess.Entities
         public string Phone { get; set; }
         public string AdditionalInformation { get; set; }
 
-        public virtual int AvatarId { get; set; }
-        public virtual ICollection<int> MediasId { get; set; }
+        public virtual Media Avatar { get; set; }
+        public virtual ICollection<Media> Medias { get; set; }
         public virtual ICollection<CampPlace> CampPlaces { get; set; }
         public virtual ICollection<Group> Groups { get; set; }
 

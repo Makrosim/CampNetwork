@@ -19,13 +19,9 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public async Task CreatePost(int campPlaceID, string postText)
+        public async Task CreatePost(int campPlaceID, PostDTO postDTO) // Need fix
         {
-            var post = new Post
-            {
-                Text = postText,
-                CreationDate = DateTime.Now
-            };
+            var post = Mapper.Map<PostDTO, Post>(postDTO);
 
             Database.PostManager.Create(post);
             await Database.SaveAsync();
@@ -42,8 +38,6 @@ namespace CampBusinessLogic.Services
             var postList = new List<PostDTO>();
 
             var profile = Database.UserProfileManager.Get(user.Id);
-
-            InitializeMapper();
 
             foreach (var cp in profile.CampPlaces)
             {
@@ -65,8 +59,6 @@ namespace CampBusinessLogic.Services
             var postList = new List<PostDTO>();
             var group = Database.GroupManager.Get(groupId);
 
-            InitializeMapper();
-
             foreach (var post in group.Posts)
             {
                 var postDTO = Mapper.Map<Post, PostDTO>(post);
@@ -80,8 +72,6 @@ namespace CampBusinessLogic.Services
         {
             var postList = new List<PostDTO>();
             var campPlace = Database.CampPlaceManager.Get(campPlaceId);
-
-            InitializeMapper();
 
             foreach (var post in campPlace.Posts)
             {
@@ -97,7 +87,7 @@ namespace CampBusinessLogic.Services
             var post = Database.PostManager.Get(postId);
 
             if (userName != post.CampPlace.UserProfile.User.UserName)
-                throw new UnauthorizedAccessException("You are not owner of this recource");
+                throw new UnauthorizedAccessException("У вас нет полномочий совершать это действие");
 
             var messageList = new List<Message>();
 
@@ -113,18 +103,6 @@ namespace CampBusinessLogic.Services
 
             Database.PostManager.Delete(post.Id);
             await Database.SaveAsync();
-        }
-
-        private void InitializeMapper()
-        {
-            Mapper.Initialize(cfg => {
-                cfg.CreateMap<Post, PostDTO>()
-                .ForMember(dest => dest.CampPlaceName, opts => opts.MapFrom(src => src.CampPlace.Name))
-                .ForMember(dest => dest.Author, opts => opts.MapFrom(src => src.CampPlace.UserProfile.User.UserName))
-                .ForMember(dest => dest.CampPlaceId, opts => opts.MapFrom(src => src.CampPlace.Id))
-                .ForMember(dest => dest.AuthorFirstName, opts => opts.MapFrom(src => src.CampPlace.UserProfile.FirstName))
-                .ForMember(dest => dest.AuthorLastName, opts => opts.MapFrom(src => src.CampPlace.UserProfile.LastName));
-            });
         }
 
     }

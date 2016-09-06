@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using CampDataAccess.Interfaces;
+using Microsoft.Owin.Security;
 
 namespace CampBusinessLogic.Services
 {
@@ -39,12 +40,24 @@ namespace CampBusinessLogic.Services
                 context.SetError("invalid_grant", "The user name or password is incorrect.");
                 return;
             }
-            
-            var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-            identity.AddClaim(new Claim("sub", context.UserName));
-            identity.AddClaim(new Claim("role", "user"));
 
-            context.Validated(identity);
+            var identity = new ClaimsIdentity(context.Options.AuthenticationType);
+            identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
+            identity.AddClaim(new Claim(ClaimTypes.Role, "user"));
+            identity.AddClaim(new Claim("sub", context.UserName));
+
+            var props = new AuthenticationProperties(new Dictionary<string, string>
+                {
+                    {
+                        "as:client_id", (context.ClientId == null) ? string.Empty : context.ClientId
+                    },
+                    {
+                        "userName", context.UserName
+                    }
+                });
+
+            var ticket = new AuthenticationTicket(identity, props);
+            context.Validated(ticket);
         }
 
     }

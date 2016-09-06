@@ -8,8 +8,8 @@ namespace CampBusinessLogic.Interfaces
 {
     public interface IUserService : IDisposable
     {
-        Task Create(UserDTO userDTO);
-        Task<ClaimsIdentity> Authenticate(UserDTO userDTO);
+        Task Create(RegisterDTO userDTO);
+        Task<ClaimsIdentity> Authenticate(RegisterDTO userDTO);
         Task Delete(string name);
     }
 }

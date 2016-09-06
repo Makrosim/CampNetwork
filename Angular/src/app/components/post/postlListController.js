@@ -5,8 +5,7 @@ app.controller('postlistController', ['$http', '$scope', '$location', '$routePar
     var authData = localStorageService.get('authorizationData');
 
 	$scope.text ='';
-	$scope.posts = {};
-	$scope.posts.messages = {};
+	$scope.posts = null;
 	$scope.userName = authData.userName;
 
 	var string = serviceBase + 'api/Post/?groupId=' + $scope.$parent.groupId;

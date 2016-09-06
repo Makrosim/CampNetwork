@@ -7,7 +7,7 @@ app.controller('profileController', ['$http', '$scope', '$rootScope', '$location
     var authData = localStorageService.get('authorizationData');
     $scope.profile = {};
 
-    $http.get(serviceBase + 'api/UserProfile/?userName=' + authData.userName + '&ownerName=' + authData.userName).then
+    $http.get(serviceBase + 'api/Profiles').then
     (
         function (response)
         {
@@ -31,7 +31,7 @@ app.controller('profileController', ['$http', '$scope', '$rootScope', '$location
 
             fd.append('avatar', $scope.file);
 
-            $http.post(serviceBase + 'api/UserProfile', fd, { transformRequest:angular.identity, headers: { 'Content-Type': undefined } }).then
+            $http.post(serviceBase + 'api/Profiles' + authData.userName + '/Medias', fd, { transformRequest:angular.identity, headers: { 'Content-Type': undefined } }).then
             (
                 function (response) 
                 {

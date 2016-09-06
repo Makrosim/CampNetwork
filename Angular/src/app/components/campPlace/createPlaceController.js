@@ -10,7 +10,7 @@ app.controller('createPlaceController', ['$http', '$scope', '$rootScope', '$loca
 
     $scope.submit = function ()
     {
-        $http.post(serviceBase + 'api/campPlace/?userName=' + authData.userName, $scope.campPlace).then
+        $http.post(serviceBase + 'api/CampPlaces', $scope.campPlace).then
         (
             function (response)
             {

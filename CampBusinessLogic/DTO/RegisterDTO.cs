@@ -2,7 +2,7 @@
 
 namespace CampBusinessLogic.DTO
 {
-    public class UserDTO
+    public class RegisterDTO
     {
         public string Id { get; set; }
 

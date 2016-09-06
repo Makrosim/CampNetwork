@@ -17,13 +17,16 @@ app.controller('homeController', ['$http', '$scope', '$rootScope', '$location', 
         param = authData.userName;
     }
 
-    $http.get(serviceBase + 'api/UserProfile/?userName=' + authData.userName + '&ownerName=' + param).then
+    $http.get(serviceBase + 'api/Profiles/?ownerName=' + param).then
     (
         function (response) 
         {
             $scope.profile = response.data;
+
+            if($scope.profile.avatarBase64.length === 0)
+                $scope.profile.avatarBase64 = serviceBase + 'content/images/empty.png';
+
             $scope.isProfileExists = true;
-            getMedia(); 
             getPosts();
         },
         function (err)
@@ -34,35 +37,14 @@ app.controller('homeController', ['$http', '$scope', '$rootScope', '$location', 
         }
     );
 
-    function getMedia()
-    {
-        $http.get(serviceBase + 'api/UserProfile/?mediaId=' + $scope.profile.avatarId).then
-        (
-            function (response) 
-            {
-                if(response.data.length > 0)
-                {
-                    $scope.avatar = 'data:image/png;base64,' + response.data;
-                }
-                else
-                {
-                    $scope.avatar = serviceBase + 'content/images/empty.png'
-                }
-            },
-            function (err)
-            {
-               console.log(err.statusText);
-            }
-        );    
-    }
-
     function getPosts()
     {
-        $http.get(serviceBase + 'api/Post/?userName=' + authData.userName).then
+        $http.get(serviceBase + 'api/Users/' + authData.userName + '/Posts').then
         (
             function (response)
             {
-                $scope.$broadcast('dataReceived', response.data.map(getMessages));
+                if(response.status != "204")
+                    $scope.$broadcast('dataReceived', response.data.map(getMessages));
             },
             function (err)
             {
@@ -76,7 +58,7 @@ app.controller('homeController', ['$http', '$scope', '$rootScope', '$location', 
     {
         value.messages = {};
 
-        $http.get(serviceBase + 'api/Message/?postId=' + value.id).then
+        $http.get(serviceBase + 'api/Posts/' + value.id + '/Messages').then
         (
             function (response)
             {

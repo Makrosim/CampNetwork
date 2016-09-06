@@ -10,11 +10,12 @@ app.controller('groupController', ['$http', '$scope', '$rootScope', '$location',
     $scope.createdGroups = [];
     $scope.otherGroups = [];
 
-    $http.get(serviceBase + 'api/Group/?userName=' + authData.userName).then
+    $http.get(serviceBase + 'api/Users/' + authData.userName + '/Groups').then
     (
         function (response) 
         {
-            response.data.forEach(getCreatedGroups);
+            if(response.status != "204")
+                response.data.forEach(getCreatedGroups);
 
             if(response.data.length > 0)
                 $scope.isGroupsExists = true;

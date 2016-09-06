@@ -11,6 +11,6 @@ namespace CampBusinessLogic.Interfaces
     {
         Task<MessageDTO> CreateUsersMessage(string name, MessageDTO messageDTO);
         List<MessageDTO> GetAllPostMessages(int postId);
-        Task DeleteUsersMessage(int messageId, int postId);
+        Task DeleteUsersMessage(string userName, int messageId);
     }
 }

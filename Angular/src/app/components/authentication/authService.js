@@ -13,7 +13,7 @@ app.factory('authService', ['$http', '$q', 'localStorageService', function ($htt
     {
         _logOut();
 
-        return $http.post(serviceBase + 'api/account/register', registration).then
+        return $http.post(serviceBase + 'api/accounts', registration).then
         (
             function (response)
             {

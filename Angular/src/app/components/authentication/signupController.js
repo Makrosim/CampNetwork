@@ -13,8 +13,8 @@ app.controller('signupController', ['$scope', '$rootScope', '$location', '$timeo
         confirmPassword: ""
     };
 
-    $scope.signUp = function () {
-        console.log($scope.registration);
+    $scope.signUp = function ()
+    {
         authService.saveRegistration($scope.registration).then
         (
             function (response)
@@ -27,7 +27,7 @@ app.controller('signupController', ['$scope', '$rootScope', '$location', '$timeo
             },
             function (response)
             {
-                console.log(response.data.message);
+                console.log(response);
                  var errors = [];
                  for (var key in response.data.modelState) {
                      for (var i = 0; i < response.data.modelState[key].length; i++) {

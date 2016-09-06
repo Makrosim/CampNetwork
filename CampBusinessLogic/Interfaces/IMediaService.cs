@@ -10,7 +10,7 @@ namespace CampBusinessLogic.Interfaces
     public interface IMediaService
     {
         Task<int> SaveMedia(string mediaPath);
-        string GetMediaPath(int mediaId);
+        string GetMediaBase64(int mediaId);
         void Delete(int mediaId);
     }
 }

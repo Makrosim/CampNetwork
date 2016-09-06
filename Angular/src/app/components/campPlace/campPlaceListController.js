@@ -15,7 +15,7 @@ app.controller('campPlaceListController', ['$http', '$scope', '$location', 'loca
 
     $scope.delete = function (id, index)
     {
-        $http.delete(serviceBase + 'api/CampPlace/?Id=' + id).then
+        $http.delete(serviceBase + 'api/CampPlaces/' + id).then
         (
             function (response) 
             {

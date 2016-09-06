@@ -19,7 +19,7 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public async Task Create(UserDTO userDTO)
+        public async Task Create(RegisterDTO userDTO)
         {
             var user = await Database.UserManager.FindByNameAsync(userDTO.UserName);
 
@@ -43,7 +43,6 @@ namespace CampBusinessLogic.Services
                         Phone = "Не установлено",
                         Skype = "Не установлено",
                         AdditionalInformation = "Не установлено",
-                        AvatarId = -1
                     };
 
                     Database.UserProfileManager.Create(profile);
@@ -58,7 +57,7 @@ namespace CampBusinessLogic.Services
             }          
         }
 
-        public async Task<ClaimsIdentity> Authenticate(UserDTO userDTO)
+        public async Task<ClaimsIdentity> Authenticate(RegisterDTO userDTO)
         {
             ClaimsIdentity claim = null;
             // находим пользователя

@@ -9,7 +9,6 @@ namespace CampBusinessLogic.DTO
 {
     public class ProfileDTO
     {
-        public string UserName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Address { get; set; }
@@ -19,6 +18,6 @@ namespace CampBusinessLogic.DTO
         public string BirthDateMounth { get; set; }
         public string BirthDateYear { get; set; }
         public string AdditionalInformation { get; set; }
-        public int AvatarId { get; set; }
+        public string AvatarBase64 { get; set; }
     }
 }

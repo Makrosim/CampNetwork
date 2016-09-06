@@ -14,23 +14,20 @@ namespace CampBusinessLogic.Services
     public class ProfileService : IProfileService
     {
         IUnitOfWork Database { get; set; }
+        IMediaService mediaService { get; set; }
 
-        public ProfileService(IUnitOfWork uow)
+        public ProfileService(IUnitOfWork uow, IMediaService mediaService)
         {
             Database = uow;
+            this.mediaService = mediaService;
         }
 
-        public List<ProfileDTO> SearchByName(string searchCriteria)
+        public List<ProfileDTO> Search(string soughtName)
         {
-            if (String.IsNullOrEmpty(searchCriteria))
-                throw new ArgumentNullException(searchCriteria);
+            if (string.IsNullOrEmpty(soughtName))
+                throw new ArgumentNullException(soughtName);
 
-            Mapper.Initialize(cfg => { cfg.CreateMap<UserProfile, ProfileDTO>()
-                .ForMember(dest => dest.UserName, opts => opts.MapFrom(src => src.User.UserName)); });
-
-            searchCriteria = searchCriteria.ToLower();
-
-            var profileList = Database.UserProfileManager.List(p => p.FirstName.ToLower().Contains(searchCriteria) || p.LastName.ToLower().Contains(searchCriteria)).ToArray();
+            var profileList = Database.UserProfileManager.List(p => p.FirstName.Contains(soughtName) || p.LastName.Contains(soughtName)).ToArray();
             var profileDTOList = new List<ProfileDTO>();
 
             foreach(var profile in profileList)
@@ -54,13 +51,9 @@ namespace CampBusinessLogic.Services
 
             var profile = Database.UserProfileManager.Get(user.Id);
 
-            Mapper.Initialize(cfg => { cfg.CreateMap<UserProfile, ProfileDTO>()
-                .ForMember(dest => dest.UserName, opts => opts.MapFrom(src => src.User.UserName)); });
-
             var profDTO = Mapper.Map<UserProfile, ProfileDTO>(profile);
 
-            if (profile.AvatarId != -1)
-                profDTO.AvatarId = Database.MediaManager.Get(profile.AvatarId).Id; //Правильно ли?
+            profDTO.AvatarBase64 = mediaService.GetMediaBase64(profile.Avatar?.Id ?? -1);
 
             return profDTO;
         }
@@ -73,7 +66,6 @@ namespace CampBusinessLogic.Services
             var user = await Database.UserManager.FindByNameAsync(name);
             var profile = Database.UserProfileManager.Get(user.Id);
 
-            Mapper.Initialize(cfg => { cfg.CreateMap<ProfileDTO, UserProfile>().ForMember("Id", c => c.Ignore()); });
             Mapper.Map(profDTO, profile, typeof(ProfileDTO), typeof(UserProfile));
 
             Database.UserProfileManager.Update(profile);

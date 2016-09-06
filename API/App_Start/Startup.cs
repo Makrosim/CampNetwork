@@ -13,6 +13,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
+using CampBusinessLogic.AutoMapper;
 
 [assembly: OwinStartup(typeof(API.App_Start.Startup))]
 namespace API.App_Start
@@ -33,6 +34,8 @@ namespace API.App_Start
             WebApiConfig.Register(config, container);
 
             app.UseWebApi(config);
+            AutoMapper.InitializeMapper();
+
         }
 
         public void ConfigureOAuth(IAppBuilder app)

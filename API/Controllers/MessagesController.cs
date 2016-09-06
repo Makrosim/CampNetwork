@@ -10,23 +10,24 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    public class MessageController : ApiController
+    public class MessagesController : ApiController
     {
         private IMessageService messageService;
 
-        public MessageController(IMessageService messageService)
+        public MessagesController(IMessageService messageService)
         {
             this.messageService = messageService;
         }
 
+        [HttpGet]
         [Authorize]
-        public HttpResponseMessage Get(int postId)
+        public HttpResponseMessage Posts(int id)
         {
             var result = new List<MessageDTO>();
 
             try
             {
-                result = messageService.GetAllPostMessages(postId);
+                result = messageService.GetAllPostMessages(id);
             }
             catch(Exception ex)
             {
@@ -35,14 +36,17 @@ namespace API.Controllers
 
             if (result.Count == 0)
                 return Request.CreateResponse(HttpStatusCode.NoContent);
-            else
-                return Request.CreateResponse(HttpStatusCode.OK, result);
+
+            return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
         [Authorize]
-        public async Task<HttpResponseMessage> Post([FromUri]string userName, [FromBody]MessageDTO messageDTO)
+        public async Task<HttpResponseMessage> Post([FromBody]MessageDTO messageDTO)
         {
+            var userName = RequestContext.Principal.Identity.Name;
+
             var result = new MessageDTO();
+
             try
             {
                result = await messageService.CreateUsersMessage(userName, messageDTO);
@@ -57,11 +61,13 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public async Task<HttpResponseMessage> Delete([FromUri]int messageId, [FromUri]int postId)
+        public async Task<HttpResponseMessage> Delete([FromUri]int messageId)
         {
+            var userName = RequestContext.Principal.Identity.Name;
+
             try
             {
-                await messageService.DeleteUsersMessage(messageId, postId);
+                await messageService.DeleteUsersMessage(userName, messageId);
             }
             catch(Exception ex)
             {

@@ -7,7 +7,7 @@ namespace CampBusinessLogic.Interfaces
 {
     public interface IProfileService : IDisposable
     {
-        List<ProfileDTO> SearchByName(string searchCriteria);
+        List<ProfileDTO> Search(string soughtName);
         Task<ProfileDTO> GetProfileData(string name);
         Task SetProfileData(string name, ProfileDTO profileDTO);
     }

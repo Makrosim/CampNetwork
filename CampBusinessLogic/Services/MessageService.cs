@@ -21,10 +21,6 @@ namespace CampBusinessLogic.Services
 
         public async Task<MessageDTO> CreateUsersMessage(string name, MessageDTO messageDTO)
         {
-            Mapper.Initialize(cfg => { cfg.CreateMap<MessageDTO, Message>()
-                .ForMember("Id", c => c.Ignore());
-            });
-
             var message = Mapper.Map<MessageDTO, Message>(messageDTO);
             message.UserProfile = (await Database.UserManager.FindByNameAsync(messageDTO.Author)).UserProfile;
 
@@ -39,8 +35,6 @@ namespace CampBusinessLogic.Services
 
             await Database.SaveAsync();
 
-            InitializeMapper();
-
             return Mapper.Map<Message, MessageDTO>(message);
         }
 
@@ -48,8 +42,6 @@ namespace CampBusinessLogic.Services
         {
             var post = Database.PostManager.Get(postId);
             var messages = new List<MessageDTO>();
-
-            InitializeMapper();
 
             foreach (var message in post.Messages)
             {
@@ -61,24 +53,15 @@ namespace CampBusinessLogic.Services
             return messages;
         }
 
-        private void InitializeMapper()
-        {
-            Mapper.Initialize(cfg => { cfg.CreateMap<Message, MessageDTO>()
-                .ForMember(dest => dest.FirstName, opts => opts.MapFrom(src => src.UserProfile.FirstName))
-                .ForMember(dest => dest.LastName, opts => opts.MapFrom(src => src.UserProfile.LastName))
-                .ForMember(dest => dest.Author, opts => opts.MapFrom(src => src.UserProfile.User.UserName));
-            });
-        }
-
-        public async Task DeleteUsersMessage(int messageId, int postId)
+        public async Task DeleteUsersMessage(string userName, int messageId)
         {
             var message = Database.MessageManager.Get(messageId);
+
+            if (!userName.Equals(message.UserProfile.User.UserName))
+                throw new Exception("У вас нет полномочий совершать это действие");
+
             Database.MessageManager.Delete(message.Id);
 
-            var post = Database.PostManager.Get(postId);
-            post.Messages.Remove(message);
-
-            Database.PostManager.Update(post);
             await Database.SaveAsync();
         }
 

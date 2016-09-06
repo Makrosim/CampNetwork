@@ -8,20 +8,17 @@ using System;
 
 namespace API.Controllers
 {
-    [RoutePrefix("api/Account")]
-    public class AccountController : ApiController
+    public class AccountsController : ApiController
     {
         private IUserService userService;
 
-        public AccountController(IUserService userService)
+        public AccountsController(IUserService userService)
         {
             this.userService = userService;
         }
 
-        // POST api/Account/Register
         [AllowAnonymous]
-        [Route("Register")]
-        public async Task<HttpResponseMessage> Register(UserDTO userDTO)
+        public async Task<HttpResponseMessage> Post(RegisterDTO registerDTO)
         {
             if (!ModelState.IsValid)
             {
@@ -30,7 +27,7 @@ namespace API.Controllers
 
             try
             {
-                await userService.Create(userDTO);
+                await userService.Create(registerDTO);
             }
             catch(Exception ex)
             {

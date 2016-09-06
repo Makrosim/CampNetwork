@@ -28,18 +28,12 @@ namespace CampDataAccess.Repositories
         {
             var entity = db.Set<T>().Find(id);
 
-            if (entity == null)
-                throw new Exception("Запрашиваемый ресурс не найден");
-
             return entity;
         }
 
         public T Get(string id)
         {
             var entity = db.Set<T>().Find(id);
-
-            if (entity == null)
-                throw new Exception("Запрашиваемый ресурс не найден");
 
             return entity;
         }
@@ -67,9 +61,6 @@ namespace CampDataAccess.Repositories
         public void Delete(int id)
         {
             var entity = db.Set<T>().Find(id);
-
-            if (entity == null)
-                throw new Exception("Запрашиваемый ресурс не найден");
 
             db.Set<T>().Remove(entity);
             db.SaveChanges();
