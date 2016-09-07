@@ -21,22 +21,28 @@ app.controller('profileController', ['$http', '$scope', '$rootScope', '$location
 
     $scope.submit = function () 
     {
-        if($scope.file === undefined)
-        {
-            postProfile();
-        }
-        else
+        $http.post(serviceBase + 'api/Profiles/' + authData.userName, $scope.profile).then
+        (
+            function (response)
+            {
+                $location.path('/home/' + authData.userName);
+            },
+            function (err)
+            {
+                console.log(err);
+            }
+        );
+
+        if($scope.file !== undefined)
         {
             var fd = new FormData()
-
             fd.append('avatar', $scope.file);
 
-            $http.post(serviceBase + 'api/Profiles' + authData.userName + '/Medias', fd, { transformRequest:angular.identity, headers: { 'Content-Type': undefined } }).then
+            $http.post(serviceBase + 'api/Profiles/' + authData.userName + '/Medias', fd, { transformRequest:angular.identity, headers: { 'Content-Type': undefined } }).then
             (
                 function (response) 
                 {
-                    $scope.profile.avatarId = response.data;
-                    postProfile();
+
                 },
                 function (err) 
                 {
@@ -46,35 +52,4 @@ app.controller('profileController', ['$http', '$scope', '$rootScope', '$location
         }
     }
 
-
-    function postProfile()
-    {
-        $http.post(serviceBase + 'api/UserProfile/?userName=' + authData.userName, $scope.profile).then
-        (
-            function (response)
-            {
-                $location.path('/home');
-            },
-            function (err)
-            {
-                console.log(err);
-            }
-        );
-    };
-}]);
-
-app.directive('fileModel', ['$parse', function ($parse) {
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-            var model = $parse(attrs.fileModel);
-            var modelSetter = model.assign;
-            
-            element.bind('change', function(){
-                scope.$apply(function(){
-                    modelSetter(scope, element[0].files[0]);
-                });
-            });
-        }
-    };
 }]);

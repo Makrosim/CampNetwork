@@ -29,6 +29,7 @@ namespace CampBusinessLogic.Services
 
             var group = Mapper.Map<GroupDTO, Group>(groupDTO);
 
+            group.Creator = Database.UserProfileManager.Get(name);
             group.Members.Add(profile);
 
             Database.GroupManager.Create(group);
@@ -82,16 +83,6 @@ namespace CampBusinessLogic.Services
             var group = Mapper.Map<GroupDTO, Group>(groupDTO);
 
             Database.GroupManager.Create(group);
-        }
-
-        public async Task AddPost(int groupId, int postId)
-        {
-            var group = Database.GroupManager.Get(groupId);
-            var post = Database.PostManager.Get(postId);
-
-            group.Posts.Add(post);
-
-            await Database.SaveAsync();
         }
 
         public void Dispose()

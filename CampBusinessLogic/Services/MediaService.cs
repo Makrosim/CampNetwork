@@ -16,18 +16,30 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public async Task<int> SaveMedia(string path)
+        public async Task AttachAvatar(string userName, string path)
         {
             if (String.IsNullOrEmpty(path))
                 throw new ArgumentNullException(path);
 
-            var media = new Media { Type = "Image", Path = path };
+            var user = await Database.UserManager.FindByNameAsync(userName);
+            var profile = user.UserProfile;
 
-            Database.MediaManager.Create(media);
+            if(profile.Avatar == null)
+            {
+                var media = new Media { Type = "Image", Path = path, UserProfile = profile };
 
-            await Database.SaveAsync();
+                Database.MediaManager.Create(media);
+                await Database.SaveAsync();
 
-            return media.Id;
+                profile.Avatar = media;
+            }
+            else
+            {
+                profile.Avatar.Path = path;
+                Database.MediaManager.Update(profile.Avatar);
+
+                await Database.SaveAsync();
+            }
         }
 
         public string GetMediaBase64(int mediaId)

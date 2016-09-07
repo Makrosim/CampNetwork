@@ -10,7 +10,7 @@ app.controller('createGroupController', ['$http', '$scope', '$rootScope', '$loca
 
     $scope.create = function ()
     {
-        $http.post(serviceBase + 'api/Group/?userName=' + authData.userName, $scope.groupData).then
+        $http.post(serviceBase + 'api/Groups/', $scope.groupData).then
         (
             function (response)
             {

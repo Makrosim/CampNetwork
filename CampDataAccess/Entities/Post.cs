@@ -8,13 +8,14 @@ namespace CampDataAccess.Entities
     {
         public Post()
         {
-            MediaAttachments = new List<int>();
+            MediaAttachments = new List<Media>();
             Messages = new List<Message>();
         }
 
-        public DateTime CreationDate { get; set; }
+        public string Name { get; set; }
         public string Text { get; set; }
-        public virtual ICollection<int> MediaAttachments { get; set; }
+        public DateTime CreationDate { get; set; }
+        public virtual ICollection<Media> MediaAttachments { get; set; }
         public virtual ICollection<Message> Messages { get; set; }
 
         public virtual CampPlace CampPlace { get; set; }

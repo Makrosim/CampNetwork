@@ -95,9 +95,16 @@ namespace CampBusinessLogic.Services
             await Database.SaveAsync();
         }
 
-        public void Delete(int campPlaceId)
+        public async Task Delete(string userName, int campPlaceId)
         {
+            var user = Database.CampPlaceManager.Get(campPlaceId).UserProfile.User;
+
+            if(user.UserName != userName)
+                throw new UnauthorizedAccessException("У вас нет полномочий совершать это действие");
+
             Database.CampPlaceManager.Delete(campPlaceId);
+
+            await Database.SaveAsync();
         }
 
         public void Dispose()

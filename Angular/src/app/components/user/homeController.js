@@ -5,45 +5,38 @@ app.controller('homeController', ['$http', '$scope', '$rootScope', '$location', 
 
     var serviceBase = localStorageService.get('serviceBase');
     var authData = localStorageService.get('authorizationData');
+
+    $scope.response = null;
     $scope.errorMessage = null;
 
-    $scope.profile = null;
-    $scope.isProfileExists = null;
-
-    var param = $routeParams['userName'];
-
-    if(param === undefined)
-    {
-        param = authData.userName;
-    }
-
-    $http.get(serviceBase + 'api/Profiles/?ownerName=' + param).then
+    $http.get(serviceBase + 'api/Profiles/' + $routeParams['userName']).then
     (
         function (response) 
         {
+            $scope.response = response;
             $scope.profile = response.data;
 
-            if($scope.profile.avatarBase64.length === 0)
-                $scope.profile.avatarBase64 = serviceBase + 'content/images/empty.png';
+            if(response.status != '204')
+            {
+                if($scope.response.data.avatarBase64.length === 0)
+                    $scope.response.data.avatarBase64 = serviceBase + 'content/images/empty.png';
 
-            $scope.isProfileExists = true;
-            getPosts();
+                getPosts();
+            }
         },
         function (err)
         {
             console.log(err);
-            $scope.errorMessage = err.data.Message;
-            $scope.isProfileExists = false;
         }
     );
 
     function getPosts()
     {
-        $http.get(serviceBase + 'api/Users/' + authData.userName + '/Posts').then
+        $http.get(serviceBase + 'api/Users/' + $routeParams['userName'] + '/Posts').then
         (
             function (response)
             {
-                if(response.status != "204")
+                if(response.status != "204")                   
                     $scope.$broadcast('dataReceived', response.data.map(getMessages));
             },
             function (err)

@@ -30,13 +30,13 @@ app.controller('groupController', ['$http', '$scope', '$rootScope', '$location',
 
     function getCreatedGroups(value, index, array)
     {
-        if(value.isCreator === true)
+        if(authData.userName == value.creator)
         {
             $scope.createdGroups.push(value);
         }
         else
         {
-            $scope.otherGrups.push(value);
+            $scope.otherGroups.push(value);
         }
     }
 }]);

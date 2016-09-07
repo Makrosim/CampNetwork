@@ -19,13 +19,17 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public async Task CreatePost(int campPlaceID, PostDTO postDTO) // Need fix
+        public async Task CreatePost(PostDTO postDTO)
         {
             var post = Mapper.Map<PostDTO, Post>(postDTO);
+            post.CreationDate = DateTime.Now;
 
             Database.PostManager.Create(post);
+
             await Database.SaveAsync();
-            post.CampPlace = Database.CampPlaceManager.Get(campPlaceID);
+
+            post.CampPlace = Database.CampPlaceManager.Get(postDTO.CampPlaceId);
+
             await Database.SaveAsync();
         }
 
@@ -80,6 +84,16 @@ namespace CampBusinessLogic.Services
             }
 
             return postList;
+        }
+
+        public async Task AttachPostToGroup(int groupId, int postId)
+        {
+            var group = Database.GroupManager.Get(groupId);
+            var post = Database.PostManager.Get(postId);
+
+            group.Posts.Add(post);
+
+            await Database.SaveAsync();
         }
 
         public async Task DeletePost(string userName, int postId)

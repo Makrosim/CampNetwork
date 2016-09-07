@@ -5,15 +5,17 @@ app.controller('campPlaceController', ['$http', '$scope', '$rootScope', '$locati
 
     var serviceBase = localStorageService.get('serviceBase');
     var authData = localStorageService.get('authorizationData');
-    $scope.campList = null;
 
-    $scope.points = {};
+    $scope.response = null;
 
     $http.get(serviceBase + 'api/Users/' + authData.userName + '/CampPlaces').then
     (
         function (response) 
         {
-            $scope.$broadcast('dataReceived', response.data);
+            $scope.response = response;
+
+            if(response.status != "204")     
+                $scope.$broadcast('dataReceived', response.data);
         },
         function (err) 
         {

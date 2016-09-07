@@ -1,55 +1,57 @@
 <div class="secondary-list-div" ng-controller="postlistController">
-    <div class="panel-group" ng-repeat="post in posts">
+    <div class="container col-md-12 post-list-div" ng-repeat="post in posts">
 
-        <div class="panel panel-info">
-            <div class="panel-heading">
-                <a href="" class="pull-right" style="color: grey" ng-click="deletePost(post.id)" ng-if="userName === post.author">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                </a>
-                <span>Название статьи</span>               
-            </div>
-            <div class="panel-body">
-
-                <div class="col-md-6 userInfo">
-                    <adress>
-                        <strong>Автор</strong>
-                        <br><a href="#/home/{{post.author}}" ng-bind="post.authorFirstName + ' ' + post.authorLastName"></a>
-                    </adress>
+        <div class="panel-group panel-with-comments" >
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <a href="" class="pull-right" style="color: grey" ng-click="deletePost(post.id, $index)" ng-if="userName === post.author">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </a>
+                    <span ng-bind="post.name"></span>               
                 </div>
+                <div class="panel-body">
 
-                <div class="col-md-6" style="margin-bottom: 10px">
-                    <adress>
-                        <strong>Место отдыха</strong>
-                        <br><a href="#/campPlaceHome/{{post.campPlaceId}}" ng-bind="post.campPlaceName"></a>
-                    </adress>
+                    <div class="col-md-6 userInfo">
+                        <adress>
+                            <strong>Автор</strong>
+                            <br><a href="#/home/{{post.author}}" ng-bind="post.authorFirstName + ' ' + post.authorLastName"></a>
+                        </adress>
+                    </div>
+
+                    <div class="col-md-6" style="margin-bottom: 10px">
+                        <adress>
+                            <strong>Место отдыха</strong>
+                            <br><a href="#/campPlaceHome/{{post.campPlaceId}}" ng-bind="post.campPlaceName"></a>
+                        </adress>
+                    </div>
+
+                    <p>{{post.text}}</p>
                 </div>
+                <div class="panel-footer">
+                    <span>{{post.creationDate | date:"HH:mm MM/dd/yyyy"}}</span>
+                    
+                    <a href="" class="pull-right" style="color: grey" onclick="set()">
+                        <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                    </a> 
+                </div>
+            </div>
 
-                <p>{{post.text}}</p>
-            </div>
-            <div class="panel-footer">
-                <span>{{post.creationDate | date:"HH:mm MM/dd/yyyy"}}</span>
-                
-                <a href="" class="pull-right" style="color: grey" onclick="set()">
-                    <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-                </a> 
-            </div>
+            <form id="comment_area" class="comment-area" hidden="">
+                <div class="form-group">
+                    <input type="hidden" name="groupId" value="@(ViewBag.Group?.Id ?? 0)" />
+                    <input type="hidden" name="postId" value="@a.Id" />
+                    <textarea class="form-control" ng-model="text"></textarea>
+                </div>
+                <input id="sub" class="btn btn-success" value="Комментировать" ng-click="comment(text, post.id, $index)" />
+            </form>
         </div>
-
-        <form id="comment_area" class="comment-area" hidden="">
-            <div class="form-group">
-                <input type="hidden" name="groupId" value="@(ViewBag.Group?.Id ?? 0)" />
-                <input type="hidden" name="postId" value="@a.Id" />
-                <textarea class="form-control" ng-model="text"></textarea>
-            </div>
-            <input id="sub" class="btn btn-success" value="Комментировать" ng-click="comment(text, post.id, $index)" />
-        </form>
 
         <dl class="dl-comment col-md-12">
             <div ng-repeat="message in post.messages">
                 <dt>
                     <span><a href="#/home/{{message.author}}" ng-bind="message.firstName + ' ' + message.lastName"></a> в {{message.date | date:"HH:mm MM/dd/yyyy"}}</span>
 
-                    <a href="" style="color: grey" ng-click="delete(message.id, post.id, post.messages.indexOf(message), posts.indexOf(post))" ng-if="userName === message.author">
+                    <a href="" style="color: grey" ng-click="delete(message.id, post.id, $index, posts.indexOf(post))" ng-if="userName === message.author">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </a>
                  </dt>

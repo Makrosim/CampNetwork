@@ -1,12 +1,10 @@
-<div class="main-list-div" ng-controller="campPlaceListController">
-
-    <div class="loader container" ng-if="campList === null"></div>
+<div ng-controller="campPlaceListController">
 
     <div class="panel-group">
 
         <div class="panel panel-info" ng-repeat="place in campList">
             <div class="panel-heading">
-                <a href="" class="pull-right" style="color: grey" ng-click="delete(place.id)" ng-if="currentUser === place.author">
+                <a href="" class="pull-right" style="color: grey" ng-click="delete(place.id, $index)" ng-if="currentUser === place.author">
                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                 </a>
                 <a href="#/campPlaceHome/{{place.id}}">{{place.name}}</a>

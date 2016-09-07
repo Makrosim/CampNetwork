@@ -19,7 +19,6 @@ app.controller('signupController', ['$scope', '$rootScope', '$location', '$timeo
         (
             function (response)
             {
-
                 $scope.savedSuccessfully = true;
                 $scope.message = "User has been registered successfully, you will be redicted to login page in 2 seconds.";
                 startTimer();

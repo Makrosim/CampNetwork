@@ -23,9 +23,9 @@ namespace API.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<HttpResponseMessage> Profiles(string id) //Fix, IO in API = Bad
+        public async Task<HttpResponseMessage> Profiles(string firstId) //Fix, IO in API = Bad
         {
-            int mediaId;
+            var userName = RequestContext.Principal.Identity.Name;
 
             try
             {
@@ -34,18 +34,18 @@ namespace API.Controllers
                 await Request.Content.ReadAsMultipartAsync(streamProvider);
 
                 var imgname = streamProvider.FileData[0].Headers.ContentDisposition.FileName.Trim(new char[] { '"', '/' });
-                var newpath = fileSaveLocation + "/" + imgname;
+                var newpath = fileSaveLocation + "\\" + imgname;
                 File.Delete(newpath);
                 File.Move(streamProvider.FileData[0].LocalFileName, newpath);
 
-                mediaId = await mediaService.SaveMedia(newpath);
+                await mediaService.AttachAvatar(userName, newpath);
             }
             catch(Exception ex)
             {
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, mediaId);
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
     }
 }

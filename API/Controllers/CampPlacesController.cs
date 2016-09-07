@@ -20,45 +20,33 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public async Task<HttpResponseMessage> Get()
+        public HttpResponseMessage Get(int id)
         {
-            var userName = RequestContext.Principal.Identity.Name;
+            var campPlaceId = id;
 
-            var campList = new List<CampPlaceDTO>();
+            var campPlace = new CampPlaceDTO();
 
             try
             {
-                campList = await campService.GetCampList(userName);
+                campPlace = campService.GetCampData(campPlaceId);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
             }
 
-            if (campList == null)
+            if (campPlace == null)
                 return Request.CreateResponse(HttpStatusCode.NoContent);
 
-            return Request.CreateResponse(HttpStatusCode.OK, campList);
+           return Request.CreateResponse(HttpStatusCode.OK, campPlace);
         }
 
+        [HttpGet]
         [Authorize]
-        public HttpResponseMessage Get(int campPlaceId)
+        public HttpResponseMessage Search(string firstId)
         {
-            var campPlace = campService.GetCampData(campPlaceId);
+            var soughtName = firstId;
 
-            HttpResponseMessage response;
-
-            if (campPlace == null)
-                response = Request.CreateResponse(HttpStatusCode.InternalServerError);
-            else
-                response = Request.CreateResponse(HttpStatusCode.OK, campPlace);
-
-            return response;
-        }
-
-        [Authorize]
-        public HttpResponseMessage Search(string soughtName)
-        {
             var campPlaceList = new List<CampPlaceDTO>();
 
             try
@@ -78,13 +66,15 @@ namespace API.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<HttpResponseMessage> Users(string id)
+        public async Task<HttpResponseMessage> Users(string firstId)
         {
+            var userName = firstId;
+
             var campList = new List<CampPlaceDTO>();
 
             try
             {
-                campList = await campService.GetCampList(id);
+                campList = await campService.GetCampList(userName);
             }
             catch (Exception ex)
             {
@@ -130,11 +120,15 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public HttpResponseMessage Delete(int id)
+        public async Task<HttpResponseMessage> Delete(int id)
         {
+            var campPlaceId = id;
+
+            var userName = RequestContext.Principal.Identity.Name;
+
             try
             {
-                campService.Delete(id);
+                await campService.Delete(userName, campPlaceId);
             }
             catch(Exception ex)
             {

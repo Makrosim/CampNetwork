@@ -23,15 +23,24 @@ namespace CampBusinessLogic.AutoMapper
                 .ForMember(dest => dest.AuthorFirstName, opts => opts.MapFrom(src => src.UserProfile.FirstName))
                 .ForMember(dest => dest.AuthorLastName, opts => opts.MapFrom(src => src.UserProfile.LastName));
 
-                cfg.CreateMap<GroupDTO, Group>();
+                cfg.CreateMap<GroupDTO, Group>()
+                .ForMember("Creator", c => c.Ignore());
 
                 cfg.CreateMap<Group, GroupDTO>()
+                .ForMember(dest => dest.Creator, opts => opts.MapFrom(src => src.Creator.User.UserName))
                 .ForMember(dest => dest.CreatorFirstName, opts => opts.MapFrom(src => src.Creator.FirstName))
                 .ForMember(dest => dest.CreatorLastName, opts => opts.MapFrom(src => src.Creator.LastName))
                 .ForMember(dest => dest.MembersCount, opts => opts.MapFrom(src => src.Members.Count));
 
                 cfg.CreateMap<MessageDTO, Message>()
                 .ForMember("Id", c => c.Ignore());
+
+                cfg.CreateMap<Message, MessageDTO>()
+                .ForMember(dest => dest.Author, opts => opts.MapFrom(src => src.UserProfile.User.UserName))
+                .ForMember(dest => dest.FirstName, opts => opts.MapFrom(src => src.UserProfile.FirstName))
+                .ForMember(dest => dest.LastName, opts => opts.MapFrom(src => src.UserProfile.LastName));
+
+                cfg.CreateMap<PostDTO, Post>();
 
                 cfg.CreateMap<Post, PostDTO>()
                 .ForMember(dest => dest.CampPlaceName, opts => opts.MapFrom(src => src.CampPlace.Name))
@@ -43,7 +52,8 @@ namespace CampBusinessLogic.AutoMapper
                 cfg.CreateMap<ProfileDTO, UserProfile>()
                 .ForMember("Id", c => c.Ignore());
 
-                cfg.CreateMap<UserProfile, ProfileDTO>();
+                cfg.CreateMap<UserProfile, ProfileDTO>()
+                .ForMember(dest => dest.UserName, opts => opts.MapFrom(src => src.User.UserName));
             });
 
         }

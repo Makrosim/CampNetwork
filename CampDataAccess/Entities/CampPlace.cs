@@ -6,11 +6,11 @@ namespace CampDataAccess.Entities
     {
         public enum Rates
         {
-            VeryBad = 1,
-            Bad = 2,
-            Medium = 3,
-            Good = 4,
-            VeryGood = 5
+            Ужасно = 1,
+            Плохо = 2,
+            Средне = 3,
+            Хорошо = 4,
+            Отлично = 5
         }
 
         public CampPlace()

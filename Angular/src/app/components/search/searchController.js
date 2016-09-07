@@ -14,7 +14,7 @@ app.controller('searchController', ['$http', '$scope', '$location', '$routeParam
 	    return includeString;
 	}
 
-	if($routeParams['searchCriteria'] === undefined)
+	if($scope.searchCriteria === undefined)
 	{
 
 	}
@@ -23,12 +23,12 @@ app.controller('searchController', ['$http', '$scope', '$location', '$routeParam
 		switch($routeParams['type'])
 		{
 			case 'Места отдыха':
-				queryString = serviceBase + 'api/campPlace/?campPlaceName=' + $routeParams['searchCriteria'];
+				queryString = serviceBase + 'api/Search/' + $scope.searchCriteria + '/CampPlaces';
 				includeString = 'app/components/campPlace/campPlaceList.html';
 				break;
 
 			case 'Пользователи':
-				queryString = serviceBase + 'api/userProfile/?searchCriteria=' + $routeParams['searchCriteria'];
+				queryString = serviceBase + 'api/Search/' + $scope.searchCriteria + '/Profiles';
 				includeString = 'app/components/user/userList.html';
 				break;
 		};

@@ -5,8 +5,33 @@
     <div ng-switch-when="true">
         <div class="well row user-info">
             <p class="lead">{{campPlace.name}}</p>
+
             <div class="col-md-8 userInfo">
-                <p>Краткое описание: {{campPlace.shortDescription}}</p>
+
+                <div class="col-md-6 userInfo">
+                    <adress>
+                        <strong>Координаты</strong>
+                        <br>Широта: {{campPlace.locationY}}
+                        <br>Долгота: {{campPlace.locationX}}
+                    </adress>
+                </div>
+                <div class="col-md-6 userInfo" style="margin-bottom: 10px">
+                    <adress>
+                        <strong>Оценки</strong>
+                        <br>Чистота: {{campPlace.purity}}
+                        <br>Людность: {{campPlace.crowdy}}
+                        <br>Доступность: {{campPlace.approachability}}
+                        <br>Комфорт: {{campPlace.comfortableness}}
+                    </adress>
+                </div>
+
+                <div >
+                    <adress>
+                        <strong>Краткое описание</strong>
+                        <br>{{campPlace.shortDescription}}
+                    </adress>
+                </div>
+
             </div>
             <div>
                 <div class="homeMap col-md-2" id="homeMap"></div>
@@ -24,19 +49,19 @@
 
             function initMap()
             {
-                var myLatlng = { lat: 50, lng: 36.28 };
-
-                map = new google.maps.Map(divmap, { center: myLatlng, zoom: 8 });
-
                 var scope = angular.element(document.getElementById('div')).scope();
 
-                var locX = scope.campPlace.locationX;
-                var locY = scope.campPlace.locationY;
+                var locX = parseFloat(scope.campPlace.locationX);
+                var locY = parseFloat(scope.campPlace.locationY);
                 var title = scope.campPlace.name;
+
+                var position = { lat: locY, lng: locX };
+
+                map = new google.maps.Map(divmap, { center: position, zoom: 8 });
 
                 var marker = new google.maps.Marker
                 ({
-                    position: { lat: parseFloat(locY), lng: parseFloat(locX) },
+                    position: position,
                     map: map,
                     title: title
                 });

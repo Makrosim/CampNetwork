@@ -11,6 +11,5 @@ namespace CampBusinessLogic.Interfaces
         Task<List<GroupDTO>> GetAllGroups(string userName);
         Task<GroupDTO> GetGroupData(string userName, int groupId);
         Task SetGroupData(string userName, GroupDTO groupDTO);
-        Task AddPost(int groupId, int postId);
     }
 }

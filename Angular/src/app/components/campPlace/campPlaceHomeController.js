@@ -10,7 +10,7 @@ app.controller('campPlaceHomeController', ['$http', '$scope', '$rootScope', '$lo
     $scope.campPlaceId = $routeParams['campPlaceId'];
     $scope.campPlace = {};
 
-    $http.get(serviceBase + 'api/CampPlace/?campPlaceId=' + $scope.campPlaceId).then
+    $http.get(serviceBase + 'api/CampPlaces/' + $scope.campPlaceId).then
     (
         function (response) 
         {
@@ -23,7 +23,7 @@ app.controller('campPlaceHomeController', ['$http', '$scope', '$rootScope', '$lo
         }
     );
 
-    $http.get(serviceBase + 'api/Post/GetCampPlacePosts/?campPlaceId=' + $scope.campPlaceId).then
+    $http.get(serviceBase + 'api/CampPlaces/' + $scope.campPlaceId + '/Posts').then
     (
         function (response)
         {
@@ -39,7 +39,7 @@ app.controller('campPlaceHomeController', ['$http', '$scope', '$rootScope', '$lo
     {
         value.messages = {};
 
-        $http.get(serviceBase + 'api/Message/?postId=' + value.id).then
+        $http.get(serviceBase + 'api/Posts/' + value.id + '/Messages').then
         (
             function (response)
             {

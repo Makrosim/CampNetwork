@@ -37,7 +37,6 @@ app.controller('indexController', ['$scope', 'localStorageService', '$location',
 		{
 			$location.path('/search/' + $scope.data.selectedOption.name + '/' + $scope.data.searchCriteria);		
 		}
-
 	}
 
     $scope.logOut = function ()

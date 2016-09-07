@@ -39,27 +39,30 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public async Task<HttpResponseMessage> Get(string ownerName)
+        public async Task<HttpResponseMessage> Get(string id)
         {
-            var userProfile = new ProfileDTO();;
+            var userProfile = new ProfileDTO(); ;
 
             try
             {
-                userProfile = await profileService.GetProfileData(ownerName);
+                userProfile = await profileService.GetProfileData(id);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
             }
+
+            if (userProfile == null)
+                return Request.CreateResponse(HttpStatusCode.NoContent);
 
             return Request.CreateResponse(HttpStatusCode.OK, userProfile);
         }
 
         [HttpGet]
         [Authorize]
-        public HttpResponseMessage Search(string soughtName)
+        public HttpResponseMessage Search(string firstId)
         {
-            var profileList = profileService.Search(soughtName);
+            var profileList = profileService.Search(firstId);
 
             if (profileList.Count == 0)
                 return Request.CreateResponse(HttpStatusCode.InternalServerError); 

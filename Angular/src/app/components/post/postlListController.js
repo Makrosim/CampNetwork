@@ -8,20 +8,18 @@ app.controller('postlistController', ['$http', '$scope', '$location', '$routePar
 	$scope.posts = null;
 	$scope.userName = authData.userName;
 
-	var string = serviceBase + 'api/Post/?groupId=' + $scope.$parent.groupId;
-
     $scope.$on('dataReceived', function (event, data)
     {
   		$scope.posts = data;
 	});
 
-	$scope.deletePost = function (postId)
+	$scope.deletePost = function (postId, postIndex)
 	{
-        $http.delete(serviceBase + 'api/Post/?userName=' + authData.userName + '&postId=' + postId).then
+        $http.delete(serviceBase + 'api/Posts/' + postId).then
         (
         	function (response)
 	        {
-
+				$scope.posts.splice(postIndex);
 	        },
 	        function (err)
 	        {
@@ -32,7 +30,7 @@ app.controller('postlistController', ['$http', '$scope', '$location', '$routePar
 
 	$scope.delete = function (messageId, postId, messageIndex, postIndex)
 	{
-        $http.delete(serviceBase + 'api/Message/?messageId=' + messageId + '&postId=' + postId).then
+        $http.delete(serviceBase + 'api/Posts/' + postId + '/Messages/' + messageId).then
         (
         	function (response)
 	        {
@@ -60,7 +58,7 @@ app.controller('postlistController', ['$http', '$scope', '$location', '$routePar
 		message.author = authData.userName;
 		message.date = new Date();
 
-        $http.post(serviceBase + 'api/Message/?userName=' + authData.userName, message).then
+        $http.post(serviceBase + 'api/Messages/', message).then
         (
         	function (response)
 	        {

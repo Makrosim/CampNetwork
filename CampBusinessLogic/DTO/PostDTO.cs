@@ -9,6 +9,7 @@ namespace CampBusinessLogic.DTO
     public class PostDTO
     {
         public int Id { get; set; }
+        public string Name { get; set; }
         public string Author { get; set; }
         public string AuthorFirstName { get; set; }
         public string AuthorLastName { get; set; }

@@ -9,7 +9,7 @@ namespace CampBusinessLogic.Interfaces
 {
     public interface IMediaService
     {
-        Task<int> SaveMedia(string mediaPath);
+        Task AttachAvatar(string userName, string mediaPath);
         string GetMediaBase64(int mediaId);
         void Delete(int mediaId);
     }

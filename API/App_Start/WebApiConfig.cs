@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
+using System.Web.Http.Routing.Constraints;
 
 namespace API
 {
@@ -32,7 +33,7 @@ namespace API
             config.Routes.MapHttpRoute
             (
                 name: "DoubleEntityRoute",
-                routeTemplate: "api/{action}/{id}/{controller}"
+                routeTemplate: "api/{action}/{firstId}/{controller}"
             );
 
             config.Routes.MapHttpRoute
@@ -41,8 +42,6 @@ namespace API
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-
-
 
             config.Routes.MapHttpRoute
             (

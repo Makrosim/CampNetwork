@@ -21,13 +21,13 @@ namespace API.Controllers
 
         [HttpGet]
         [Authorize]
-        public HttpResponseMessage Posts(int id)
+        public HttpResponseMessage Posts(int firstId)
         {
             var result = new List<MessageDTO>();
 
             try
             {
-                result = messageService.GetAllPostMessages(id);
+                result = messageService.GetAllPostMessages(firstId);
             }
             catch(Exception ex)
             {
@@ -60,14 +60,15 @@ namespace API.Controllers
 
         }
 
+        [HttpDelete]
         [Authorize]
-        public async Task<HttpResponseMessage> Delete([FromUri]int messageId)
+        public async Task<HttpResponseMessage> Posts(int firstId, int secondId)
         {
             var userName = RequestContext.Principal.Identity.Name;
 
             try
             {
-                await messageService.DeleteUsersMessage(userName, messageId);
+                await messageService.DeleteUsersMessage(userName, firstId, secondId);
             }
             catch(Exception ex)
             {

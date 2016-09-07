@@ -13,23 +13,21 @@ namespace API.Controllers
     public class PostsController : ApiController
     {
         private IPostService postService;
-        private IGroupService groupService;
 
-        public PostsController(IPostService postService, IGroupService groupService)
+        public PostsController(IPostService postService)
         {
             this.postService = postService;
-            this.groupService = groupService;
         }
 
         [HttpGet]
         [Authorize]
-        public async Task<HttpResponseMessage> Users(string id)
+        public async Task<HttpResponseMessage> Users(string firstId)
         {
             var postList = new List<PostDTO>();
 
             try
             {
-                postList = await postService.GetAllUsersPosts(id);
+                postList = await postService.GetAllUsersPosts(firstId);
             }
             catch(Exception ex)
             {
@@ -44,13 +42,13 @@ namespace API.Controllers
 
         [HttpGet]
         [Authorize]
-        public HttpResponseMessage Groups(int groupId)
+        public HttpResponseMessage Groups(int firstId)
         {
             var postList = new List<PostDTO>();
 
             try
             {
-                postList = postService.GetAllGroupPosts(groupId);
+                postList = postService.GetAllGroupPosts(firstId);
             }
             catch (Exception ex)
             {
@@ -65,11 +63,11 @@ namespace API.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<HttpResponseMessage> Groups(int groupId, int postId)
+        public async Task<HttpResponseMessage> Groups(int firstId, int secondId)
         {
             try
             {
-                await groupService.AddPost(groupId, postId);
+                await postService.AttachPostToGroup(firstId, secondId);
             }
             catch (Exception ex)
             {
@@ -81,13 +79,13 @@ namespace API.Controllers
 
         [HttpGet]
         [Authorize]
-        public HttpResponseMessage CampPlaces(int campPlaceId)
+        public HttpResponseMessage CampPlaces(int firstId)
         {
             var postList = new List<PostDTO>();
 
             try
             {
-                postList = postService.GetAllCampPlacePosts(campPlaceId);
+                postList = postService.GetAllCampPlacePosts(firstId);
             }
             catch(Exception ex)
             {
@@ -100,12 +98,13 @@ namespace API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, postList);
         }
 
+        [HttpPost]
         [Authorize]
-        public async Task<HttpResponseMessage> Post([FromUri]int campPlaceId, [FromBody]PostDTO postDTO)
+        public async Task<HttpResponseMessage> Post([FromBody]PostDTO postDTO)
         {
             try
             {
-                await postService.CreatePost(campPlaceId, postDTO);
+                await postService.CreatePost(postDTO);
             }
             catch (Exception ex)
             {
@@ -116,13 +115,13 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public async Task<HttpResponseMessage> Delete(int postId)
+        public async Task<HttpResponseMessage> Delete(int id)
         {
             var userName = RequestContext.Principal.Identity.Name;
 
             try
             {
-                await postService.DeletePost(userName, postId);
+                await postService.DeletePost(userName, id);
             }
             catch(UnauthorizedAccessException ex)
             {

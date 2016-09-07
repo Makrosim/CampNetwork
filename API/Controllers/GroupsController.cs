@@ -20,13 +20,13 @@ namespace API.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<HttpResponseMessage> Users(string id)
+        public async Task<HttpResponseMessage> Users(string firstId)
         {
             var groupList = new List<GroupDTO>();
 
             try
             {
-                groupList = await groupService.GetAllGroups(id);
+                groupList = await groupService.GetAllGroups(firstId);
             }
             catch(Exception ex)
             {
@@ -40,7 +40,7 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public async Task<HttpResponseMessage> Get(int groupId)
+        public async Task<HttpResponseMessage> Get(int id)
         {
             var userName = RequestContext.Principal.Identity.Name;
 
@@ -48,7 +48,7 @@ namespace API.Controllers
 
             try
             {
-                groupDTO = await groupService.GetGroupData(userName, groupId);
+                groupDTO = await groupService.GetGroupData(userName, id);
             }
             catch (Exception ex)
             {
@@ -62,8 +62,10 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public async Task<HttpResponseMessage> Post(string userName, GroupDTO groupDTO)
+        public async Task<HttpResponseMessage> Post([FromBody] GroupDTO groupDTO)
         {
+            var userName = RequestContext.Principal.Identity.Name;
+
             try
             {
                 await groupService.CreateGroup(userName, groupDTO);

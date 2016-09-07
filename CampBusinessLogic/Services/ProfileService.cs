@@ -33,6 +33,7 @@ namespace CampBusinessLogic.Services
             foreach(var profile in profileList)
             {
                 var profileDTO = Mapper.Map<UserProfile, ProfileDTO>(profile);
+                profileDTO.AvatarBase64 = mediaService.GetMediaBase64(profile.Avatar?.Id ?? -1);
                 profileDTOList.Add(profileDTO);
             }
 
@@ -47,7 +48,7 @@ namespace CampBusinessLogic.Services
             var user = await Database.UserManager.FindByNameAsync(name);
 
             if(user == null)
-                throw new Exception("Запрашиваемый ресурс не найден");
+                return null; // Fix?
 
             var profile = Database.UserProfileManager.Get(user.Id);
 

@@ -1,6 +1,7 @@
 <div id="div">
-    <div class="container col-md-10">
-        <div class="alert alert-info" ng-if="campList.length === 0">Вы еще не добавили места отдыха</div>
+    <div class="container col-md-10 main-list-div">
+        <div class="loader container" ng-if="response.status == null"></div>
+        <div class="alert alert-info" ng-if="response.status == '204'">Вы еще не добавили места отдыха</div>
         <div class="map well" hidden id="map"></div>
         <ng-include src="'app/components/campPlace/campPlaceList.html'"></ng-include>
     </div>
@@ -32,21 +33,25 @@
 
         function initMap()
         {
-            var myLatlng = { lat: 50, lng: 36.28 };
+            var camps = angular.element(document.getElementById('div')).scope().response.data;
+
+            var myLatlng = { lat: parseFloat(camps[0].locationY), lng: parseFloat(camps[0].locationX) };
 
             map = new google.maps.Map(document.getElementById('map'), { center: myLatlng, zoom: 8 });
-
-            var camps = angular.element(document.getElementById('div')).scope().points;
 
             camps.forEach
             (
                 function (item, i, camps)
                 {
-                    var point = item.split(" ");
+                    var lng = parseFloat(item.locationX);
+                    var lat = parseFloat(item.locationY);
+
+                    var title = item.name;
+
                     var marker = new google.maps.Marker({
-                        position: { lat: parseFloat(point[1]), lng: parseFloat(point[0]) },
+                        position: { lat: lat, lng: lng },
                         map: map,
-                        title: point[2]
+                        title: title
                     });
                 }
             );

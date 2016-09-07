@@ -54,13 +54,9 @@
     <div class="container" ng-switch on="data.isAuth">
         <div class="col-md-2 sidebar-offcanvas" role="navigation" ng-switch-when="true">
             <div class="list-group">
-                <a class="list-group-item active" href="#/home" >
+                <a class="list-group-item active" href="#/home/{{data.authData.userName}}" >
                     <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
                     <span ng-bind="data.authData.userName"></span>
-                </a>
-                <a class="list-group-item" href="#/">                
-                    <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
-                    <span>Диалоги</span>   
                 </a>
                 <a class="list-group-item" href="#/camp">
                     <span class="glyphicon glyphicon-tent" aria-hidden="true"></span>

@@ -19,10 +19,10 @@ namespace CampBusinessLogic.Services
             Database = uow;
         }
 
-        public async Task<MessageDTO> CreateUsersMessage(string name, MessageDTO messageDTO)
+        public async Task<MessageDTO> CreateUsersMessage(string userName, MessageDTO messageDTO)
         {
             var message = Mapper.Map<MessageDTO, Message>(messageDTO);
-            message.UserProfile = (await Database.UserManager.FindByNameAsync(messageDTO.Author)).UserProfile;
+            message.UserProfile = (await Database.UserManager.FindByNameAsync(userName)).UserProfile;
 
             Database.MessageManager.Create(message);
 
@@ -53,13 +53,15 @@ namespace CampBusinessLogic.Services
             return messages;
         }
 
-        public async Task DeleteUsersMessage(string userName, int messageId)
+        public async Task DeleteUsersMessage(string userName, int postId, int messageId)
         {
             var message = Database.MessageManager.Get(messageId);
+            var post = Database.PostManager.Get(postId);
 
             if (!userName.Equals(message.UserProfile.User.UserName))
                 throw new Exception("У вас нет полномочий совершать это действие");
 
+            post.Messages.Remove(message);
             Database.MessageManager.Delete(message.Id);
 
             await Database.SaveAsync();
