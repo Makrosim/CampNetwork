@@ -33,7 +33,7 @@
 
         function initMap()
         {
-            var camps = angular.element(document.getElementById('div')).scope().response.data;
+            var camps = angular.element(document.getElementById('div')).scope().response;
 
             var myLatlng = { lat: parseFloat(camps[0].locationY), lng: parseFloat(camps[0].locationX) };
 

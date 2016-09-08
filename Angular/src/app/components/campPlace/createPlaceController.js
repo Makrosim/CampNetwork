@@ -1,58 +1,37 @@
 'use strict';
-app.controller('createPlaceController', ['$http', '$scope', '$routeParams', '$rootScope', '$location', 'localStorageService', function ($http, $scope, $routeParams, $rootScope, $location, localStorageService)
+app.controller('createPlaceController', ['campPlaceService', '$http', '$scope', '$routeParams', '$rootScope', '$location', 'localStorageService', function (campPlaceService, $http, $scope, $routeParams, $rootScope, $location, localStorageService)
 {
     $rootScope.title = 'Создать место отдыха';
 
     var serviceBase = localStorageService.get('serviceBase');
     var authData = localStorageService.get('authorizationData');
+    var campPlaceId = $routeParams['id'];
 
-    $scope.campPlaceId = $routeParams['id'];
     $scope.campPlace = {};
 
-    if($scope.campPlaceId != undefined)
+    if(campPlaceId != undefined)
     {
-        $http.get(serviceBase + 'api/CampPlaces/' + $scope.campPlaceId).then
-        (
-            function (response)
-            {
-                $scope.campPlace = response.data;
-            },
-            function (err)
-            {
-                console.log(err);
-            }
-        );
+        campPlaceService.getCampPlaceData(campPlaceId, function(data)
+        {
+            $scope.campPlace = data;
+        });
     }
 
     $scope.submit = function ()
     {
         if($scope.campPlaceId == undefined)
         {
-            $http.post(serviceBase + 'api/CampPlaces/', $scope.campPlace).then
-            (
-                function (response)
-                {
-                    $location.path('/camp');
-                },
-                function (err)
-                {
-                    console.log(err.statusText);
-                }
-            );
+            campPlaceService.createCampPlace($scope.campPlace, function(data)
+            {
+                $location.path('/camp');
+            });
         }
         else
         {
-            $http.put(serviceBase + 'api/CampPlaces/', $scope.campPlace).then
-            (
-                function (response)
-                {
-                    $location.path('/camp');
-                },
-                function (err)
-                {
-                    console.log(err.statusText);
-                }
-            );
+            campPlaceService.updateCampPlace($scope.campPlace, function(data)
+            {
+                $location.path('/camp');
+            });
         }
     }
 

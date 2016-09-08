@@ -97,7 +97,6 @@ app.factory('campPlaceService', ['$http', '$q', 'localStorageService', function 
             function (response)
             {
             	callback();
-                $location.path('/camp');
             },
             function (err)
             {
@@ -113,7 +112,6 @@ app.factory('campPlaceService', ['$http', '$q', 'localStorageService', function 
             function (response)
             {
             	callback();
-                $location.path('/camp');
             },
             function (err)
             {
@@ -122,9 +120,27 @@ app.factory('campPlaceService', ['$http', '$q', 'localStorageService', function 
         );
     };
 
+    var _deleteCampPlace = function (campPlaceId, callback)
+    {
+        $http.delete(serviceBase + 'api/CampPlaces/' + campPlaceId).then
+        (
+            function (response) 
+            {
+            	callback();
+            },
+            function (err)
+            {
+                console.log(err);
+            }
+        );
+    };
+
     campPlaceServiceFactory.getUsersCampPlaces = _getUsersCampPlaces;
     campPlaceServiceFactory.getCampPlaceData = _getCampPlaceData;
     campPlaceServiceFactory.getCampPlacePosts = _getCampPlacePosts;
+    campPlaceServiceFactory.deleteCampPlace = _deleteCampPlace;
+    campPlaceServiceFactory.createCampPlace = _createCampPlace;
+    campPlaceServiceFactory.updateCampPlace = _updateCampPlace;
 
     return campPlaceServiceFactory;
 }]);

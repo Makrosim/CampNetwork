@@ -11,12 +11,11 @@ app.controller('campPlaceHomeController', ['campPlaceService', '$scope', '$rootS
     campPlaceService.getCampPlaceData(campPlaceId, function(data)
     {
         $scope.campPlace = data;
+    });
 
-        campPlaceService.getCampPlacePosts(campPlaceId, function(data)
-        {
-            $scope.$broadcast('dataReceived', data);
-        });
-
+    campPlaceService.getCampPlacePosts(campPlaceId, function(data)
+    {
+        $scope.$broadcast('dataReceived', data);
     });
 
 }]);
