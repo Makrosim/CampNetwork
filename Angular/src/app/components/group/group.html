@@ -6,39 +6,53 @@
 
         <div class="alert alert-info" ng-switch-when="false"> Вы еще не вступили ни в одну группу </div>
 
-        <div class="panel-group" ng-switch-when="true">
+        <div ng-switch-when="true">
 
             <h3 ng-if="createdGroups.length > 0">Созданные вами группы: </h3>
-
-            <div class="panel panel-info" ng-repeat="group in createdGroups">
-                <div class="panel-heading">
-                    <a href="#/openGroup/?groupId={{group.id}}" ng-bing="group.name"></a>
+            
+            <div class="panel-group">
+                <div class="panel panel-info" ng-repeat="group in createdGroups">
+                    <div class="panel-heading">
+                        <a href="" class="pull-right" style="color: grey" ng-click="delete(group.id, $index, true)">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        </a>
+                        <a href="#/openGroup/{{group.id}}" ng-bind="group.name"></a>
+                    </div>
+                    <div class="panel-body">                
+                        <p>Описание: {{group.shortDescription}}</p>
+                    </div>
+                    <div class="panel-footer"> 
+                        <span class="pull-right">Создатель: 
+                            <a href="#/home/{{group.creator}}">{{group.creatorFirstName}} {{group.creatorLastName}}</a>
+                        </span>                        
+                        <span>Кол-во учасников: {{group.membersCount}}</span>
+                     </div>                   
                 </div>
-                <div class="panel-body">
-                    <p>Id группы: {{group.id}}</p>
-                    <p>Описание: {{group.shortDescription}}</p>
-                </div>
-                <div class="panel-footer"> Кол-во учасников: {{group.membersCount}} </div>
             </div>
 
             <h3 ng-if="otherGroups.length > 0">Вы состоите в группах: </h3>
 
-            <div class="panel panel-info" ng-repeat="group in otherGroups">
-                <div class="panel-heading">
-                    <a href="/Groups/Open/@group.Id" ng-bind="group.name"></a>
+            <div class="panel-group">
+                <div class="panel panel-info" ng-repeat="group in otherGroups">
+                    <div class="panel-heading">
+                        <a href="" class="pull-right" style="color: grey" ng-click="delete(group.id, $index, false)">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        </a>
+                        <a href="#/openGroup/{{group.id}}" ng-bind="group.name"></a>
+                    </div>
+                    <div class="panel-body">                
+                        <p>Описание: {{group.shortDescription}}</p>
+                    </div>
+                    <div class="panel-footer"> 
+                        <span class="pull-right">Создатель: 
+                            <a href="#/home/{{group.creator}}">{{group.creatorFirstName}} {{group.creatorLastName}}</a>
+                        </span>                        
+                        <span>Кол-во учасников: {{group.membersCount}}</span>
+                     </div>                
                 </div>
-                <div class="panel-body">                
-                    <p>Описание: {{group.shortDescription}}</p>
-                </div>
-                <div class="panel-footer"> 
-                    <a class="pull-right">Создатель: {{group.creatorFirstName}} {{group.creatorLastName}}</a>
-                    <span>Кол-во учасников: {{group.membersCount}}</span>
-                 </div>
-                
             </div>
 
         </div>
-
     </div>
 
     <div class="col-md-2 sidebar-offcanvas" role="navigation">

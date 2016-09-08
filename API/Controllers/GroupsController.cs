@@ -26,7 +26,7 @@ namespace API.Controllers
 
             try
             {
-                groupList = await groupService.GetAllGroups(firstId);
+                groupList = await groupService.GetUsersGroups(firstId);
             }
             catch(Exception ex)
             {
@@ -40,15 +40,13 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public async Task<HttpResponseMessage> Get(int id)
+        public HttpResponseMessage Get(int id)
         {
-            var userName = RequestContext.Principal.Identity.Name;
-
             var groupDTO = new GroupDTO();
 
             try
             {
-                groupDTO = await groupService.GetGroupData(userName, id);
+                groupDTO = groupService.GetGroupData(id);
             }
             catch (Exception ex)
             {
@@ -62,7 +60,7 @@ namespace API.Controllers
         }
 
         [Authorize]
-        public async Task<HttpResponseMessage> Post([FromBody] GroupDTO groupDTO)
+        public async Task<HttpResponseMessage> Post([FromBody]GroupDTO groupDTO)
         {
             var userName = RequestContext.Principal.Identity.Name;
 
@@ -71,6 +69,27 @@ namespace API.Controllers
                 await groupService.CreateGroup(userName, groupDTO);
             }
             catch(Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        [Authorize]
+        public async Task<HttpResponseMessage> Delete(int id)
+        {
+            var userName = RequestContext.Principal.Identity.Name;
+
+            try
+            {
+                await groupService.Delete(userName, id);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.Forbidden, ex);
+            }
+            catch (Exception ex)
             {
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
             }

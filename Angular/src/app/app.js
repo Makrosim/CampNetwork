@@ -57,7 +57,7 @@ app.config(function ($routeProvider) {
         templateUrl: "app/components/group/createGroup.html"
     });
 
-    $routeProvider.when("/openGroup", {
+    $routeProvider.when("/openGroup/:groupId", {
         controller: "openGroupController",
         templateUrl: "app/components/group/openGroup.html"
     });
@@ -76,17 +76,15 @@ app.config(function ($routeProvider) {
         controller: "errorController",
         templateUrl: "app/components/layout/error.html"
     });
-
-    $routeProvider.otherwise({redirectTo: '/home'});
 });
 
 app.config(function ($httpProvider) {
     $httpProvider.interceptors.push('authInterceptorService');
 });
 
-app.run(['authService', 'localStorageService', function (authService, localStorageService)
+app.run(['authService', '$location', 'localStorageService', function (authService, $location, localStorageService)
 {
-    //localStorageService.set('serviceBase', 'http://localhost:56332/');
-    localStorageService.set('serviceBase', 'http://localhost:8080/CampNetwork/');
+    localStorageService.set('serviceBase', 'http://localhost:56332/');
+    //localStorageService.set('serviceBase', 'http://localhost:8080/CampNetwork/');
     authService.fillAuthData();
 }]);

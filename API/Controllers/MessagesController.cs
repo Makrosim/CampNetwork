@@ -70,7 +70,11 @@ namespace API.Controllers
             {
                 await messageService.DeleteUsersMessage(userName, firstId, secondId);
             }
-            catch(Exception ex)
+            catch (UnauthorizedAccessException ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.Forbidden, ex);
+            }
+            catch (Exception ex)
             {
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
             }

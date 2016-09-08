@@ -58,8 +58,8 @@ namespace CampBusinessLogic.Services
             var message = Database.MessageManager.Get(messageId);
             var post = Database.PostManager.Get(postId);
 
-            if (!userName.Equals(message.UserProfile.User.UserName))
-                throw new Exception("У вас нет полномочий совершать это действие");
+            if (!userName.Equals(message.UserProfile.User.UserName) || userName.Equals(message.Post.CampPlace.UserProfile.User.UserName))
+                throw new UnauthorizedAccessException("У вас нет полномочий совершать это действие");
 
             post.Messages.Remove(message);
             Database.MessageManager.Delete(message.Id);

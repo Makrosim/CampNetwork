@@ -12,23 +12,21 @@ namespace API.Controllers
 {
     public class CampPlacesController : ApiController
     {
-        private ICampPlaceService campService;
+        private ICampPlaceService campPlaceService;
 
         public CampPlacesController(ICampPlaceService campService)
         {
-            this.campService = campService;
+            this.campPlaceService = campService;
         }
 
         [Authorize]
         public HttpResponseMessage Get(int id)
         {
-            var campPlaceId = id;
-
             var campPlace = new CampPlaceDTO();
 
             try
             {
-                campPlace = campService.GetCampData(campPlaceId);
+                campPlace = campPlaceService.GetCampData(id);
             }
             catch(Exception ex)
             {
@@ -45,13 +43,11 @@ namespace API.Controllers
         [Authorize]
         public HttpResponseMessage Search(string firstId)
         {
-            var soughtName = firstId;
-
             var campPlaceList = new List<CampPlaceDTO>();
 
             try
             {
-                campPlaceList = campService.Search(soughtName);
+                campPlaceList = campPlaceService.Search(firstId);
             }
             catch(Exception ex)
             {
@@ -68,13 +64,11 @@ namespace API.Controllers
         [Authorize]
         public async Task<HttpResponseMessage> Users(string firstId)
         {
-            var userName = firstId;
-
             var campList = new List<CampPlaceDTO>();
 
             try
             {
-                campList = await campService.GetCampList(userName);
+                campList = await campPlaceService.GetCampList(firstId);
             }
             catch (Exception ex)
             {
@@ -94,7 +88,7 @@ namespace API.Controllers
 
             try
             {
-                await campService.Create(userName, campPlaceDTO);
+                await campPlaceService.Create(userName, campPlaceDTO);
             }
             catch(Exception ex)
             {
@@ -109,7 +103,7 @@ namespace API.Controllers
         {
             try
             {
-               await campService.Update(campPlaceDTO);
+               await campPlaceService.Update(campPlaceDTO);
             }
             catch(Exception ex)
             {
@@ -122,15 +116,17 @@ namespace API.Controllers
         [Authorize]
         public async Task<HttpResponseMessage> Delete(int id)
         {
-            var campPlaceId = id;
-
             var userName = RequestContext.Principal.Identity.Name;
 
             try
             {
-                await campService.Delete(userName, campPlaceId);
+                await campPlaceService.Delete(userName, id);
             }
-            catch(Exception ex)
+            catch(UnauthorizedAccessException ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.Forbidden, ex);
+            }
+            catch (Exception ex)
             {
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
             }

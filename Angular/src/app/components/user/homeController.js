@@ -7,9 +7,13 @@ app.controller('homeController', ['$http', '$scope', '$rootScope', '$location', 
     var authData = localStorageService.get('authorizationData');
 
     $scope.response = null;
-    $scope.errorMessage = null;
 
-    $http.get(serviceBase + 'api/Profiles/' + $routeParams['userName']).then
+    var userName = $routeParams['userName'];
+
+    if($routeParams['userName'] == undefined)
+        userName = authData.userName;
+
+    $http.get(serviceBase + 'api/Profiles/' + userName).then
     (
         function (response) 
         {

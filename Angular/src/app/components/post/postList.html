@@ -51,7 +51,7 @@
                 <dt>
                     <span><a href="#/home/{{message.author}}" ng-bind="message.firstName + ' ' + message.lastName"></a> в {{message.date | date:"HH:mm MM/dd/yyyy"}}</span>
 
-                    <a href="" style="color: grey" ng-click="delete(message.id, post.id, $index, posts.indexOf(post))" ng-if="userName === message.author">
+                    <a href="" style="color: grey" ng-click="delete(message.id, post.id, $index, posts.indexOf(post))" ng-if="(userName === message.author) || (userName === post.author)">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </a>
                  </dt>

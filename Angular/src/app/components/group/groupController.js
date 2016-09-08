@@ -39,4 +39,28 @@ app.controller('groupController', ['$http', '$scope', '$rootScope', '$location',
             $scope.otherGroups.push(value);
         }
     }
+
+    $scope.delete = function (id, index, isCreator)
+    {
+        $http.delete(serviceBase + 'api/Groups/' + id).then
+        (
+            function (response) 
+            {
+                if(isCreator)
+                {
+                    $scope.createdGroups.splice(index, 1);
+                }
+                else
+                {
+                    $scope.otherGroups.splice(index, 1);
+                }
+                
+            },
+            function (err)
+            {
+                console.log(err);
+            }
+        );
+    }
+
 }]);

@@ -1,6 +1,7 @@
 ﻿using CampBusinessLogic.DTO;
 using CampBusinessLogic.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -62,10 +63,19 @@ namespace API.Controllers
         [Authorize]
         public HttpResponseMessage Search(string firstId)
         {
-            var profileList = profileService.Search(firstId);
+            var profileList = new List<ProfileDTO>();
+
+            try
+            {
+                profileList = profileService.Search(firstId);
+            }
+            catch(Exception ex)
+            {
+                Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+            }
 
             if (profileList.Count == 0)
-                return Request.CreateResponse(HttpStatusCode.InternalServerError); 
+                return Request.CreateResponse(HttpStatusCode.NoContent); 
 
             return Request.CreateResponse(HttpStatusCode.OK, profileList);
         }

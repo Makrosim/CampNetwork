@@ -10,6 +10,17 @@ app.controller('openGroupController', ['$http', '$scope', '$rootScope', '$locati
     $scope.groupId = $routeParams['groupId'];
     $scope.postId = -1;
 
+    $http.get(serviceBase + 'api/Groups/' + $scope.groupId).then
+    (
+        function (response) 
+        {
+            $scope.group = response.data;
+        },
+        function (err)
+        {
+            console.log(err.statusText);
+        }
+    );
 
     $scope.addPost = function ()
     {
@@ -26,15 +37,4 @@ app.controller('openGroupController', ['$http', '$scope', '$rootScope', '$locati
         );
     };
 
-    $http.get(serviceBase + 'api/Group/?userName=' + authData.userName + '&groupId=' + $scope.groupId).then
-    (
-        function (response) 
-        {
-            $scope.group = response.data;
-        },
-        function (err)
-        {
-            console.log(err.statusText);
-        }
-    );
 }]);
