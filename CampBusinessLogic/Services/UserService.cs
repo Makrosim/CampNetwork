@@ -68,9 +68,9 @@ namespace CampBusinessLogic.Services
             return claim;
         }
 
-        public async Task Delete(string name)
+        public async Task Delete(string userName)
         {
-            var user = await Database.UserManager.FindByNameAsync(name);
+            var user = await Database.UserManager.FindByNameAsync(userName);
             await Database.UserManager.DeleteAsync(user);
         }
 

@@ -10,6 +10,6 @@ namespace CampBusinessLogic.Interfaces
     {
         Task Create(RegisterDTO userDTO);
         Task<ClaimsIdentity> Authenticate(RegisterDTO userDTO);
-        Task Delete(string name);
+        Task Delete(string userName);
     }
 }

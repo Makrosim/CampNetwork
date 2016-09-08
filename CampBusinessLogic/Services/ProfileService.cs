@@ -40,12 +40,12 @@ namespace CampBusinessLogic.Services
             return profileDTOList;
         }
 
-        public async Task<ProfileDTO> GetProfileData(string name)
+        public async Task<ProfileDTO> GetProfileData(string userName)
         {
-            if (String.IsNullOrEmpty(name))
-                throw new ArgumentNullException(name);
+            if (String.IsNullOrEmpty(userName))
+                throw new ArgumentNullException(userName);
             
-            var user = await Database.UserManager.FindByNameAsync(name);
+            var user = await Database.UserManager.FindByNameAsync(userName);
 
             if(user == null)
                 return null; // Fix?
@@ -59,12 +59,12 @@ namespace CampBusinessLogic.Services
             return profDTO;
         }
 
-        public async Task SetProfileData(string name, ProfileDTO profDTO)
+        public async Task SetProfileData(string userName, ProfileDTO profDTO)
         {
-            if (String.IsNullOrEmpty(name))
-                throw new ArgumentNullException(name);
+            if (String.IsNullOrEmpty(userName))
+                throw new ArgumentNullException(userName);
             
-            var user = await Database.UserManager.FindByNameAsync(name);
+            var user = await Database.UserManager.FindByNameAsync(userName);
             var profile = Database.UserProfileManager.Get(user.Id);
 
             Mapper.Map(profDTO, profile, typeof(ProfileDTO), typeof(UserProfile));
