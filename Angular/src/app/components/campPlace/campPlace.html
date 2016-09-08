@@ -1,7 +1,7 @@
 <div id="div">
     <div class="container col-md-10 main-list-div">
-        <div class="loader container" ng-if="response.status == null"></div>
-        <div class="alert alert-info" ng-if="response.status == '204'">Вы еще не добавили места отдыха</div>
+        <div class="loader container" ng-if="response == null"></div>
+        <div class="alert alert-info" ng-if="response == '204'">Вы еще не добавили места отдыха</div>
         <div class="map well" hidden id="map"></div>
         <ng-include src="'app/components/campPlace/campPlaceList.html'"></ng-include>
     </div>

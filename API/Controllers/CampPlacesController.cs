@@ -101,11 +101,17 @@ namespace API.Controllers
         [Authorize]
         public async Task<HttpResponseMessage> Put(CampPlaceDTO campPlaceDTO)
         {
+            var userName = RequestContext.Principal.Identity.Name;
+
             try
             {
-               await campPlaceService.Update(campPlaceDTO);
+               await campPlaceService.Update(userName, campPlaceDTO);
             }
-            catch(Exception ex)
+            catch (UnauthorizedAccessException ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.Forbidden, ex);
+            }
+            catch (Exception ex)
             {
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
             }

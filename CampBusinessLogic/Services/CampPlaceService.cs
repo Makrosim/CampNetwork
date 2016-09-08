@@ -85,8 +85,13 @@ namespace CampBusinessLogic.Services
             return campDTOList;
         }
 
-        public async Task Update(CampPlaceDTO campPlaceDTO)
+        public async Task Update(string userName, CampPlaceDTO campPlaceDTO)
         {
+            var user = Database.CampPlaceManager.Get(campPlaceDTO.Id).UserProfile.User;
+
+            if (user.UserName != userName)
+                throw new UnauthorizedAccessException("У вас нет полномочий совершать это действие");
+
             var campPlace = Database.CampPlaceManager.Get(campPlaceDTO.Id);
 
             Mapper.Map(campPlaceDTO, campPlace, typeof(CampPlaceDTO), typeof(CampPlace));

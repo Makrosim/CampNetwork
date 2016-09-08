@@ -37,6 +37,11 @@ app.config(function ($routeProvider) {
         templateUrl: "app/components/campPlace/createPlace.html"
     });
 
+    $routeProvider.when("/createPlace/:id", {
+        controller: "createPlaceController",
+        templateUrl: "app/components/campPlace/createPlace.html"
+    });
+
     $routeProvider.when("/campPlaceHome/:campPlaceId", {
         controller: "campPlaceHomeController",
         templateUrl: "app/components/campPlace/campPlaceHome.html"
@@ -84,7 +89,7 @@ app.config(function ($httpProvider) {
 
 app.run(['authService', '$location', 'localStorageService', function (authService, $location, localStorageService)
 {
-    localStorageService.set('serviceBase', 'http://localhost:56332/');
-    //localStorageService.set('serviceBase', 'http://localhost:8080/CampNetwork/');
+    //localStorageService.set('serviceBase', 'http://localhost:56332/');
+    localStorageService.set('serviceBase', 'http://localhost:8080/CampNetwork/');
     authService.fillAuthData();
 }]);

@@ -25,7 +25,7 @@ namespace API.Controllers
         {
             var userName = RequestContext.Principal.Identity.Name;
 
-            var userProfile = new ProfileDTO(); ;
+            var userProfile = new ProfileDTO();
 
             try
             {
@@ -36,13 +36,16 @@ namespace API.Controllers
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
             }
 
+            if (userProfile == null)
+                return Request.CreateResponse(HttpStatusCode.NoContent);
+
             return Request.CreateResponse(HttpStatusCode.OK, userProfile);
         }
 
         [Authorize]
         public async Task<HttpResponseMessage> Get(string id)
         {
-            var userProfile = new ProfileDTO(); ;
+            var userProfile = new ProfileDTO();
 
             try
             {

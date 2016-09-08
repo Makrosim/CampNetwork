@@ -1,58 +1,22 @@
 'use strict';
-app.controller('campPlaceHomeController', ['$http', '$scope', '$rootScope', '$location', '$routeParams', 'localStorageService', function ($http, $scope, $rootScope, $location, $routeParams, localStorageService)
+app.controller('campPlaceHomeController', ['campPlaceService', '$scope', '$rootScope', '$location', '$routeParams', 'localStorageService', function (campPlaceService, $scope, $rootScope, $location, $routeParams, localStorageService)
 {
     $rootScope.title = 'Место отдыха';
 
-    var serviceBase = localStorageService.get('serviceBase');
     var authData = localStorageService.get('authorizationData');
+    var campPlaceId = $routeParams['campPlaceId'];
 
-    $scope.errorMessage = null;
-    $scope.campPlaceId = $routeParams['campPlaceId'];
     $scope.campPlace = {};
 
-    $http.get(serviceBase + 'api/CampPlaces/' + $scope.campPlaceId).then
-    (
-        function (response) 
-        {
-            $scope.campPlace = response.data;
-        },
-        function (err)
-        {
-            console.log(err);
-            $scope.errorMessage = err.data.exceptionMessage;
-        }
-    );
-
-    $http.get(serviceBase + 'api/CampPlaces/' + $scope.campPlaceId + '/Posts').then
-    (
-        function (response)
-        {
-            $scope.$broadcast('dataReceived', response.data.map(getMessages));
-        },
-        function (err)
-        {
-            console.log(err);
-        }
-    );
-
-    function getMessages(value, index, array)
+    campPlaceService.getCampPlaceData(campPlaceId, function(data)
     {
-        value.messages = {};
+        $scope.campPlace = data;
 
-        $http.get(serviceBase + 'api/Posts/' + value.id + '/Messages').then
-        (
-            function (response)
-            {
-                var messages = response.data;
-                value.messages = messages;
-            },
-            function (err)
-            {
-                console.log(err);
-            }
-        )
+        campPlaceService.getCampPlacePosts(campPlaceId, function(data)
+        {
+            $scope.$broadcast('dataReceived', data);
+        });
 
-        return value;
-    };
+    });
 
 }]);

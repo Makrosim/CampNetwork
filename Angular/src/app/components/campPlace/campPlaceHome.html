@@ -1,8 +1,8 @@
-<div id="div" class="col-md-10" ng-switch on="errorMessage === null">
+<div id="div" class="col-md-10" ng-switch on="campPlace == '204'">
 
-    <div class="alert alert-warning" ng-switch-when="false" ng-bind="errorMessage"></div>
+    <div class="alert alert-warning" ng-switch-when="true">Запрашиваемый ресурс не найден</div>
 
-    <div ng-switch-when="true">
+    <div ng-switch-when="false">
         <div class="well row user-info">
             <p class="lead">{{campPlace.name}}</p>
 
@@ -38,8 +38,6 @@
             </div>
         </div>
 
-        <ng-include src="'app/components/post/postlist.html'"></ng-include>
-
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBiYT8YJ36AWUsSXozMhCOWi-ruz0tgPc&callback=initMap"></script>
 
         <script type="text/javascript">
@@ -70,4 +68,6 @@
         </script>
     </div>
 
+    <ng-include src="'app/components/post/postlist.html'"></ng-include>
+        
 </div>

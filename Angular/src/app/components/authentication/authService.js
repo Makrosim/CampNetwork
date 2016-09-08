@@ -32,7 +32,6 @@ app.factory('authService', ['$http', '$q', 'localStorageService', function ($htt
         (
             function (response)
             {
-                console.log(response);
                 localStorageService.set('authorizationData', { token: response.data.access_token, userName: loginData.userName });
 
                 _authentication.isAuth = true;

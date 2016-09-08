@@ -17,7 +17,7 @@ namespace API.Windsor
         {
             container.Register(Component.For<IUserService>().ImplementedBy<UserService>());
             container.Register(Component.For<IProfileService>().ImplementedBy<ProfileService>());
-            container.Register(Component.For<ICampPlaceService>().ImplementedBy<CampPlaceService>());
+            container.Register(Component.For<ICampPlaceService>().ImplementedBy<CampPlaceService>().LifestylePerWebRequest());
             container.Register(Component.For<IPostService>().ImplementedBy<PostService>());
             container.Register(Component.For<IMessageService>().ImplementedBy<MessageService>());
             container.Register(Component.For<IGroupService>().ImplementedBy<GroupService>());

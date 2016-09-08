@@ -11,7 +11,7 @@ namespace CampBusinessLogic.Interfaces
         List<string> GetPointsList();
         CampPlaceDTO GetCampData(int campPlaceId);
         List<CampPlaceDTO> Search(string soughtName);
-        Task Update(CampPlaceDTO campPlaceDTO);
+        Task Update(string userName, CampPlaceDTO campPlaceDTO);
         Task Delete(string userName, int campPlaceId);
     }
 }
