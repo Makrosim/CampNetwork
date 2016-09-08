@@ -13,6 +13,12 @@ app.controller('postlistController', ['$http', '$scope', '$location', '$routePar
   		$scope.posts = data;
 	});
 
+    $scope.set = function (index)
+    {
+        var area = document.getElementById(index);                    
+        area.hidden = !area.hidden;
+    };
+
 	$scope.deletePost = function (postId, postIndex)
 	{
         $http.delete(serviceBase + 'api/Posts/' + postId).then
@@ -76,6 +82,9 @@ app.controller('postlistController', ['$http', '$scope', '$location', '$routePar
 	            console.log(err);
 	        }
         );
+
+        var area = document.getElementById(postId);                    
+        area.hidden = true;
 	};
 
 }]);

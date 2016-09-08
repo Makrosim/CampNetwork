@@ -30,16 +30,14 @@
                 <div class="panel-footer">
                     <span>{{post.creationDate | date:"HH:mm MM/dd/yyyy"}}</span>
                     
-                    <a href="" class="pull-right" style="color: grey" onclick="set()">
+                    <a href="" class="pull-right" style="color: grey" ng-click="set(post.id)">
                         <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
                     </a> 
                 </div>
             </div>
 
-            <form id="comment_area" class="comment-area" hidden="">
+            <form ng-attr-id="{{post.id}}" class="comment-area" hidden="">
                 <div class="form-group">
-                    <input type="hidden" name="groupId" value="@(ViewBag.Group?.Id ?? 0)" />
-                    <input type="hidden" name="postId" value="@a.Id" />
                     <textarea class="form-control" ng-model="text"></textarea>
                 </div>
                 <input id="sub" class="btn btn-success" value="Комментировать" ng-click="comment(text, post.id, $index)" />
@@ -58,22 +56,6 @@
                 <dd ng-bind="' - ' + message.text"></dd>
             </div>
         </dl>
-
-        <script type="text/javascript">
-
-            var sub = document.getElementById("sub");
-            var area = document.getElementById("comment_area");
-
-            function set()
-            {
-                area.hidden = !area.hidden;
-            };
-
-            sub.onclick = function ()
-            {
-                area.hidden = true;
-            };
-        </script>
 
     </div>
 </div>

@@ -19,7 +19,7 @@ app.controller('createPlaceController', ['campPlaceService', '$http', '$scope', 
 
     $scope.submit = function ()
     {
-        if($scope.campPlaceId == undefined)
+        if(campPlaceId == undefined)
         {
             campPlaceService.createCampPlace($scope.campPlace, function(data)
             {

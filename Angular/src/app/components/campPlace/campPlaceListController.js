@@ -12,8 +12,6 @@ app.controller('campPlaceListController', ['campPlaceService', '$scope', 'localS
   		$scope.campList = data;
 	});
 
-
-
     $scope.delete = function (id, index)
     {
 	    campPlaceService.deleteCampPlace(id, function(data)
