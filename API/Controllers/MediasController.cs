@@ -33,7 +33,9 @@ namespace API.Controllers
                 var streamProvider = new MultipartFormDataStreamProvider(fileSaveLocation);
                 await Request.Content.ReadAsMultipartAsync(streamProvider);
 
-                var imgname = streamProvider.FileData[0].Headers.ContentDisposition.FileName.Trim(new char[] { '"', '/' });
+                Random rnd = new Random(1);
+
+                string imgname = rnd.Next() + ".jpg";
                 var newpath = fileSaveLocation + "\\" + imgname;
                 File.Delete(newpath);
                 File.Move(streamProvider.FileData[0].LocalFileName, newpath);

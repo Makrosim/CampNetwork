@@ -1,34 +1,35 @@
-<div id="div" class="col-md-10" ng-switch on="campPlace == '204'">
+<div id="div" class="col-md-10">
 
-    <div class="alert alert-warning" ng-switch-when="true">Запрашиваемый ресурс не найден</div>
+    <div class="loader container" ng-if="response === null"></div>
+    <div class="alert alert-warning" ng-if="response == '204'">Запрашиваемый ресурс не найден</div>
 
-    <div ng-switch-when="false">
+    <div ng-if="(response !== null) && (response != '204')">
         <div class="well row user-info">
-            <p class="lead">{{campPlace.name}}</p>
+            <p class="lead">{{response.name}}</p>
 
             <div class="col-md-8 userInfo">
 
                 <div class="col-md-6 userInfo">
                     <adress>
                         <strong>Координаты</strong>
-                        <br>Широта: {{campPlace.locationY}}
-                        <br>Долгота: {{campPlace.locationX}}
+                        <br>Широта: {{response.locationY}}
+                        <br>Долгота: {{response.locationX}}
                     </adress>
                 </div>
                 <div class="col-md-6 userInfo" style="margin-bottom: 10px">
                     <adress>
                         <strong>Оценки</strong>
-                        <br>Чистота: {{campPlace.purity}}
-                        <br>Людность: {{campPlace.crowdy}}
-                        <br>Доступность: {{campPlace.approachability}}
-                        <br>Комфорт: {{campPlace.comfortableness}}
+                        <br>Чистота: {{response.purity}}
+                        <br>Людность: {{response.crowdy}}
+                        <br>Доступность: {{response.approachability}}
+                        <br>Комфорт: {{response.comfortableness}}
                     </adress>
                 </div>
 
                 <div >
                     <adress>
                         <strong>Краткое описание</strong>
-                        <br>{{campPlace.shortDescription}}
+                        <br>{{response.shortDescription}}
                     </adress>
                 </div>
 
@@ -49,9 +50,9 @@
             {
                 var scope = angular.element(document.getElementById('div')).scope();
 
-                var locX = parseFloat(scope.campPlace.locationX);
-                var locY = parseFloat(scope.campPlace.locationY);
-                var title = scope.campPlace.name;
+                var locX = parseFloat(scope.response.locationX);
+                var locY = parseFloat(scope.response.locationY);
+                var title = scope.response.name;
 
                 var position = { lat: locY, lng: locX };
 

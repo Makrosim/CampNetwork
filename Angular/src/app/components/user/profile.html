@@ -1,4 +1,14 @@
 <div class="col-md-10">
+
+  <style>
+    .cropArea {
+      background: #E4E4E4;
+      overflow: hidden;
+      width:500px;
+      height:350px;
+    }
+  </style>
+
     <form class="form-horizontal" enctype="multipart/form-data">
         <div class="form-group">
             <label class="col-md-3 control-label" for="inp_FirstName">Имя</label>
@@ -17,7 +27,16 @@
 
             <div class="col-md-2">
                 <select class="form-control" id="inp_BirthDateDay" type="" name="BirthDateDay" data-ng-model="profile.birthDateDay"  >
-                    <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
+                    <option>1</option> <option>2</option> <option>3</option> 
+                    <option>4</option> <option>5</option> <option>6</option>
+                    <option>7</option> <option>8</option> <option>9</option> 
+                    <option>10</option> <option>11</option> <option>12</option>
+                    <option>1</option> <option>2</option> <option>12</option> 
+                    <option>4</option> <option>5</option> <option>6</option>
+                    <option>1</option> <option>2</option> <option>18</option> 
+                    <option>4</option> <option>5</option> <option>6</option>
+                    <option>1</option> <option>2</option> <option>24</option> 
+                    <option>4</option> <option>5</option> <option>6</option>
                 </select>
             </div>
             <div class="col-md-2">
@@ -58,9 +77,16 @@
         <div class="form-group">
             <label class="col-md-3 control-label" for="inp_image">Аватар (180x180)</label>
             <div class="col-md-6">
-                <input type="file" id="inp_image" name="image" file-model="file" />
+                <input type="file" id="fileInput" />
             </div>
         </div> 
+
+        <div class="cropArea">
+            <img-crop image="myImage" result-image="myCroppedImage" result-image-size="180"></img-crop>
+        </div>
+        <div>Cropped Image:</div>
+        <div><img ng-src="{{myCroppedImage}}" /></div>
+
         <div class="form-group">
             <div class="col-md-offset-3 col-md-6">
                 <button class="btn btn-success" data-ng-click="submit()">Сохранить</button>

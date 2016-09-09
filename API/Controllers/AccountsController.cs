@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net;
 using System;
+using Microsoft.AspNet.Identity;
 
 namespace API.Controllers
 {
@@ -22,7 +23,13 @@ namespace API.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState);
+                string errorString = "Ошибка создания пользователя: ";
+
+                foreach (var modelState in ModelState.Values)
+                    foreach(var error in modelState.Errors)
+                        errorString += error.ErrorMessage;
+
+                return Request.CreateResponse(HttpStatusCode.BadRequest, errorString);
             }
 
             try
@@ -31,7 +38,7 @@ namespace API.Controllers
             }
             catch(Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
             return Request.CreateResponse(HttpStatusCode.OK);

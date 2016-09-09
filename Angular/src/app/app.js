@@ -1,4 +1,4 @@
-var app = angular.module('campApp', ['ngRoute', 'LocalStorageModule']);
+var app = angular.module('campApp', ['ngRoute', 'LocalStorageModule', 'ngImgCrop']);
 
 app.config(function ($routeProvider) {
 
@@ -89,7 +89,7 @@ app.config(function ($httpProvider) {
 
 app.run(['authService', '$location', 'localStorageService', function (authService, $location, localStorageService)
 {
-    //localStorageService.set('serviceBase', 'http://localhost:56332/');
-    localStorageService.set('serviceBase', 'http://localhost:8080/CampNetwork/');
+    localStorageService.set('serviceBase', 'http://localhost:56332/');
+    //localStorageService.set('serviceBase', 'http://localhost:8080/CampNetwork/');
     authService.fillAuthData();
 }]);

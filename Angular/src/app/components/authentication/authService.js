@@ -5,8 +5,7 @@ app.factory('authService', ['$http', '$q', 'localStorageService', function ($htt
     var authServiceFactory = {};
 
     var _authentication = {
-        isAuth: false,
-        userName: ""
+        isAuth: false
     };
 
     var _saveRegistration = function (registration)

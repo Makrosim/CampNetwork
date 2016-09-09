@@ -28,7 +28,7 @@
                     <p>{{post.text}}</p>
                 </div>
                 <div class="panel-footer">
-                    <span>{{post.creationDate | date:"HH:mm MM/dd/yyyy"}}</span>
+                    <span>{{post.creationDate | date:"HH:mm dd/MM/yyyy"}}</span>
                     
                     <a href="" class="pull-right" style="color: grey" ng-click="set(post.id)">
                         <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
@@ -47,7 +47,7 @@
         <dl class="dl-comment col-md-12">
             <div ng-repeat="message in post.messages">
                 <dt>
-                    <span><a href="#/home/{{message.author}}" ng-bind="message.firstName + ' ' + message.lastName"></a> в {{message.date | date:"HH:mm MM/dd/yyyy"}}</span>
+                    <span><a href="#/home/{{message.author}}" ng-bind="message.firstName + ' ' + message.lastName"></a> в {{message.date | date:"HH:mm dd/MM/yyyy"}}</span>
 
                     <a href="" style="color: grey" ng-click="delete(message.id, post.id, $index, posts.indexOf(post))" ng-if="(userName === message.author) || (userName === post.author)">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>

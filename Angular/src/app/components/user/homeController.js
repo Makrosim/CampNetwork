@@ -7,6 +7,9 @@ app.controller('homeController', ['$http', '$scope', '$rootScope', '$location', 
     var authData = localStorageService.get('authorizationData');
 
     $scope.response = null;
+    $scope.defaultAvatarUri = serviceBase + 'content/images/empty.png';
+
+    console.log($scope.defaultAvatarUri);
 
     var userName = $routeParams['userName'];
 
@@ -22,9 +25,7 @@ app.controller('homeController', ['$http', '$scope', '$rootScope', '$location', 
 
             if(response.status != '204')
             {
-                if($scope.response.data.avatarBase64.length === 0)
-                    $scope.response.data.avatarBase64 = serviceBase + 'content/images/empty.png';
-
+                console.log($scope.profile.avatarBase64.length);
                 getPosts();
             }
         },

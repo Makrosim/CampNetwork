@@ -3,27 +3,26 @@ app.controller('loginController', ['$scope', '$rootScope', '$location', 'authSer
 
     $rootScope.title = 'Логин';
 
-    $scope.loginData = {
-        userName: "",
-        password: ""
-    };
-
+    $scope.loginData = {};
     $scope.message = "";
 
-    $scope.login = function ()
+    $scope.login = function (isValid)
     {
-        authService.login($scope.loginData).then
-        (
-            function (response)
-            {
-                $scope.$emit('login', authService.authentication.isAuth);
-                $location.path('/home/' + $scope.loginData.userName);
-            },
-            function (err) 
-            {
-                $scope.message = err.error_description;
-            }
-        );
+        if(isValid)
+        {
+            authService.login($scope.loginData).then
+            (
+                function (response)
+                {
+                    $scope.$emit('login', authService.authentication.isAuth);
+                    $location.path('/home/' + $scope.loginData.userName);
+                },
+                function (err) 
+                {
+                    $scope.message = err.data.error_description;
+                }
+            );   
+        }
     };
 
 }]);

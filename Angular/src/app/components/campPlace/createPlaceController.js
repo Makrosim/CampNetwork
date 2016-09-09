@@ -17,21 +17,25 @@ app.controller('createPlaceController', ['campPlaceService', '$http', '$scope', 
         });
     }
 
-    $scope.submit = function ()
+    $scope.submit = function (isValid)
     {
-        if(campPlaceId == undefined)
+        console.log(isValid);
+        if(isValid)
         {
-            campPlaceService.createCampPlace($scope.campPlace, function(data)
+            if(campPlaceId == undefined)
             {
-                $location.path('/camp');
-            });
-        }
-        else
-        {
-            campPlaceService.updateCampPlace($scope.campPlace, function(data)
+                campPlaceService.createCampPlace($scope.campPlace, function(data)
+                {
+                    $location.path('/camp');
+                });
+            }
+            else
             {
-                $location.path('/camp');
-            });
+                campPlaceService.updateCampPlace($scope.campPlace, function(data)
+                {
+                    $location.path('/camp');
+                });
+            }
         }
     }
 

@@ -49,7 +49,14 @@ namespace CampBusinessLogic.Services
                     await Database.SaveAsync();
                 }
                 else
-                    throw new Exception("Ошибка создания пользователя");
+                {
+                    string identityErrorsString = "Ошибка создания пользователя: ";
+
+                    foreach (var errorString in result.Errors)
+                        identityErrorsString += errorString;
+                    throw new Exception(identityErrorsString);
+                }
+                    
             }
             else
             {

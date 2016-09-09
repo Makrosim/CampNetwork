@@ -6,16 +6,17 @@ app.controller('campPlaceHomeController', ['campPlaceService', '$scope', '$rootS
     var authData = localStorageService.get('authorizationData');
     var campPlaceId = $routeParams['campPlaceId'];
 
-    $scope.campPlace = {};
+    $scope.response = null;
 
     campPlaceService.getCampPlaceData(campPlaceId, function(data)
     {
-        $scope.campPlace = data;
+        $scope.response = data;
     });
 
     campPlaceService.getCampPlacePosts(campPlaceId, function(data)
     {
-        $scope.$broadcast('dataReceived', data);
+        if(data != '204')
+            $scope.$broadcast('dataReceived', data);
     });
 
 }]);
