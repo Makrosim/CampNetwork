@@ -1,16 +1,16 @@
 <div class="col-md-10">
 
     <div class="loader container" ng-if="response === null"></div>
-    <div class="alert alert-warning main-list-div" ng-if="response.status == '204'">Запрашиваемый ресурс не найден</div>
+    <div class="alert alert-warning main-list-div" ng-if="response.status == '204'">The resource are requested not found</div>
 
     <div class="well row user-info" ng-if="response.status == '200'">
-        <p ng-bind="profile.firstName + ' ' + profile.lastName" class="lead"></p>
+        <p class="lead">{{profile.firstName}} {{profile.lastName}}</p>
 
         <div class="col-md-8 userInfo">
         
             <div class="col-md-4 userInfo">
                 <adress>
-                    <strong>Адрес</strong>
+                    <strong>Address</strong>
                     <br>{{profile.address}}
                 </adress>
             </div>
@@ -24,14 +24,14 @@
 
             <div class="col-md-4 userInfo" style="margin-bottom: 10px">
                 <adress>
-                    <strong>Дата рождения</strong>
+                    <strong>Birthday</strong>
                     <br>{{profile.birthDateDay}} {{profile.birthDateMounth}} {{profile.birthDateYear}}
                 </adress>
             </div>
             
             <div >
                 <adress>
-                    <strong>Дополнительная информация</strong>
+                    <strong>Additional information</strong>
                     <br>{{profile.additionalInformation}}
                 </adress>
             </div>

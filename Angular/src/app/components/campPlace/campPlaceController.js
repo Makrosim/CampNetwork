@@ -1,13 +1,9 @@
 'use strict';
-app.controller('campPlaceController', ['campPlaceService', '$scope', '$rootScope', 'localStorageService', function (campPlaceService, $scope, $rootScope, localStorageService) {
-
-    $rootScope.title = 'Места отдыха';
-
-    var authData = localStorageService.get('authorizationData');
-
+app.controller('campPlaceController', ['campPlaceService', '$scope', 'authService', function (campPlaceService, $scope, authService)
+{
     $scope.response = null;
 
-    campPlaceService.getUsersCampPlaces(authData.userName, function(data)
+    campPlaceService.getUsersCampPlaces(authService.authentication.userName, function(data)
     { 
         $scope.response = data;
 

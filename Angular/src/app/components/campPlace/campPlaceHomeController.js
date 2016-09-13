@@ -1,9 +1,6 @@
 'use strict';
-app.controller('campPlaceHomeController', ['campPlaceService', '$scope', '$rootScope', '$location', '$routeParams', 'localStorageService', function (campPlaceService, $scope, $rootScope, $location, $routeParams, localStorageService)
+app.controller('campPlaceHomeController', ['campPlaceService', '$scope', '$routeParams', function (campPlaceService, $scope, $routeParams)
 {
-    $rootScope.title = 'Место отдыха';
-
-    var authData = localStorageService.get('authorizationData');
     var campPlaceId = $routeParams['campPlaceId'];
 
     $scope.response = null;

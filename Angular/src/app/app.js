@@ -83,13 +83,17 @@ app.config(function ($routeProvider) {
     });
 });
 
+app.constant('config', 
+{
+    //serviceBase: 'http://localhost:56332/'
+    serviceBase: 'http://localhost:8080/CampNetwork/'
+});
+
 app.config(function ($httpProvider) {
     $httpProvider.interceptors.push('authInterceptorService');
 });
 
 app.run(['authService', '$location', 'localStorageService', function (authService, $location, localStorageService)
 {
-    localStorageService.set('serviceBase', 'http://localhost:56332/');
-    //localStorageService.set('serviceBase', 'http://localhost:8080/CampNetwork/');
     authService.fillAuthData();
 }]);

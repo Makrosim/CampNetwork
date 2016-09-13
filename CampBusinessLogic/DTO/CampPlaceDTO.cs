@@ -8,11 +8,11 @@ namespace CampBusinessLogic.DTO
     {
         public enum Rates
         {
-            Ужасно = 1,
-            Плохо = 2,
-            Средне = 3,
-            Хорошо = 4,
-            Отлично = 5
+            Terribly = 1,
+            Bad = 2,
+            Medium = 3,
+            Good = 4,
+            Excellent = 5
         }
 
         public int Id { get; set; }

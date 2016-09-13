@@ -1,8 +1,7 @@
 'use strict';
-app.controller('postlistController', ['$http', '$scope', '$location', '$routeParams', 'localStorageService', function ($http, $scope, $location, $routeParams, localStorageService) {
-
-    var serviceBase = localStorageService.get('serviceBase');
-    var authData = localStorageService.get('authorizationData');
+app.controller('postlistController', ['$http', '$scope', '$location', '$routeParams', 'authService', 'config', function ($http, $scope, $location, $routeParams, authService, config)
+{
+    var authData = authService.authentication;
 
 	$scope.text ='';
 	$scope.posts = null;
@@ -21,7 +20,7 @@ app.controller('postlistController', ['$http', '$scope', '$location', '$routePar
 
 	$scope.deletePost = function (postId, postIndex)
 	{
-        $http.delete(serviceBase + 'api/Posts/' + postId).then
+        $http.delete(config.serviceBase + 'api/Posts/' + postId).then
         (
         	function (response)
 	        {
@@ -36,7 +35,7 @@ app.controller('postlistController', ['$http', '$scope', '$location', '$routePar
 
 	$scope.delete = function (messageId, postId, messageIndex, postIndex)
 	{
-        $http.delete(serviceBase + 'api/Posts/' + postId + '/Messages/' + messageId).then
+        $http.delete(config.serviceBase + 'api/Posts/' + postId + '/Messages/' + messageId).then
         (
         	function (response)
 	        {
@@ -64,7 +63,7 @@ app.controller('postlistController', ['$http', '$scope', '$location', '$routePar
 		message.author = authData.userName;
 		message.date = new Date();
 
-        $http.post(serviceBase + 'api/Messages/', message).then
+        $http.post(config.serviceBase + 'api/Messages/', message).then
         (
         	function (response)
 	        {

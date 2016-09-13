@@ -1,7 +1,7 @@
 <div id="div" class="col-md-10">
 
     <div class="loader container" ng-if="response === null"></div>
-    <div class="alert alert-warning" ng-if="response == '204'">Запрашиваемый ресурс не найден</div>
+    <div class="alert alert-warning" ng-if="response == '204'">Requested resource not found or not exists</div>
 
     <div ng-if="(response !== null) && (response != '204')">
         <div class="well row user-info">
@@ -11,24 +11,24 @@
 
                 <div class="col-md-6 userInfo">
                     <adress>
-                        <strong>Координаты</strong>
-                        <br>Широта: {{response.locationY}}
-                        <br>Долгота: {{response.locationX}}
+                        <strong>Location</strong>
+                        <br>Latitude: {{response.locationY}}
+                        <br>Longitude: {{response.locationX}}
                     </adress>
                 </div>
                 <div class="col-md-6 userInfo" style="margin-bottom: 10px">
                     <adress>
-                        <strong>Оценки</strong>
-                        <br>Чистота: {{response.purity}}
-                        <br>Людность: {{response.crowdy}}
-                        <br>Доступность: {{response.approachability}}
-                        <br>Комфорт: {{response.comfortableness}}
+                        <strong>Marks</strong>
+                        <br>Purity: {{response.purity}}
+                        <br>Crowdy: {{response.crowdy}}
+                        <br>Accessibility: {{response.approachability}}
+                        <br>Comfortableness: {{response.comfortableness}}
                     </adress>
                 </div>
 
                 <div >
                     <adress>
-                        <strong>Краткое описание</strong>
+                        <strong>Short description</strong>
                         <br>{{response.shortDescription}}
                     </adress>
                 </div>

@@ -1,22 +1,15 @@
 'use strict';
-app.controller('homeController', ['$http', '$scope', '$rootScope', '$location', '$timeout', '$routeParams', 'localStorageService', function ($http, $scope, $rootScope, $location, $timeout, $routeParams, localStorageService) {
-
-    $rootScope.title = 'Домашняя страница';
-
-    var serviceBase = localStorageService.get('serviceBase');
-    var authData = localStorageService.get('authorizationData');
-
+app.controller('homeController', ['$http', '$scope', '$location', '$routeParams', 'authService', 'config', function ($http, $scope, $location, $routeParams, authService, config)
+{
     $scope.response = null;
-    $scope.defaultAvatarUri = serviceBase + 'content/images/empty.png';
-
-    console.log($scope.defaultAvatarUri);
+    $scope.defaultAvatarUri = config.serviceBase + 'content/images/empty.png';
 
     var userName = $routeParams['userName'];
 
     if($routeParams['userName'] == undefined)
-        userName = authData.userName;
+        userName = authService.authentication.userName;
 
-    $http.get(serviceBase + 'api/Profiles/' + userName).then
+    $http.get(config.serviceBase + 'api/Profiles/' + userName).then
     (
         function (response) 
         {
@@ -25,7 +18,6 @@ app.controller('homeController', ['$http', '$scope', '$rootScope', '$location', 
 
             if(response.status != '204')
             {
-                console.log($scope.profile.avatarBase64.length);
                 getPosts();
             }
         },
@@ -37,7 +29,7 @@ app.controller('homeController', ['$http', '$scope', '$rootScope', '$location', 
 
     function getPosts()
     {
-        $http.get(serviceBase + 'api/Users/' + $routeParams['userName'] + '/Posts').then
+        $http.get(config.serviceBase + 'api/Users/' + $routeParams['userName'] + '/Posts').then
         (
             function (response)
             {
@@ -56,7 +48,7 @@ app.controller('homeController', ['$http', '$scope', '$rootScope', '$location', 
     {
         value.messages = {};
 
-        $http.get(serviceBase + 'api/Posts/' + value.id + '/Messages').then
+        $http.get(config.serviceBase + 'api/Posts/' + value.id + '/Messages').then
         (
             function (response)
             {

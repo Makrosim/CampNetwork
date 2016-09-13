@@ -1,8 +1,6 @@
 'use strict';
-app.controller('signupController', ['$scope', '$rootScope', '$location', '$timeout', 'authService', function ($scope, $rootScope, $location, $timeout, authService) {
-
-    $rootScope.title = 'Регистрация';
-
+app.controller('signupController', ['$scope', '$location', '$timeout', 'authService', function ($scope, $location, $timeout, authService)
+{
     $scope.savedSuccessfully = false;
     $scope.message = "";
 
@@ -29,8 +27,10 @@ app.controller('signupController', ['$scope', '$rootScope', '$location', '$timeo
         }
     };
 
-    var startTimer = function () {
-        var timer = $timeout(function () {
+    var startTimer = function ()
+    {
+        var timer = $timeout(function ()
+        {
             $timeout.cancel(timer);
             $location.path('/login');
         }, 2000);

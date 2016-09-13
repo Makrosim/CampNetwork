@@ -1,16 +1,11 @@
 'use strict';
-app.controller('openGroupController', ['$http', '$scope', '$rootScope', '$location', '$routeParams', 'localStorageService', function ($http, $scope, $rootScope, $location, $routeParams, localStorageService)
+app.controller('openGroupController', ['$http', '$scope', '$location', '$routeParams', 'config', function ($http, $scope, $location, $routeParams, config)
 {
-    $rootScope.title = 'Группа';
-
-    var serviceBase = localStorageService.get('serviceBase');
-    var authData = localStorageService.get('authorizationData');
-
     $scope.group = {};
     $scope.groupId = $routeParams['groupId'];
     $scope.postId = -1;
 
-    $http.get(serviceBase + 'api/Groups/' + $scope.groupId).then
+    $http.get(config.serviceBase + 'api/Groups/' + $scope.groupId).then
     (
         function (response) 
         {
@@ -24,7 +19,7 @@ app.controller('openGroupController', ['$http', '$scope', '$rootScope', '$locati
 
     $scope.addPost = function ()
     {
-        $http.get(serviceBase + 'api/Group/AddPost/?groupId=' + $scope.group.id + '&postId=' + $scope.postId).then
+        $http.get(config.serviceBase + 'api/Group/AddPost/?groupId=' + $scope.group.id + '&postId=' + $scope.postId).then
         (
             function (response) 
             {

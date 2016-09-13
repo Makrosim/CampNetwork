@@ -1,6 +1,6 @@
 <div class="col-md-10" ng-switch on="searchCriteria === undefined">
-    <div class="alert alert-info main-list-div" ng-if="response.status == '204'"> Поиск не дал результатов </div>
-    <div class="alert alert-info main-list-div" ng-switch-when="true"> Введите критерий поиска </div>
+    <div class="alert alert-info main-list-div" ng-if="response.status == '204'"> No search result </div>
+    <div class="alert alert-info main-list-div" ng-switch-when="true"> Please, input search criteria </div>
     <div  ng-switch-when="false">
     	<ng-include src="initData()"></ng-include> 
     </div>

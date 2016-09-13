@@ -1,10 +1,14 @@
 ﻿'use strict';
-app.controller('loginController', ['$scope', '$rootScope', '$location', 'authService', function ($scope, $rootScope, $location, authService) {
-
-    $rootScope.title = 'Логин';
-
+app.controller('loginController', ['$scope', '$location', 'authService', function ($scope, $location, authService)
+{
     $scope.loginData = {};
     $scope.message = "";
+
+    (function ()
+    {
+        authService.logOut();
+        $scope.$emit('login', false);
+    })();
 
     $scope.login = function (isValid)
     {

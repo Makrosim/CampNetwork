@@ -1,15 +1,15 @@
 <div id="div">
     <div class="container col-md-10 main-list-div">
         <div class="loader container" ng-if="response == null"></div>
-        <div class="alert alert-info" ng-if="response == '204'">Вы еще не добавили места отдыха</div>
+        <div class="alert alert-info" ng-if="response == '204'">You have not added camp places yet</div>
         <div class="map well" hidden id="map"></div>
         <ng-include src="'app/components/campPlace/campPlaceList.html'"></ng-include>
     </div>
 
     <div class="col-md-2 sidebar-offcanvas " role="navigation">
         <div class="list-group">
-            <a class="list-group-item" href="#/createPlace">Добавить</a>
-            <a class="list-group-item" href="" id="maplink">Карта</a>
+            <a class="list-group-item" href="#/createPlace">Create</a>
+            <a class="list-group-item" href="" id="maplink">Map</a>
         </div>
     </div>
 

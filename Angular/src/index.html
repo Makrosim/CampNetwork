@@ -27,7 +27,7 @@
     <nav class="navbar navbar-inverse" role="navigation">
         <div class="container">
             <div class="navbar-header">
-                <span class="navbar-brand" ng-bind="title"></span>
+                <a href="#/home/{{data.authData.userName}}" class="navbar-brand">Camp Network</a>
             </div> 
 
             <div class="collapse navbar-collapse" role="navigation" ng-if="data.isAuth">
@@ -40,11 +40,11 @@
                     </li>
                     <li>
                         <form class="navbar-form">
-                            <input type="text" class="form-control" placeholder="Критерий" ng-model="data.searchCriteria">
+                            <input type="text" class="form-control" placeholder="Criteria" ng-model="data.searchCriteria">
                         </form>
                     </li>
                     <li>
-                        <a href="" ng-click="search()">Поиск</a>
+                        <a href="" ng-click="search()">Search</a>
                     </li>
                 </ul>
             </div>
@@ -54,25 +54,25 @@
     <div class="container" ng-switch on="data.isAuth">
         <div class="col-md-2 sidebar-offcanvas" role="navigation" ng-switch-when="true">
             <div class="list-group">
-                <a class="list-group-item active" href="#/home/{{data.authData.userName}}" >
+                <a class="list-group-item" href="#/home/{{data.authData.userName}}" >
                     <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-                    <span ng-bind="data.authData.userName"></span>
+                    <span>{{data.authData.userName}}</span>
                 </a>
                 <a class="list-group-item" href="#/camp">
                     <span class="glyphicon glyphicon-tent" aria-hidden="true"></span>
-                    <span>Места отдыха</span>   
+                    <span>Camp places</span>   
                 </a>        
                 <a class="list-group-item" href="#/group">
                     <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
-                    <span>Группы</span>  
+                    <span>Groups</span>  
                 </a>
                 <a class="list-group-item" href="#/profile">
                     <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-                    <span>Настройки</span>   
+                    <span>Profile</span>   
                 </a>
                 <a class="list-group-item" href="" id="loginLink" ng-click="logOut()">
                     <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
-                    <span>Выход</span>   
+                    <span>Log out</span>   
                 </a>
             </div>
         </div>
@@ -81,11 +81,11 @@
             <div class="list-group">
                 <a class="list-group-item" href="#/login" >
                     <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
-                    <span>Логин</span>
+                    <span>Login</span>
                 </a>
                 <a class="list-group-item" href="#/signup">                
                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                    <span>Регистрация</span>   
+                    <span>Register</span>   
                 </a>
             </div>
         </div>

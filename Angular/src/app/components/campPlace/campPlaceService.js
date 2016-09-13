@@ -1,12 +1,11 @@
 'use strict';
-app.factory('campPlaceService', ['$http', '$q', 'localStorageService', function ($http, $q, localStorageService) {
-
-    var serviceBase = localStorageService.get('serviceBase');
+app.factory('campPlaceService', ['$http', 'config', function ($http, config)
+{
     var campPlaceServiceFactory = {};
 
     var _getUsersCampPlaces = function (userName, callback)
     {
-	    $http.get(serviceBase + 'api/Users/' + userName + '/CampPlaces').then
+	    $http.get(config.serviceBase + 'api/Users/' + userName + '/CampPlaces').then
 	    (
 	        function (response) 
 	        {
@@ -28,7 +27,7 @@ app.factory('campPlaceService', ['$http', '$q', 'localStorageService', function 
 
     var _getCampPlaceData = function (campPlaceId, callback)
     {
-	    $http.get(serviceBase + 'api/CampPlaces/' + campPlaceId).then
+	    $http.get(config.serviceBase + 'api/CampPlaces/' + campPlaceId).then
 	    (
 	        function (response) 
 	        {
@@ -50,7 +49,7 @@ app.factory('campPlaceService', ['$http', '$q', 'localStorageService', function 
 
     var _getCampPlacePosts = function (campPlaceId, callback)
     {
-	    $http.get(serviceBase + 'api/CampPlaces/' + campPlaceId + '/Posts').then
+	    $http.get(config.serviceBase + 'api/CampPlaces/' + campPlaceId + '/Posts').then
 	    (
 	        function (response)
 	        {
@@ -74,7 +73,7 @@ app.factory('campPlaceService', ['$http', '$q', 'localStorageService', function 
     {
         value.messages = {};
 
-        $http.get(serviceBase + 'api/Posts/' + value.id + '/Messages').then
+        $http.get(config.serviceBase + 'api/Posts/' + value.id + '/Messages').then
         (
             function (response)
             {
@@ -92,7 +91,7 @@ app.factory('campPlaceService', ['$http', '$q', 'localStorageService', function 
 
     var _createCampPlace = function (campPlace, callback)
     {
-        $http.post(serviceBase + 'api/CampPlaces/', campPlace).then
+        $http.post(config.serviceBase + 'api/CampPlaces/', campPlace).then
         (
             function (response)
             {
@@ -100,14 +99,14 @@ app.factory('campPlaceService', ['$http', '$q', 'localStorageService', function 
             },
             function (err)
             {
-                console.log(err.statusText);
+                console.log(err);
             }
         );
     };
 
     var _updateCampPlace = function (campPlace, callback)
     {
-        $http.put(serviceBase + 'api/CampPlaces/', campPlace).then
+        $http.put(config.serviceBase + 'api/CampPlaces/', campPlace).then
         (
             function (response)
             {
@@ -122,7 +121,7 @@ app.factory('campPlaceService', ['$http', '$q', 'localStorageService', function 
 
     var _deleteCampPlace = function (campPlaceId, callback)
     {
-        $http.delete(serviceBase + 'api/CampPlaces/' + campPlaceId).then
+        $http.delete(config.serviceBase + 'api/CampPlaces/' + campPlaceId).then
         (
             function (response) 
             {

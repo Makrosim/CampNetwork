@@ -72,6 +72,14 @@ body
     margin-left: -15px;
 }
 
+.cropArea
+{
+  background: #E4E4E4;
+  overflow: hidden;
+  width: 500px;
+  height: 350px;
+}
+
 .loader {
     border: 16px solid #f3f3f3; /* Light grey */
     border-top: 16px solid #3498db; /* Blue */

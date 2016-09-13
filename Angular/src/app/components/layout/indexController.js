@@ -1,19 +1,18 @@
 ﻿'use strict';
-app.controller('indexController', ['$scope', 'localStorageService', '$location', 'authService', function ($scope, localStorageService, $location, authService) {
-
+app.controller('indexController', ['$scope', '$location', 'authService', function ($scope, $location, authService)
+{
 	$scope.data = {};
-    $scope.data.authData = localStorageService.get('authorizationData');
+    $scope.data.authData = authService.authentication;
     $scope.data.availableOptions = 
 	    [
-		    {id: '1', name: 'Места отдыха'},
-		    {id: '2', name: 'Пользователи'},
+		    {id: '1', name: 'Camp places'},
+		    {id: '2', name: 'Users'},
 	    ];   	
 
-    $scope.data.selectedOption = {id: '1', name: 'Места отдыха'};
+    $scope.data.selectedOption = {id: '1', name: 'Camp places'};
 
     $scope.$on('login', function (event, isAuth) 
 	{
-		$scope.data.authData = localStorageService.get('authorizationData');
 		$scope.data.isAuth = isAuth;
 	})	
 
@@ -31,11 +30,11 @@ app.controller('indexController', ['$scope', 'localStorageService', '$location',
 	{	
 		if($scope.data.searchCriteria === undefined)
 		{
-			$location.path('/search/' + $scope.data.selectedOption.name);
+			$location.path('/search/' + $scope.data.selectedOption.id);
 		}
 		else
 		{
-			$location.path('/search/' + $scope.data.selectedOption.name + '/' + $scope.data.searchCriteria);		
+			$location.path('/search/' + $scope.data.selectedOption.id + '/' + $scope.data.searchCriteria);		
 		}
 	}
 

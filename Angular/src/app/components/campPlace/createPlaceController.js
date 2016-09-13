@@ -1,10 +1,6 @@
 'use strict';
-app.controller('createPlaceController', ['campPlaceService', '$http', '$scope', '$routeParams', '$rootScope', '$location', 'localStorageService', function (campPlaceService, $http, $scope, $routeParams, $rootScope, $location, localStorageService)
+app.controller('createPlaceController', ['campPlaceService', '$http', '$scope', '$routeParams', '$location', function (campPlaceService, $http, $scope, $routeParams, $location)
 {
-    $rootScope.title = 'Создать место отдыха';
-
-    var serviceBase = localStorageService.get('serviceBase');
-    var authData = localStorageService.get('authorizationData');
     var campPlaceId = $routeParams['id'];
 
     $scope.campPlace = {};
@@ -19,7 +15,6 @@ app.controller('createPlaceController', ['campPlaceService', '$http', '$scope', 
 
     $scope.submit = function (isValid)
     {
-        console.log(isValid);
         if(isValid)
         {
             if(campPlaceId == undefined)

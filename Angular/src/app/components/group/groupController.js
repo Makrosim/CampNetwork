@@ -1,16 +1,13 @@
 'use strict';
-app.controller('groupController', ['$http', '$scope', '$rootScope', '$location', 'localStorageService', function ($http, $scope, $rootScope, $location, localStorageService)
+app.controller('groupController', ['$http', '$scope', '$location', 'authService', 'config', function ($http, $scope, $location, authService, config)
 {
-    $rootScope.title = 'Группы';
-
-    var serviceBase = localStorageService.get('serviceBase');
-    var authData = localStorageService.get('authorizationData');
+    var authData = authService.authentication;
         
     $scope.isGroupsExists = null;
     $scope.createdGroups = [];
     $scope.otherGroups = [];
 
-    $http.get(serviceBase + 'api/Users/' + authData.userName + '/Groups').then
+    $http.get(config.serviceBase + 'api/Users/' + authData.userName + '/Groups').then
     (
         function (response) 
         {
@@ -42,7 +39,7 @@ app.controller('groupController', ['$http', '$scope', '$rootScope', '$location',
 
     $scope.delete = function (id, index, isCreator)
     {
-        $http.delete(serviceBase + 'api/Groups/' + id).then
+        $http.delete(config.serviceBase + 'api/Groups/' + id).then
         (
             function (response) 
             {

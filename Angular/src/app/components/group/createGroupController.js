@@ -1,16 +1,11 @@
 'use strict';
-app.controller('createGroupController', ['$http', '$scope', '$rootScope', '$location', 'localStorageService', function ($http, $scope, $rootScope, $location, localStorageService)
+app.controller('createGroupController', ['$http', '$scope', '$location', 'config', function ($http, $scope, $location, config)
 {
-    $rootScope.title = 'Создание группы';
-
-    var serviceBase = localStorageService.get('serviceBase');
     $scope.groupData = {};
-    
-    var authData = localStorageService.get('authorizationData');
 
     $scope.create = function ()
     {
-        $http.post(serviceBase + 'api/Groups/', $scope.groupData).then
+        $http.post(config.serviceBase + 'api/Groups/', $scope.groupData).then
         (
             function (response)
             {

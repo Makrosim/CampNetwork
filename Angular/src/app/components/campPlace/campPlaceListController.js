@@ -1,11 +1,8 @@
 'use strict';
-app.controller('campPlaceListController', ['campPlaceService', '$scope', 'localStorageService', function (campPlaceService, $scope, localStorageService) {
-
-    var serviceBase = localStorageService.get('serviceBase');
-    var authData = localStorageService.get('authorizationData');
-
+app.controller('campPlaceListController', ['campPlaceService', '$scope', 'authService', function (campPlaceService, $scope, authService)
+{
     $scope.campList = null;
-	$scope.currentUser = authData.userName;
+	$scope.currentUser = authService.authentication.userName;
 
     $scope.$on('dataReceived', function (event, data)
     {

@@ -1,7 +1,6 @@
 ﻿'use strict';
-app.factory('authService', ['$http', '$q', 'localStorageService', function ($http, $q, localStorageService) {
-
-    var serviceBase = localStorageService.get('serviceBase');
+app.factory('authService', ['$http', '$q', 'localStorageService', 'config', function ($http, $q, localStorageService, config)
+{
     var authServiceFactory = {};
 
     var _authentication = {
@@ -12,7 +11,7 @@ app.factory('authService', ['$http', '$q', 'localStorageService', function ($htt
     {
         _logOut();
 
-        return $http.post(serviceBase + 'api/accounts', registration).then
+        return $http.post(config.serviceBase + 'api/accounts', registration).then
         (
             function (response)
             {
@@ -21,13 +20,13 @@ app.factory('authService', ['$http', '$q', 'localStorageService', function ($htt
         );
     };
 
-    var _login = function (loginData) {
-
+    var _login = function (loginData)
+    {
         var data = "grant_type=password&username=" + loginData.userName + "&password=" + loginData.password;
 
         var deferred = $q.defer();
 
-        $http.post(serviceBase + 'token', data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).then
+        $http.post(config.serviceBase + 'token', data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).then
         (
             function (response)
             {
@@ -46,11 +45,10 @@ app.factory('authService', ['$http', '$q', 'localStorageService', function ($htt
         );
 
         return deferred.promise;
-
     };
 
-    var _logOut = function () {
-
+    var _logOut = function ()
+    {
         localStorageService.remove('authorizationData');
 
         _authentication.isAuth = false;
@@ -58,10 +56,11 @@ app.factory('authService', ['$http', '$q', 'localStorageService', function ($htt
 
     };
 
-    var _fillAuthData = function () {
-
+    var _fillAuthData = function ()
+    {
         var authData = localStorageService.get('authorizationData');
-        if (authData) {
+        if (authData)
+        {
             _authentication.isAuth = true;
             _authentication.userName = authData.userName;
         }

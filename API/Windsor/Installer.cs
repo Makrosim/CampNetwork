@@ -15,13 +15,13 @@ namespace API.Windsor
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            container.Register(Component.For<IUserService>().ImplementedBy<UserService>());
-            container.Register(Component.For<IProfileService>().ImplementedBy<ProfileService>());
+            container.Register(Component.For<IUserService>().ImplementedBy<UserService>().LifestylePerWebRequest());
+            container.Register(Component.For<IProfileService>().ImplementedBy<ProfileService>().LifestylePerWebRequest());
             container.Register(Component.For<ICampPlaceService>().ImplementedBy<CampPlaceService>().LifestylePerWebRequest());
-            container.Register(Component.For<IPostService>().ImplementedBy<PostService>());
-            container.Register(Component.For<IMessageService>().ImplementedBy<MessageService>());
-            container.Register(Component.For<IGroupService>().ImplementedBy<GroupService>());
-            container.Register(Component.For<IMediaService>().ImplementedBy<MediaService>());
+            container.Register(Component.For<IPostService>().ImplementedBy<PostService>().LifestylePerWebRequest());
+            container.Register(Component.For<IMessageService>().ImplementedBy<MessageService>().LifestylePerWebRequest());
+            container.Register(Component.For<IGroupService>().ImplementedBy<GroupService>().LifestylePerWebRequest());
+            container.Register(Component.For<IMediaService>().ImplementedBy<MediaService>().LifestylePerWebRequest());
             container.Register(Component.For<IOAuthAuthorizationServerProvider>().ImplementedBy<OAuthService>());
             container.Register(Classes.FromThisAssembly().BasedOn<ApiController>().LifestylePerWebRequest());
         }

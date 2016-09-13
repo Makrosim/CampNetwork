@@ -8,7 +8,7 @@
                 
                     <div class="col-md-4 userInfo">
                         <adress>
-                            <strong>Адрес</strong>
+                            <strong>Address</strong>
                             <br>{{profile.address}}
                         </adress>
                     </div>
@@ -22,21 +22,22 @@
 
                     <div class="col-md-4 userInfo" style="margin-bottom: 10px">
                         <adress>
-                            <strong>Дата рождения</strong>
+                            <strong>Bithday</strong>
                             <br>{{profile.birthDateDay}} {{profile.birthDateMounth}} {{profile.birthDateYear}}
                         </adress>
                     </div>
                     
                     <div >
                         <adress>
-                            <strong>Дополнительная информация</strong>
+                            <strong>Additional information</strong>
                             <br>{{profile.additionalInformation}}
                         </adress>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <img data-ng-src="data:image/png;base64,{{profile.avatarBase64}}" height="180" width="180" />
-                </div>
+            <div class="col-md-4">
+                <img data-ng-src="{{defaultAvatarUri}}" height="180" width="180" ng-if="profile.avatarBase64.length === 0"/>
+                <img data-ng-src="data:image/png;base64,{{profile.avatarBase64}}" height="180" width="180" ng-if="profile.avatarBase64.length !== 0"/>
+            </div>
             </div>
 
             <div class="panel-footer"></div>

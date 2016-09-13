@@ -4,24 +4,24 @@
         <div class="panel-group panel-with-comments" >
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <a href="" class="pull-right" style="color: grey" ng-click="deletePost(post.id, $index)" ng-if="userName === post.author">
+                    <a href="" class="pull-right" style="color: grey" ng-click="deletePost(post.id, $index)" ng-if="userName.toLowerCase() === post.author.toLowerCase()">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </a>
-                    <span ng-bind="post.name"></span>               
+                    <span>{{post.name}}</span>               
                 </div>
                 <div class="panel-body">
 
                     <div class="col-md-6 userInfo">
                         <adress>
-                            <strong>Автор</strong>
-                            <br><a href="#/home/{{post.author}}" ng-bind="post.authorFirstName + ' ' + post.authorLastName"></a>
+                            <strong>Author</strong>
+                            <br><a href="#/home/{{post.author}}">{{post.authorFirstName}} {{post.authorLastName}}</a>
                         </adress>
                     </div>
 
                     <div class="col-md-6" style="margin-bottom: 10px">
                         <adress>
-                            <strong>Место отдыха</strong>
-                            <br><a href="#/campPlaceHome/{{post.campPlaceId}}" ng-bind="post.campPlaceName"></a>
+                            <strong>Camp place</strong>
+                            <br><a href="#/campPlaceHome/{{post.campPlaceId}}">{{post.campPlaceName}}</a>
                         </adress>
                     </div>
 
@@ -40,20 +40,23 @@
                 <div class="form-group">
                     <textarea class="form-control" ng-model="text"></textarea>
                 </div>
-                <input id="sub" class="btn btn-success" value="Комментировать" ng-click="comment(text, post.id, $index)" />
+                <input id="sub" class="btn btn-success" value="Comment" ng-click="comment(text, post.id, $index)"/>
             </form>
         </div>
 
         <dl class="dl-comment col-md-12">
             <div ng-repeat="message in post.messages">
                 <dt>
-                    <span><a href="#/home/{{message.author}}" ng-bind="message.firstName + ' ' + message.lastName"></a> в {{message.date | date:"HH:mm dd/MM/yyyy"}}</span>
+                    <span>
+                        <a href="#/home/{{message.author}}">{{message.firstName}} {{message.lastName}}</a>
+                        <span> в {{message.date | date:"HH:mm dd/MM/yyyy"}}</span>
+                    </span>
 
-                    <a href="" style="color: grey" ng-click="delete(message.id, post.id, $index, posts.indexOf(post))" ng-if="(userName === message.author) || (userName === post.author)">
+                    <a href="" style="color: grey" ng-click="delete(message.id, post.id, $index, posts.indexOf(post))" ng-if="(userName.toLowerCase() === message.author.toLowerCase()) || (userName.toLowerCase() === post.author.toLowerCase())">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </a>
                  </dt>
-                <dd ng-bind="' - ' + message.text"></dd>
+                <dd> - {{message.text}}</dd>
             </div>
         </dl>
 

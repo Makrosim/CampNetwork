@@ -1,25 +1,25 @@
 <div class="col-md-10">
 
     <div class="well row user-info">
-        <p  class="lead" ng-bind="group.name"></p>
+        <p  class="lead">{{group.name}}</p>
         
         <div class="col-md-6 userInfo">
             <adress>
-                <strong>Людей в группе</strong>
+                <strong>Members count</strong>
                 <br>{{group.membersCount}}
             </adress>
         </div>
 
         <div class="col-md-6 userInfo" style="margin-bottom: 10px">
             <adress>
-                <strong>Создатель</strong>
-                <br>{{group.creatorFirstName}} {{group.cretorLastName}}
+                <strong>Creator</strong>
+                <br>{{group.creatorFirstName}} {{group.creatorLastName}}
             </adress>
         </div>
 
         <div >
             <adress>
-                <strong>Краткое описание</strong>
+                <strong>Short description</strong>
                 <br>{{group.shortDescription}}
             </adress>
         </div>
